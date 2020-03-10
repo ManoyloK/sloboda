@@ -56,7 +56,6 @@ class _SendSupportViewState extends State<SendSupportView> {
               ),
             ),
           ),
-          VDivider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -124,7 +123,6 @@ class _SendSupportViewState extends State<SendSupportView> {
               ),
             ),
           ),
-          VDivider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
