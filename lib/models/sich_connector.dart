@@ -19,4 +19,10 @@ class SichConnector {
         .put(root + send + cossacks + '/${amount.toString()}', body: {});
     return jsonDecode(response.body);
   }
+
+  Future<Map> sendMoney(int amount) async {
+    var response =
+        await http.put(root + send + gold + '/${amount.toString()}', body: {});
+    return jsonDecode(response.body);
+  }
 }

@@ -610,6 +610,7 @@ class SlobodaLocalizations {
       'sichHas': 'Sich has',
       'reset': 'Reset',
       'sichName': 'Sich',
+      'sendMoneyToSich': 'Send money',
     },
     'uk': {
       'overview': 'Головна',
@@ -649,6 +650,7 @@ class SlobodaLocalizations {
       'sichHas': 'На Січі є',
       'reset': 'Заново',
       'sichName': 'Запорізька Січ',
+      'sendMoneyToSich': 'Відіслати гроші',
     }
   };
 
@@ -784,5 +786,10 @@ class SlobodaLocalizations {
   static String get sichName {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['sichName'];
+  }
+
+  static String get sendMoneyToSich {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['sendMoneyToSich'];
   }
 }

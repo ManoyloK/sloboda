@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/sich/send_support_view.dart';
 import 'package:sloboda/views/sich_stats_view.dart';
+
+import '../../components/divider.dart';
 
 class SichScreen extends StatefulWidget {
   static String routeName = '/sich';
@@ -18,9 +21,25 @@ class _SichScreenState extends State<SichScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SichStatsView(
-          city: widget.city,
+      body: StreamBuilder(
+        stream: widget.city.changes,
+        builder: (context, snapshot) =>
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                SichStatsView(
+                  city: widget.city,
+                ),
+                VDivider(),
+                SendSupportView(
+                  city: widget.city,
+                ),
+                VDivider(),
+              ],
+            ),
+          ),
         ),
       ),
       appBar: AppBar(

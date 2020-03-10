@@ -71,7 +71,7 @@ class Sloboda {
     return citizens.where((citizen) => !citizen.occupied).length > 0;
   }
 
-  _removeFromStock(Map<RESOURCE_TYPES, int> map) {
+  removeFromStock(Map<RESOURCE_TYPES, int> map) {
     map.entries.forEach((e) {
       stock.removeFromType(e.key, e.value);
     });
@@ -90,7 +90,7 @@ class Sloboda {
 
   buildBuilding(Buildable buildable) {
     if (canBuildResourceBuilding(buildable)) {
-      _removeFromStock(buildable.requiredToBuild);
+      removeFromStock(buildable.requiredToBuild);
       if (buildable is ResourceBuilding) {
         resourceBuildings.add(buildable);
         Producable producable = buildable;
