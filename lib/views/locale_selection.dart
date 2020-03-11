@@ -41,7 +41,11 @@ class _LocaleSelectionState extends State<LocaleSelection> {
 
   void _setNewLocale(String newValue) async {
     UrlParser.updateLanguage(newValue);
-    await AppPreferences.instance.setUILanguage(newValue);
+    try {
+      await AppPreferences.instance.setUILanguage(newValue);
+    } catch (e) {
+      print('Error saving new ui language to app preferences.');
+    }
     if (widget.onLocaleChanged != null) {
       widget.onLocaleChanged(Locale(newValue));
     }

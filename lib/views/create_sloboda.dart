@@ -33,81 +33,56 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SafeArea(
-              child: SoftContainer(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: LocaleSelection(
-                        locale: SlobodaLocalizations.locale,
-                        onLocaleChanged: (Locale locale) {
-                          setState(() {
-                            SlobodaLocalizations.locale = locale;
-                          });
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: FullWidth(
-                        child: SoftContainer(
-                          child: Column(
-                            children: <Widget>[
-                              Image.asset(
-                                "images/city_props/citizen.png",
-                                width: 260,
-                              ),
-                              RaisedButton(
-                                child: Text(SlobodaLocalizations.normalSloboda),
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    CityGame.routeName,
-                                    arguments: CityGameArguments(
-                                      city: Sloboda(),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    VDivider(),
-                    Expanded(
-                      flex: 5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(
-                        child: Column(
-                          children: <Widget>[
-                            Image.asset(
-                              "images/city_props/cossack.png",
-                              width: 260,
-                            ),
-                            RaisedButton(
-                              child: Text(SlobodaLocalizations.bigSloboda),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  CityGame.routeName,
-                                  arguments: CityGameArguments(
-                                    city: Sloboda(
-                                      stock: Stock.bigStock(),
-                                      props: CityProps.bigProps(),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
+                        child: LocaleSelection(
+                          locale: SlobodaLocalizations.locale,
+                          onLocaleChanged: (Locale locale) {
+                            setState(() {
+                              SlobodaLocalizations.locale = locale;
+                            });
+                          },
                         ),
                       ),
                     ),
-                    VDivider(),
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    flex: 9,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SoftContainer(
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            if (constraints.maxWidth > constraints.maxHeight) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: _buildChildren(context),
+                                ),
+                              );
+                            } else {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: _buildChildren(context),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             );
           } else {
@@ -116,5 +91,75 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
         },
       ),
     );
+  }
+
+  _buildChildren(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    var imageWidth = width * 0.6;
+    return [
+      Expanded(
+        flex: 15,
+        child: SoftContainer(
+          child: FullWidth(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  "images/city_props/citizen.png",
+                  width: imageWidth,
+                ),
+                RaisedButton(
+                  child: Text(SlobodaLocalizations.normalSloboda),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      CityGame.routeName,
+                      arguments: CityGameArguments(
+                        city: Sloboda(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 1,
+        child: AllDivider(),
+      ),
+      Expanded(
+        flex: 15,
+        child: SoftContainer(
+          child: FullWidth(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  "images/city_props/cossack.png",
+                  width: imageWidth,
+                ),
+                RaisedButton(
+                  child: Text(SlobodaLocalizations.bigSloboda),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      CityGame.routeName,
+                      arguments: CityGameArguments(
+                        city: Sloboda(
+                          stock: Stock.bigStock(),
+                          props: CityProps.bigProps(),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    ];
   }
 }
