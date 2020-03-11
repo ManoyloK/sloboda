@@ -130,7 +130,7 @@ class ResourceLocalizations extends InternalLocalizations {
     },
     'uk': {
       'food': 'Їжа',
-      'foodDeascription':
+      'foodDescription':
           'Потребується для всіх виробництв. Може бути здобута в бою або вирощена не полях.',
       'stone': 'Каміння',
       'stoneDescription':
