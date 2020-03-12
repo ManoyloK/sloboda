@@ -2,47 +2,31 @@ Class {
 	#name : #Sloboda,
 	#superclass : #Object,
 	#instVars : [
-		'cossacks',
-		'money'
+		'name',
+		'money',
+		'cossacks'
 	],
 	#category : #Sloboda
 }
 
-{ #category : #accessing }
-Sloboda class >> neoJsonMapping: mapper [
-mapper for: self do: [ :mapping | mapping mapInstVars: #(cossacks money) ]
+{ #category : #'as yet unclassified' }
+Sloboda class >> withName: aName withMoney: aMoney withCossacks: aCossacks [
+|c|
+c := Sloboda new.
+c name: aName.
+c money: aMoney.
+c cossacks: aCossacks.
+c
 ]
 
-{ #category : #server }
-Sloboda class >> startServer [
-| sloboda teapot |
-
-sloboda := Sloboda new.
-
-teapot := Teapot allInstances last.
-teapot ifNil: [ teapot := Teapot  ].
-teapot stop.
-
-teapot := Teapot configure: {
-	#defaultOutput -> #json. #port -> 9090. #debugMode -> true
-}.
-
-teapot GET: '/welcome' -> 'Welcome to sloboda server';
-       PUT: '/sendSupport/money/<value>' -> [ : req | sloboda addMoney: ((req at: #value) asNumber)];
-	    PUT: '/sendSupport/cossacks/<value>' -> [ : req | sloboda addCossacks: ((req at: #value) asNumber) ];
-	    GET: '/sichStats' -> sloboda.
-
-teapot start
+{ #category : #adding }
+Sloboda >> addCossacks: aCossacks [
+cossacks := cossacks + aCossacks
 ]
 
-{ #category : #accessing }
-Sloboda >> addCossacks: aNumber [
-cossacks := cossacks + (aNumber asNumber)
-]
-
-{ #category : #accessing }
-Sloboda >> addMoney: aNumber [
-money := money + (aNumber asNumber)
+{ #category : #adding }
+Sloboda >> addMoney: aMoney [
+money := money + aMoney
 ]
 
 { #category : #accessing }
@@ -51,21 +35,33 @@ Sloboda >> cossacks [
 ]
 
 { #category : #accessing }
-Sloboda >> gtPreviewFor: aView [ 
-<gtView>
-^ aView textEditor
-  text: 'Money: ', self money asString, '  |  ', 'Cossacks: ', self cossacks asString;
-  title: 'Sloboda Stats'
-
+Sloboda >> cossacks: anObject [
+	cossacks := anObject
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 Sloboda >> initialize [
 money := 0.
-cossacks := 0
+cossacks := 0.
+name = 'No name'
 ]
 
 { #category : #accessing }
 Sloboda >> money [
 	^ money
+]
+
+{ #category : #accessing }
+Sloboda >> money: anObject [
+	money := anObject
+]
+
+{ #category : #accessing }
+Sloboda >> name [
+	^ name
+]
+
+{ #category : #accessing }
+Sloboda >> name: anObject [
+	name := anObject
 ]
