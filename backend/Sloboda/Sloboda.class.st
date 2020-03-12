@@ -12,11 +12,11 @@ Class {
 { #category : #'as yet unclassified' }
 Sloboda class >> withName: aName withMoney: aMoney withCossacks: aCossacks [
 |c|
-c := Sloboda new.
+c := self new.
 c name: aName.
 c money: aMoney.
 c cossacks: aCossacks.
-c
+^c
 ]
 
 { #category : #adding }
@@ -37,6 +37,15 @@ Sloboda >> cossacks [
 { #category : #accessing }
 Sloboda >> cossacks: anObject [
 	cossacks := anObject
+]
+
+{ #category : #'gt-inspector-extension' }
+Sloboda >> gtPreviewFor: aView [ 
+<gtView>
+^ aView textEditor
+  text: 'Sloboda name: ', name, ' has Money: ', self money asString, '  |  ', 'Cossacks: ', self cossacks asString;
+  title: 'Sloboda Stats'
+
 ]
 
 { #category : #initialization }
