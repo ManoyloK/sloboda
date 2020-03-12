@@ -39,7 +39,7 @@ class _SichStatsViewState extends State<SichStatsView> {
                   );
                 }
                 var cossacks = snapshot.hasData ? snapshot.data['cossacks'] : 0;
-                var gold = snapshot.hasData ? snapshot.data['gold'] : 0;
+                var gold = snapshot.hasData ? snapshot.data['money'] : 0;
                 return Container(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -78,6 +78,16 @@ class Sloboda {
     _innerChanges.add(this);
   }
 
+  hasEnoughProp(CityProp prop) {
+    final existing = props.getByType(prop.type);
+    return existing >= prop.value;
+  }
+
+  hasEnoughStock(ResourceType type) {
+    final existing = stock.getByType(type.type);
+    return existing >= type.value;
+  }
+
   removeCossacks(int amount) {
     final existing = props.getByType(CITY_PROPERTIES.COSSACKS);
     if (existing < amount) {
