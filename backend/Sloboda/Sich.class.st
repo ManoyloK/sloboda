@@ -1,3 +1,6 @@
+"
+The main entry point for the HTTP server.
+"
 Class {
 	#name : #Sich,
 	#superclass : #Object,
