@@ -115,7 +115,7 @@ class ResourceLocalizations extends InternalLocalizations {
       'moneyDescription':
           'Used to be sent to the Sich to support defenders of Ukraine. Can be earned in battles, raids or in Mill.',
       'horse': 'Horse',
-      'horse':
+      'horseDescription':
           'Used to create cossacks. Can be earned in events, raids. Can be produced in Stables.',
       'powder': 'Powder',
       'powderDescription':
@@ -611,6 +611,7 @@ class SlobodaLocalizations {
       'reset': 'Reset',
       'sichName': 'Sich',
       'sendMoneyToSich': 'Send money',
+      'incomingEventLabel': 'New incoming event',
     },
     'uk': {
       'overview': 'Головна',
@@ -651,6 +652,7 @@ class SlobodaLocalizations {
       'reset': 'Заново',
       'sichName': 'Запорізька Січ',
       'sendMoneyToSich': 'Відіслати гроші',
+      'incomingEventLabel': 'Нова подія',
     }
   };
 
@@ -791,5 +793,10 @@ class SlobodaLocalizations {
   static String get sendMoneyToSich {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['sendMoneyToSich'];
+  }
+
+  static String get incomingEventLabel {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['incomingEventLabel'];
   }
 }
