@@ -42,6 +42,14 @@ abstract class CitySeason {
         return false;
     }
   }
+
+  CitySeason get next {
+    throw 'Must implement';
+  }
+
+  CitySeason get previous {
+    throw 'Must implement';
+  }
 }
 
 class WinterSeason extends CitySeason {
@@ -51,6 +59,14 @@ class WinterSeason extends CitySeason {
 
   String toLocalizedKey() {
     return 'winter';
+  }
+
+  CitySeason get next {
+    return SpringSeason();
+  }
+
+  CitySeason get previous {
+    return AutumnSeason();
   }
 }
 
@@ -62,6 +78,14 @@ class SpringSeason extends CitySeason {
   String toLocalizedKey() {
     return 'spring';
   }
+
+  CitySeason get next {
+    return SummerSeason();
+  }
+
+  CitySeason get previous {
+    return WinterSeason();
+  }
 }
 
 class SummerSeason extends CitySeason {
@@ -72,6 +96,14 @@ class SummerSeason extends CitySeason {
   String toLocalizedKey() {
     return 'summer';
   }
+
+  CitySeason get next {
+    return AutumnSeason();
+  }
+
+  CitySeason get previous {
+    return SpringSeason();
+  }
 }
 
 class AutumnSeason extends CitySeason {
@@ -81,6 +113,14 @@ class AutumnSeason extends CitySeason {
 
   String toLocalizedKey() {
     return 'autumn';
+  }
+
+  CitySeason get next {
+    return WinterSeason();
+  }
+
+  CitySeason get previous {
+    return SummerSeason();
   }
 }
 

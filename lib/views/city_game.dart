@@ -234,21 +234,8 @@ class _CityGameState extends State<CityGame> {
               SlobodaLocalizations.makeTurn,
             ),
           ),
-          onPress: () async {
-            List choicableEvents = city.getChoicableRandomEvents();
-
-            if (choicableEvents.isNotEmpty) {
-              DialogAnswer result =
-                  await _askForEvent(context, choicableEvents[0]);
-              city.addChoicableEventWithAnswer(
-                  result == DialogAnswer.YES, choicableEvents[0]);
-              city.makeTurn();
-              if (result == DialogAnswer.YES) {
-                city.runChoicableEventResult(choicableEvents[0]);
-              }
-            } else {
-              city.makeTurn();
-            }
+          onPress: () {
+            city.makeTurn();
           },
         ),
       ),

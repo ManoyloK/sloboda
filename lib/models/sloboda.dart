@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:rxdart/rxdart.dart';
 import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
@@ -33,6 +35,7 @@ class Sloboda {
   bool hasShootingRange = true;
 
   final List<CityEvent> events = [];
+  final Queue<RandomTurnEvent> pendingNextEvents = Queue();
 
   Stock stock;
   CityProps props;
@@ -103,8 +106,8 @@ class Sloboda {
       removeFromStock(buildable.requiredToBuild);
       if (buildable is ResourceBuilding) {
         resourceBuildings.add(buildable);
-        Producable producable = buildable;
-        producable.changes.stream.listen(_buildingChangesListener);
+        Producable producible = buildable;
+        producible.changes.stream.listen(_buildingChangesListener);
       } else if (buildable is CityBuilding) {
         cityBuildings.add(buildable);
       }
@@ -183,8 +186,8 @@ class Sloboda {
     _nextRandomEvents.clear();
   }
 
-  List getChoicableRandomEvents() {
-    final _events = RandomTurnEvent.allEvents.where((event) {
+  List<RandomTurnEvent> getChoicableRandomEvents() {
+    final List _events = RandomTurnEvent.allEvents.where((event) {
       return event is ChoicableRandomTurnEvent && event.canHappen(this);
     }).toList();
 
@@ -194,8 +197,9 @@ class Sloboda {
   void addChoicableEventWithAnswer(bool yes, ChoicableRandomTurnEvent event) {
     events.add(
       CityEvent(
-        season: currentSeason,
-        yearHappened: currentYear,
+        season: currentSeason.previous,
+        yearHappened:
+            currentSeason is WinterSeason ? currentYear - 1 : currentYear,
         sourceEvent: EventMessage(
           stock: null,
           event: event,
@@ -203,6 +207,10 @@ class Sloboda {
         ),
       ),
     );
+
+    pendingNextEvents.remove(event);
+
+    _innerChanges.add(this);
   }
 
   void runChoicableEventResult(ChoicableRandomTurnEvent event) {
@@ -229,8 +237,13 @@ class Sloboda {
     _innerChanges.add(this);
   }
 
+  _cleanPendingEvents() {
+    pendingNextEvents.clear();
+  }
+
   void makeTurn() {
     _runAttachedEvents();
+    _cleanPendingEvents();
 
     List<Exception> exceptions = [];
     simulateStock();
@@ -291,7 +304,6 @@ class Sloboda {
     });
 
     // generate random events
-
     try {
       final _events = RandomTurnEvent.allEvents.where((event) {
         return event.canHappen(this) && !(event is ChoicableRandomTurnEvent);
@@ -299,14 +311,6 @@ class Sloboda {
 
       for (var event in _events) {
         if (event != null) {
-//          events.add(
-//            CityEvent(
-//              events: [event],
-//              season: currentSeason,
-//              yearHappened: currentYear,
-//            ),
-//          );
-
           EventMessage eventResult = event.execute(this)();
           this.stock + eventResult.stock;
           events.add(
@@ -322,7 +326,14 @@ class Sloboda {
       print(e);
     }
 
+    _queueNextEvents();
     _moveToNextSeason();
+  }
+
+  _queueNextEvents() {
+    List<RandomTurnEvent> choicableEvents =
+        getChoicableRandomEvents().take(3).toList();
+    pendingNextEvents.addAll(choicableEvents);
   }
 
   _moveToNextSeason() {
