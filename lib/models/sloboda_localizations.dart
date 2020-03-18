@@ -612,6 +612,7 @@ class SlobodaLocalizations {
       'sichName': 'Sich',
       'sendMoneyToSich': 'Send money',
       'incomingEventLabel': 'New incoming event',
+      'labelInputSlobodaName': 'Sloboda Name',
     },
     'uk': {
       'overview': 'Головна',
@@ -653,6 +654,7 @@ class SlobodaLocalizations {
       'sichName': 'Запорізька Січ',
       'sendMoneyToSich': 'Відіслати гроші',
       'incomingEventLabel': 'Нова подія',
+      'labelInputSlobodaName': 'Назва слободи',
     }
   };
 
@@ -798,5 +800,10 @@ class SlobodaLocalizations {
   static String get incomingEventLabel {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['incomingEventLabel'];
+  }
+
+  static String get labelInputSlobodaName {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['labelInputSlobodaName'];
   }
 }

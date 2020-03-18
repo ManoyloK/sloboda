@@ -4,8 +4,8 @@ import 'package:sloboda/animations/slideable_button.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
+import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/inherited_city.dart';
-import 'package:sloboda/models/events/random_choicable_events.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/city_buildings/city_buildings_page.dart';
@@ -122,6 +122,9 @@ class _CityGameState extends State<CityGame> {
                                           });
                                         },
                                       ),
+                                      TitleText(
+                                        city.name,
+                                      ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: SoftContainer(
@@ -195,31 +198,6 @@ class _CityGameState extends State<CityGame> {
         );
       },
     );
-  }
-
-  Future<DialogAnswer> _askForEvent(
-      BuildContext context, ChoicableRandomTurnEvent event) async {
-    DialogAnswer result = await showDialog<DialogAnswer>(
-        context: context,
-        builder: (context) {
-          return SimpleDialog(
-            title: Text(
-              SlobodaLocalizations.getForKey(event.localizedQuestionKey),
-            ),
-            children: <Widget>[
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, DialogAnswer.YES),
-                child: Text(SlobodaLocalizations.yesToRandomEvent),
-              ),
-              SimpleDialogOption(
-                onPressed: () => Navigator.pop(context, DialogAnswer.NO),
-                child: Text(SlobodaLocalizations.noToRandomEvent),
-              ),
-            ],
-          );
-        });
-
-    return result;
   }
 
   Widget _makeTurn(BuildContext context) {

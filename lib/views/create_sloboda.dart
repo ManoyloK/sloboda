@@ -20,9 +20,16 @@ class CreateSlobodaView extends StatefulWidget {
 
 class _CreateSlobodaViewState extends State<CreateSlobodaView> {
   final AsyncMemoizer _appPreferencesInitter = AsyncMemoizer();
+  final TextEditingController _textInputController = TextEditingController();
 
   _appPreferencesInit() {
     return _appPreferencesInitter.runOnce(() => AppPreferences.instance.init());
+  }
+
+  @override
+  void initState() {
+    _textInputController.text = 'Моя Слобода';
+    super.initState();
   }
 
   @override
@@ -34,6 +41,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
           if (snapshot.hasData) {
             return SafeArea(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Expanded(
@@ -48,6 +56,31 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                               SlobodaLocalizations.locale = locale;
                             });
                           },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SoftContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                SlobodaLocalizations.labelInputSlobodaName,
+                              ),
+                              HDivider(),
+                              Expanded(
+                                flex: 1,
+                                child: TextField(
+                                  controller: _textInputController,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -115,7 +148,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                       context,
                       CityGame.routeName,
                       arguments: CityGameArguments(
-                        city: Sloboda(),
+                        city: Sloboda(name: _textInputController.text),
                       ),
                     );
                   },
@@ -148,6 +181,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                       CityGame.routeName,
                       arguments: CityGameArguments(
                         city: Sloboda(
+                          name: _textInputController.text,
                           stock: Stock.bigStock(),
                           props: CityProps.bigProps(),
                         ),

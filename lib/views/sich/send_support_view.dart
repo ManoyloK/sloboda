@@ -48,8 +48,8 @@ class _SendSupportViewState extends State<SendSupportView> {
                           var hasEnough = widget.city.hasEnoughProp(
                               CityCossacks(_amountOfCossackToSend));
                           if (hasEnough) {
-                            final result =
-                                await sich.sendCossacks(_amountOfCossackToSend);
+                            final result = await sich.sendCossacks(
+                                _amountOfCossackToSend, widget.city.name);
                             if (result) {
                               widget.city
                                   .removeCossacks(_amountOfCossackToSend);
@@ -123,8 +123,8 @@ class _SendSupportViewState extends State<SendSupportView> {
                         var hasEnough = widget.city
                             .hasEnoughStock(Money(_amountOfGoldToSend));
                         if (hasEnough) {
-                          final result =
-                              await sich.sendMoney(_amountOfGoldToSend);
+                          final result = await sich.sendMoney(
+                              _amountOfGoldToSend, widget.city.name);
                           if (result) {
                             widget.city.removeFromStock(
                                 {RESOURCE_TYPES.MONEY: _amountOfGoldToSend});
