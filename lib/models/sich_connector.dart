@@ -4,7 +4,7 @@ import 'dart:core';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-var productionRoot = 'https:/sloboda.locadeserta.com';
+var productionRoot = 'https://sloboda.locadeserta.com';
 var devRoot = productionRoot; // 'http://192.168.1.199:9090';
 
 class SichConnector {
