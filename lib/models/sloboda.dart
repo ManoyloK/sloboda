@@ -208,6 +208,10 @@ class Sloboda {
       ),
     );
 
+    if (yes) {
+      runChoicableEventResult(event);
+    }
+
     pendingNextEvents.remove(event);
 
     _innerChanges.add(this);
