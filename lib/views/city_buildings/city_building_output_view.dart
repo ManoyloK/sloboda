@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
-import 'package:sloboda/models/citizen.dart';
-import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/city_buildings/city_property_image_view.dart';
 
 class CityBuildingOutputView extends StatelessWidget {
   final CityBuilding building;
@@ -15,19 +14,10 @@ class CityBuildingOutputView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(SlobodaLocalizations.output),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            building.produces == CITY_PROPERTIES.CITIZENS
-                ? Image.asset(
-                    Citizen.getIconPath(),
-                    width: 64,
-                  )
-                : Text(
-                    building.produces.toLocalizedString(),
-                  ),
-          ],
-        ),
+        CityPropertyImageView(
+          prop: building.produces,
+          amount: building.outputAmount,
+        )
       ],
     );
   }

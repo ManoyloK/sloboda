@@ -41,6 +41,7 @@ class _CityGameState extends State<CityGame>
       ];
 
   TabController _tabController;
+
   @override
   void initState() {
     _tabController = TabController(
@@ -87,17 +88,7 @@ class _CityGameState extends State<CityGame>
                                             if (tab ==
                                                 SlobodaLocalizations.events)
                                               Text(
-                                                city.events
-                                                    .where((cityEvent) {
-                                                      return city.currentYear ==
-                                                              cityEvent
-                                                                  .yearHappened &&
-                                                          city.currentSeason
-                                                              .isNextTo(
-                                                                  cityEvent
-                                                                      .season);
-                                                    })
-                                                    .length
+                                                city.pendingNextEvents.length
                                                     .toString(),
                                                 style: Theme.of(context)
                                                     .textTheme

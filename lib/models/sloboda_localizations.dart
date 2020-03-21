@@ -48,6 +48,7 @@ class CityPropsLocalizations extends InternalLocalizations {
       'gloryDescription':
           'Glory influences chance of getting certain military random events. Even nearby Slobodas might join your forces and unite with you. The higher the Glory, the more known your settlement is. This means epic events might occur. Can be increased only by participating in events.',
       'defense': 'Defense',
+      'defenseDescription': 'In future will protect you from some type of events. On the other hand, more prepared Tartar forces might attack you.',
       'defenseLevel':
           'Defense. Decreases chances for tartar raids. Can lower the level of damage done by enemy forces. Can be increased by City Defense Buildings.',
       'citizens': 'Citizens',
@@ -357,9 +358,9 @@ class RandomEventLocalizations extends InternalLocalizations {
           'Your main goal is to defend against the Tatars. Let the priests decide their church affairs themselves.',
       'AttackCatholicChurches': 'Reflect the Orthodox parish from Catholics.',
       'AttackCatholicChurchesQuestion':
-          'The more blessed Metropolitan of Kiev, Sylvester Belkevich, asks the Cossack Society to repatriate a parish occupied by Catholics near the Bila Tserkva. He asks with the help of your armed presence to persuade the Polands to return the church back to the possession of the Orthodox metropolis.',
+          'The more blessed Metropolitan of Kyiv, Sylvester Belkevich, asks the Cossack Society to repatriate a parish occupied by Catholics near the Bila Tserkva. He asks with the help of your armed presence to persuade the Polands to return the church back to the possession of the Orthodox metropolis.',
       'successHelpDefendAgainstCatholicRaiders':
-          'Early in the morning, Polish mercenaries attempted to incite a crowd to storm Lavra. But the Cossacks used small mobile groups to catch and execute groups paid polish attackers. The perpetrator of the assault hid in St. Andrew\'s Church, but was pulled from there and hung on the descent to Podil. The St. Andrew\'s Church was immediately seized by armed Cossacks and introduced Orthodox priests there. The counter operation was so successful that the Metropolitan offered you a whole treasure of money and things in gratitude for the protection of the Orthodox faith.',
+          'Early in the morning, Polish mercenaries attempted to incite a crowd to storm Lavra. But the Cossacks used small mobile groups to catch and execute catholic supporters paid by polish Shlyachta. The perpetrator of the assault hid in St. Andrew\'s Church, but was pulled from there and hung on the descent to Podil. The St. Andrew\'s Church was immediately seized by armed Cossacks and introduced Orthodox priests there. The counter operation was so successful that the Metropolitan offered you a whole treasure of money and things in gratitude for the protection of the Orthodox faith.',
       'failureHelpDefendAgainstCatholicRaiders':
           'They were terrified by the strength that came to support Lavra. Hired bandits among the local ran away, and the armed reapers were afraid to join you in the battle. The Metropolitan in gratitude gave you rich gifts. ',
       'HelpDefendAgainstCatholicRaidersYes':
@@ -368,7 +369,7 @@ class RandomEventLocalizations extends InternalLocalizations {
           'Your main goal is to defend against the Tatars. Let the priests decide their church affairs themselves.',
       'HelpDefendAgainstCatholicRaiders': 'Protect the Kyiv-Pechersk Lavra.',
       'HelpDefendAgainstCatholicRaidersQuestion':
-          'Blessed Metropolitan of Kiev Sylvester Belkevich sent messengers to Free Lands. He learned that the polish troopers, along with the Jesuits, were preparing an armed attack to capture the Kyivv-Pechersk Lavra. He requests the deployment of armed Cossacks near Kyiv to help repel the attack.',
+          'Blessed Metropolitan of Kyiv Sylvester Belkevich sent messengers to Free Lands. He learned that the polish troopers, along with the Jesuits, were preparing an armed attack to capture the Kyivv-Pechersk Lavra. He requests the deployment of armed Cossacks near Kyiv to help repel the attack.',
     },
     'uk': {
       'koshoviyPohid':

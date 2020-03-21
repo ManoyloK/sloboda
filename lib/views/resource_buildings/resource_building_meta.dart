@@ -45,7 +45,7 @@ class _ResourceBuildingMetaViewState extends State<ResourceBuildingMetaView> {
                       building.toLocalizedString(),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),

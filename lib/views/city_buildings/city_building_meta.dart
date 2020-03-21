@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sloboda/animations/slideable_button.dart';
 import 'package:sloboda/components/button_text.dart';
+import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
-import 'package:sloboda/models/citizen.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/city_buildings/city_building_output_view.dart';
 import 'package:sloboda/views/components/buildable_requires_to_build.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 
@@ -35,18 +36,27 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
               children: <Widget>[
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     Text(
                       '${localizedCityBuildingByType(widget.type)}',
                       style: Theme.of(context).textTheme.headline6.merge(
                           TextStyle(fontSize: widget.selected ? 30 : 25)),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        cityTypeToImagePath(widget.type),
-                        height: widget.selected ? 256 : 128,
-                      ),
+                    VDivider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            cityTypeToImagePath(widget.type),
+                            height: widget.selected ? 256 : 128,
+                          ),
+                        ),
+                        CityBuildingOutputView(
+                          building: building,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -59,26 +69,13 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 35,
-                  ),
+                  VDivider(),
                   SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(SlobodaLocalizations.output),
-                          Image.asset(
-                            Citizen.getIconPath(),
-                          ),
-                        ],
-                      ),
+                    child: CityBuildingOutputView(
+                      building: building,
                     ),
                   ),
-                  SizedBox(
-                    height: 35,
-                  ),
+                  VDivider(),
                 ],
                 if (widget.onBuildPressed != null)
                   SoftContainer(
