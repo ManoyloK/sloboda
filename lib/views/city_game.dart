@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sloboda/animations/slideable_button.dart';
@@ -30,13 +31,24 @@ class CityGame extends StatefulWidget {
 
 typedef List<String> GenerateTitles();
 
-class _CityGameState extends State<CityGame> {
+class _CityGameState extends State<CityGame>
+    with SingleTickerProviderStateMixin {
   GenerateTitles _pageTitles = () => [
         SlobodaLocalizations.overview,
         SlobodaLocalizations.events,
         SlobodaLocalizations.resources,
         SlobodaLocalizations.cityBuildings,
       ];
+
+  TabController _tabController;
+  @override
+  void initState() {
+    _tabController = TabController(
+      vsync: this,
+      length: _pageTitles().length,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +73,7 @@ class _CityGameState extends State<CityGame> {
                             backgroundColor: Theme.of(context).backgroundColor,
                             appBar: AppBar(
                               bottom: TabBar(
+                                controller: _tabController,
                                 tabs: _pageTitles()
                                     .map(
                                       (tab) => Tab(
@@ -166,6 +179,10 @@ class _CityGameState extends State<CityGame> {
                               ),
                             ),
                             body: TabBarView(
+                              physics: kIsWeb
+                                  ? NeverScrollableScrollPhysics()
+                                  : BouncingScrollPhysics(),
+                              controller: _tabController,
                               children: <Widget>[
                                 CityDashboard(city: city),
                                 EventsView(

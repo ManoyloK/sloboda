@@ -39,7 +39,6 @@ class EventsView extends StatelessWidget {
 
   Widget build(BuildContext context) {
     final city = InheritedCity.of(context).city;
-    print(city.currentSeason);
     final Queue<RandomTurnEvent> pendingEvents = city.pendingNextEvents;
     return Column(
       children: <Widget>[
@@ -144,7 +143,6 @@ class PendingEventsView extends StatefulWidget {
 class _PendingEventsViewState extends State<PendingEventsView> {
   @override
   Widget build(BuildContext context) {
-    print(widget.events.length);
     ChoicableRandomTurnEvent event = widget.events.first;
     return Padding(
       padding: const EdgeInsets.all(16.0),

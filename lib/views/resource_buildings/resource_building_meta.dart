@@ -44,12 +44,18 @@ class _ResourceBuildingMetaViewState extends State<ResourceBuildingMetaView> {
                     TitleText(
                       building.toLocalizedString(),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        building.toImagePath(),
-                        height: widget.selected ? 256 : 128,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            building.toImagePath(),
+                            height: widget.selected ? 256 : 128,
+                          ),
+                        ),
+                        ResourceBuildingOutputView(building: building),
+                      ],
                     ),
                   ],
                 ),
