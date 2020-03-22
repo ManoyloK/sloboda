@@ -23,8 +23,7 @@ class _SichScreenState extends State<SichScreen> {
     return Scaffold(
       body: StreamBuilder(
         stream: widget.city.changes,
-        builder: (context, snapshot) =>
-        SingleChildScrollView(
+        builder: (context, snapshot) => SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -37,6 +36,10 @@ class _SichScreenState extends State<SichScreen> {
                   city: widget.city,
                 ),
                 VDivider(),
+                Image.asset(
+                  'images/city_buildings/sich.png',
+                  width: MediaQuery.of(context).size.width,
+                ),
               ],
             ),
           ),
