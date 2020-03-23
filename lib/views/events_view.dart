@@ -95,26 +95,33 @@ class EventsView extends StatelessWidget {
                             }
                             return Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    FullWidth(
-                                      child: Text(
-                                        SlobodaLocalizations.getForKey(
-                                            event.sourceEvent.messageKey),
-                                        textAlign: TextAlign.center,
-                                        style: textStyle,
+                                child: SoftContainer(
+                                  child: Column(
+                                    children: <Widget>[
+                                      if (event.sourceEvent.imagePath != null)
+                                        Image.asset(
+                                          event.sourceEvent.imagePath,
+                                          width: 64,
+                                        ),
+                                      FullWidth(
+                                        child: Text(
+                                          SlobodaLocalizations.getForKey(
+                                              event.sourceEvent.messageKey),
+                                          textAlign: TextAlign.center,
+                                          style: textStyle,
+                                        ),
                                       ),
-                                    ),
-                                    if (event.sourceEvent.stock != null)
-                                      StockMiniView(
-                                        stock: event.sourceEvent.stock,
-                                        stockSimulation: null,
-                                      ),
-                                    if (event.sourceEvent.cityProps != null)
-                                      CityPropsMiniView(
-                                        props: event.sourceEvent.cityProps,
-                                      ),
-                                  ],
+                                      if (event.sourceEvent.stock != null)
+                                        StockMiniView(
+                                          stock: event.sourceEvent.stock,
+                                          stockSimulation: null,
+                                        ),
+                                      if (event.sourceEvent.cityProps != null)
+                                        CityPropsMiniView(
+                                          props: event.sourceEvent.cityProps,
+                                        ),
+                                    ],
+                                  ),
                                 ));
                           }).toList(),
                         ],

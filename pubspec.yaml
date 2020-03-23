@@ -97,6 +97,10 @@ flutter:
     - images/city_props/cossack_64.png
     # UI part
     - images/ui/arrow_right.png
+    # Events
+    - images/events/failed_event.png
+    - images/events/failed_event_128.png
+    - images/events/failed_event_64.png
 
   fonts:
     - family: Roboto

@@ -14,11 +14,13 @@ class EventMessage {
   String messageKey;
   final RandomTurnEvent event;
   final CityProps cityProps;
+  final String imagePath;
 
   EventMessage(
       {this.stock,
       @required this.messageKey,
       @required this.event,
+      this.imagePath,
       this.cityProps});
 }
 
@@ -27,6 +29,8 @@ abstract class RandomTurnEvent {
   List<Function> conditions;
   Stock stockSuccess;
   Stock stockFailure;
+  String successIconPath = "images/events/failed_event.png";
+  String failureIconPath = "images/events/failed_event.png";
 
   CityProps cityPropsSuccess;
   CityProps cityPropsFailure;
@@ -54,6 +58,7 @@ abstract class RandomTurnEvent {
           event: this,
           stock: success ? stockSuccess : stockFailure,
           cityProps: success ? cityPropsSuccess : cityPropsFailure,
+          imagePath: success ? successIconPath : failureIconPath,
           messageKey:
               success ? this.successMessageKey : this.failureMessageKey);
     };
@@ -179,6 +184,7 @@ class ChildrenPopulation extends RandomTurnEvent {
         event: this,
         stock: stockSuccess,
         cityProps: cityPropsSuccess,
+        imagePath: successIconPath,
         messageKey: this.localizedKey,
       );
     };
