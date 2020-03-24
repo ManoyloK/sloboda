@@ -1,0 +1,2016 @@
+@startuml
+set namespaceSeparator ::
+
+class "sloboda::web::models::url_parser.dart::UrlParser" {
+  {static} +bool isSupported
+  {static} +Map getUrlParams()
+  {static} +dynamic updateLanguage()
+  {static} +String getLanguage()
+}
+
+abstract class "sloboda::models::abstract::stockable.dart::Stockable<T>" {
+  -Map<T, int> _map
+  +List getTypeKeys()
+  +dynamic <()
+  +dynamic >()
+  +int getByType()
+  +dynamic addToType()
+  +Map asMap()
+  +dynamic removeFromType()
+  +dynamic +()
+  +dynamic -()
+}
+
+class "sloboda::models::abstract::producable.dart::Producable" {
+  +BehaviorSubject changes
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +List<Citizen> assignedHumans
+  +int maxWorkers
+  +int workMultiplier
+  +dynamic outputAmount
+  +bool hasWorkers()
+  +int amountOfWorkers()
+  +bool isFull()
+  +bool isEmpty()
+  +void addWorker()
+  +Citizen removeWorker()
+  +void generate()
+  +void destroy()
+  +String toLocalizedString()
+}
+
+"sloboda::models::abstract::producable.dart::Producable" o-- "rxdart::src::subjects::behavior_subject.dart::BehaviorSubject"
+"sloboda::models::abstract::producable.dart::Producable" o-- "sloboda::models::resources::resource.dart::ResourceType"
+
+class "sloboda::models::abstract::producable.dart::NotEnoughResourcesException" {
+  +int amount
+  +ResourceType resource
+  +Producable building
+  +String localizedKey
+}
+
+"sloboda::models::abstract::producable.dart::NotEnoughResourcesException" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::abstract::producable.dart::NotEnoughResourcesException" o-- "sloboda::models::abstract::producable.dart::Producable"
+"dart::core::Exception" <|-- "sloboda::models::abstract::producable.dart::NotEnoughResourcesException"
+
+class "sloboda::models::abstract::producable.dart::NotEnoughWorkers" {
+  +String cause
+  +Producable building
+}
+
+"sloboda::models::abstract::producable.dart::NotEnoughWorkers" o-- "sloboda::models::abstract::producable.dart::Producable"
+"dart::core::Exception" <|-- "sloboda::models::abstract::producable.dart::NotEnoughWorkers"
+
+class "sloboda::models::abstract::buildable.dart::Buildable<T>" {
+  +Map<T, int> requiredToBuild
+}
+
+abstract class "sloboda::models::abstract::stock_item.dart::StockItem<T>" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +T type
+  +int value
+  +String toLocalizedString()
+  +String toLocalizedDescriptionString()
+  +String toImagePath()
+  +String toIconPath()
+  {static} +StockItem fromType()
+}
+
+class "sloboda::models::buildings::shooting_range.dart::ShootingRange" {
+  +String localizedKey
+  +StockItem<CITY_PROPERTIES> produces
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +Stock requiresForCossack
+  +dynamic icon
+  +dynamic image
+  +bool canProduceCossack()
+  +Widget build()
+  -void _tryToCreateCossack()
+}
+
+"sloboda::models::buildings::shooting_range.dart::ShootingRange" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::buildings::shooting_range.dart::ShootingRange" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::abstract::buildable.dart::Buildable<T>" <|-- "sloboda::models::buildings::shooting_range.dart::ShootingRange"
+
+class "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES" {
+  +int index
+  {static} +List<RESOURCE_BUILDING_TYPES> values
+  {static} +RESOURCE_BUILDING_TYPES SMITH
+  {static} +RESOURCE_BUILDING_TYPES FIELD
+  {static} +RESOURCE_BUILDING_TYPES MILL
+  {static} +RESOURCE_BUILDING_TYPES QUARRY
+  {static} +RESOURCE_BUILDING_TYPES STABLES
+  {static} +RESOURCE_BUILDING_TYPES IRON_MINE
+  {static} +RESOURCE_BUILDING_TYPES TRAPPER_HOUSE
+  {static} +RESOURCE_BUILDING_TYPES POWDER_CELLAR
+}
+
+"sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+
+abstract class "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" {
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +RESOURCE_BUILDING_TYPES type
+  +int workMultiplier
+  +Map<RESOURCE_TYPES, int> requires
+  +String localizedKey
+  +String localizedDescriptionKey
+  {static} +ResourceBuilding fromType()
+  +String toLocalizedString()
+  +String toLocalizedDescriptionString()
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::abstract::producable.dart::Producable" <|-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"sloboda::models::abstract::buildable.dart::Buildable<T>" <|-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+
+class "sloboda::models::buildings::resource_buildings::resource_building.dart::BuildingFull" {
+  +String cause
+}
+
+"dart::core::Exception" <|-- "sloboda::models::buildings::resource_buildings::resource_building.dart::BuildingFull"
+
+class "sloboda::models::buildings::resource_buildings::nature_resource.dart::NATURAL_RESOURCES" {
+  +int index
+  {static} +List<NATURAL_RESOURCES> values
+  {static} +NATURAL_RESOURCES RIVER
+  {static} +NATURAL_RESOURCES FOREST
+}
+
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::NATURAL_RESOURCES" o-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NATURAL_RESOURCES"
+
+class "sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource" {
+  +NATURAL_RESOURCES type
+  +ResourceType produces
+  +String getIconPath()
+  +String toLocalizedString()
+}
+
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource" o-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NATURAL_RESOURCES"
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::abstract::producable.dart::Producable" <|-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource"
+
+class "sloboda::models::buildings::resource_buildings::nature_resource.dart::Forest" {
+  +NATURAL_RESOURCES type
+  +int maxWorkers
+  +int workMultiplier
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String getIconPath()
+  +String getKey()
+  +String toLocalizedString()
+  +String toString()
+}
+
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::Forest" o-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NATURAL_RESOURCES"
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::Forest" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource" <|-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::Forest"
+
+class "sloboda::models::buildings::resource_buildings::nature_resource.dart::River" {
+  +NATURAL_RESOURCES type
+  +int maxWorkers
+  +int workMultiplier
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String getIconPath()
+  +String getKey()
+  +String toLocalizedString()
+}
+
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::River" o-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NATURAL_RESOURCES"
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::River" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource" <|-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::River"
+
+class "sloboda::models::buildings::resource_buildings::mill.dart::Mill" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +int workMultiplier
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::mill.dart::Mill" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::mill.dart::Mill" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::mill.dart::Mill"
+
+class "sloboda::models::buildings::resource_buildings::smith.dart::Smith" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::smith.dart::Smith" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::smith.dart::Smith" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::smith.dart::Smith"
+
+class "sloboda::models::buildings::resource_buildings::hunting_house.dart::TrapperHouse" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +Map<RESOURCE_TYPES, int> requires
+  +int maxWorkers
+  +int workMultiplier
+  +ResourceType produces
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::hunting_house.dart::TrapperHouse" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::hunting_house.dart::TrapperHouse" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::hunting_house.dart::TrapperHouse"
+
+class "sloboda::models::buildings::resource_buildings::stables.dart::Stables" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +int workMultiplier
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::stables.dart::Stables" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::stables.dart::Stables" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::stables.dart::Stables"
+
+class "sloboda::models::buildings::resource_buildings::powder_cellar.dart::PowderCellar" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +Map<RESOURCE_TYPES, int> requires
+  +int workMultiplier
+  +int maxWorkers
+  +ResourceType produces
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::powder_cellar.dart::PowderCellar" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::powder_cellar.dart::PowderCellar" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::powder_cellar.dart::PowderCellar"
+
+class "sloboda::models::buildings::resource_buildings::quarry.dart::Quarry" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +int workMultiplier
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::quarry.dart::Quarry" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::quarry.dart::Quarry" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::quarry.dart::Quarry"
+
+class "sloboda::models::buildings::resource_buildings::field.dart::Field" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +int maxWorkers
+  +int workMultiplier
+  +ResourceType produces
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::field.dart::Field" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::field.dart::Field" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::field.dart::Field"
+
+class "sloboda::models::buildings::resource_buildings::iron_mine.dart::IronMine" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +int workMultiplier
+  +ResourceType produces
+  +Map<RESOURCE_TYPES, int> requires
+  +String toIconPath()
+  +String toImagePath()
+}
+
+"sloboda::models::buildings::resource_buildings::iron_mine.dart::IronMine" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::RESOURCE_BUILDING_TYPES"
+"sloboda::models::buildings::resource_buildings::iron_mine.dart::IronMine" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding" <|-- "sloboda::models::buildings::resource_buildings::iron_mine.dart::IronMine"
+
+class "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES" {
+  +int index
+  {static} +List<CITY_BUILDING_TYPES> values
+  {static} +CITY_BUILDING_TYPES HOUSE
+  {static} +CITY_BUILDING_TYPES CHURCH
+  {static} +CITY_BUILDING_TYPES TOWER
+  {static} +CITY_BUILDING_TYPES WATCH_TOWER
+  {static} +CITY_BUILDING_TYPES WALL
+}
+
+"sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+
+abstract class "sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" {
+  +CITY_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+  +StockItem<CITY_PROPERTIES> produces
+  +int outputAmount
+  {static} +CityBuilding fromType()
+  +Map generate()
+}
+
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::abstract::buildable.dart::Buildable<T>" <|-- "sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding"
+
+class "sloboda::models::buildings::city_buildings::tower.dart::Tower" {
+  +CITY_BUILDING_TYPES type
+  +StockItem<CITY_PROPERTIES> produces
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+}
+
+"sloboda::models::buildings::city_buildings::tower.dart::Tower" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::models::buildings::city_buildings::tower.dart::Tower" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" <|-- "sloboda::models::buildings::city_buildings::tower.dart::Tower"
+
+class "sloboda::models::buildings::city_buildings::church.dart::Church" {
+  +StockItem<CITY_PROPERTIES> produces
+  +CITY_BUILDING_TYPES type
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+}
+
+"sloboda::models::buildings::city_buildings::church.dart::Church" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::buildings::city_buildings::church.dart::Church" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" <|-- "sloboda::models::buildings::city_buildings::church.dart::Church"
+
+class "sloboda::models::buildings::city_buildings::watch_tower.dart::WatchTower" {
+  +CITY_BUILDING_TYPES type
+  +StockItem<CITY_PROPERTIES> produces
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+}
+
+"sloboda::models::buildings::city_buildings::watch_tower.dart::WatchTower" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::models::buildings::city_buildings::watch_tower.dart::WatchTower" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" <|-- "sloboda::models::buildings::city_buildings::watch_tower.dart::WatchTower"
+
+class "sloboda::models::buildings::city_buildings::wall.dart::Wall" {
+  +CITY_BUILDING_TYPES type
+  +StockItem<CITY_PROPERTIES> produces
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+}
+
+"sloboda::models::buildings::city_buildings::wall.dart::Wall" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::models::buildings::city_buildings::wall.dart::Wall" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" <|-- "sloboda::models::buildings::city_buildings::wall.dart::Wall"
+
+class "sloboda::models::buildings::city_buildings::house.dart::House" {
+  +CITY_BUILDING_TYPES type
+  +StockItem<CITY_PROPERTIES> produces
+  +Map<RESOURCE_TYPES, int> requiredToBuild
+}
+
+"sloboda::models::buildings::city_buildings::house.dart::House" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::models::buildings::city_buildings::house.dart::House" o-- "sloboda::models::abstract::stock_item.dart::StockItem<CITY_PROPERTIES>"
+"sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding" <|-- "sloboda::models::buildings::city_buildings::house.dart::House"
+
+class "sloboda::models::app_preferences.dart::AppPreferences" {
+  {static} +AppPreferences instance
+  -SharedPreferences _preferences
+  -String _isDarkTheme
+  -String _languageCode
+  +Future init()
+  +bool getDarkTheme()
+  +Future setDarkTheme()
+  +String getUILanguage()
+  +Future setUILanguage()
+}
+
+"sloboda::models::app_preferences.dart::AppPreferences" o-- "sloboda::models::app_preferences.dart::AppPreferences"
+"sloboda::models::app_preferences.dart::AppPreferences" o-- "shared_preferences::shared_preferences.dart::SharedPreferences"
+
+class "sloboda::models::sloboda.dart::Sloboda" {
+  +String name
+  +int foundedYear
+  +int currentYear
+  +CitySeason currentSeason
+  +List<CityBuilding> cityBuildings
+  +List<Citizen> citizens
+  +List<ResourceBuilding> resourceBuildings
+  +List<NaturalResource> naturalResources
+  +bool hasShootingRange
+  +List<CityEvent> events
+  +Queue<RandomTurnEvent> pendingNextEvents
+  +Stock stock
+  +CityProps props
+  -BehaviorSubject _innerChanges
+  +ValueStream changes
+  -List<Function> _nextRandomEvents
+  -dynamic _buildingChangesListener()
+  +bool hasFreeCitizens()
+  +dynamic removeFromStock()
+  +dynamic hasEnoughProp()
+  +dynamic hasEnoughStock()
+  +dynamic removeCossacks()
+  +dynamic buildBuilding()
+  +bool canBuildResourceBuilding()
+  +Citizen getFirstFreeCitizen()
+  +List getAllFreeCitizens()
+  +void removeResourceBuilding()
+  +void removeCityBuilding()
+  -void _runAttachedEvents()
+  +List getChoicableRandomEvents()
+  +void addChoicableEventWithAnswer()
+  +void runChoicableEventResult()
+  +void removeCitizens()
+  +void addCitizens()
+  +void addProps()
+  -dynamic _cleanPendingEvents()
+  +void makeTurn()
+  -dynamic _queueNextEvents()
+  -dynamic _moveToNextSeason()
+  +Map simulateCityProps()
+  +Map simulateStock()
+  +CitySeason nextSeason()
+  +void dispose()
+}
+
+"sloboda::models::sloboda.dart::Sloboda" o-- "sloboda::models::city_event.dart::CitySeason"
+"sloboda::models::sloboda.dart::Sloboda" o-- "dart::collection::Queue<RandomTurnEvent>"
+"sloboda::models::sloboda.dart::Sloboda" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::sloboda.dart::Sloboda" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::sloboda.dart::Sloboda" o-- "rxdart::src::subjects::behavior_subject.dart::BehaviorSubject"
+"sloboda::models::sloboda.dart::Sloboda" o-- "rxdart::src::streams::value_stream.dart::ValueStream"
+
+class "sloboda::models::sloboda.dart::MissingResources" {
+  +Map<String, int> causes
+  +String toLocalizedString()
+}
+
+"dart::core::Exception" <|-- "sloboda::models::sloboda.dart::MissingResources"
+
+class "sloboda::models::sloboda_localizations.dart::InternalLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+  +String []()
+}
+
+class "sloboda::models::sloboda_localizations.dart::CityPropsLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+}
+
+"sloboda::models::sloboda_localizations.dart::InternalLocalizations" <|-- "sloboda::models::sloboda_localizations.dart::CityPropsLocalizations"
+
+class "sloboda::models::sloboda_localizations.dart::CityBuildingLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+}
+
+"sloboda::models::sloboda_localizations.dart::InternalLocalizations" <|-- "sloboda::models::sloboda_localizations.dart::CityBuildingLocalizations"
+
+class "sloboda::models::sloboda_localizations.dart::ResourceLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+}
+
+"sloboda::models::sloboda_localizations.dart::InternalLocalizations" <|-- "sloboda::models::sloboda_localizations.dart::ResourceLocalizations"
+
+class "sloboda::models::sloboda_localizations.dart::ResourceBuildingsLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+}
+
+"sloboda::models::sloboda_localizations.dart::InternalLocalizations" <|-- "sloboda::models::sloboda_localizations.dart::ResourceBuildingsLocalizations"
+
+class "sloboda::models::sloboda_localizations.dart::NatureResourceBuildingsLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+}
+
+"sloboda::models::sloboda_localizations.dart::InternalLocalizations" <|-- "sloboda::models::sloboda_localizations.dart::NatureResourceBuildingsLocalizations"
+
+class "sloboda::models::sloboda_localizations.dart::RandomEventLocalizations" {
+  -Map<String, Map<String, String>> _localizedMap
+}
+
+"sloboda::models::sloboda_localizations.dart::InternalLocalizations" <|-- "sloboda::models::sloboda_localizations.dart::RandomEventLocalizations"
+
+class "sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" {
+  {static} +List supportedLanguageCodes
+  {static} +ResourceBuildingsLocalizations resourceBuildingsLocalizations
+  {static} +ResourceLocalizations resourceLocalizations
+  {static} +CityBuildingLocalizations cityBuildingLocalizations
+  {static} +NatureResourceBuildingsLocalizations natureResourceLocalizations
+  {static} +RandomEventLocalizations randomEventLocalizations
+  {static} +CityPropsLocalizations cityPropsLocalizations
+  {static} +Locale locale
+  {static} -Map<String, Map<String, String>> _localizedValues
+  {static} +String overview
+  {static} +String resources
+  {static} +String cityBuildings
+  {static} +String events
+  {static} +String stock
+  {static} +String requiredForProductionBy
+  {static} +String requiredToBuildBy
+  {static} +String output
+  {static} +String input
+  {static} +String build
+  {static} +String makeTurn
+  {static} +String maxNumberOfWorkers
+  {static} +String notOccupiedCitizens
+  {static} +String nothingHappened
+  {static} +String assignedWorkers
+  {static} +String destroyBuilding
+  {static} +String yesToRandomEvent
+  {static} +String noToRandomEvent
+  {static} +String addWorker
+  {static} +String hasNoAssignedWorkers
+  {static} +String trainCossacks
+  {static} +String sendCossacksToSich
+  {static} +String cossacks
+  {static} +String bigSloboda
+  {static} +String normalSloboda
+  {static} +String sichHas
+  {static} +String reset
+  {static} +String sichName
+  {static} +String sendMoneyToSich
+  {static} +String incomingEventLabel
+  {static} +String labelInputSlobodaName
+  {static} +dynamic getForKey()
+}
+
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "sloboda::models::sloboda_localizations.dart::ResourceBuildingsLocalizations"
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "sloboda::models::sloboda_localizations.dart::ResourceLocalizations"
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "sloboda::models::sloboda_localizations.dart::CityBuildingLocalizations"
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "sloboda::models::sloboda_localizations.dart::NatureResourceBuildingsLocalizations"
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "sloboda::models::sloboda_localizations.dart::RandomEventLocalizations"
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "sloboda::models::sloboda_localizations.dart::CityPropsLocalizations"
+"sloboda::models::sloboda_localizations.dart::SlobodaLocalizations" o-- "dart::ui::Locale"
+
+class "sloboda::models::resources::resource.dart::RESOURCE_TYPES" {
+  +int index
+  {static} +List<RESOURCE_TYPES> values
+  {static} +RESOURCE_TYPES MONEY
+  {static} +RESOURCE_TYPES WOOD
+  {static} +RESOURCE_TYPES FOOD
+  {static} +RESOURCE_TYPES STONE
+  {static} +RESOURCE_TYPES POWDER
+  {static} +RESOURCE_TYPES FUR
+  {static} +RESOURCE_TYPES FISH
+  {static} +RESOURCE_TYPES FIREARM
+  {static} +RESOURCE_TYPES HORSE
+  {static} +RESOURCE_TYPES IRON_ORE
+}
+
+"sloboda::models::resources::resource.dart::RESOURCE_TYPES" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+
+abstract class "sloboda::models::resources::resource.dart::ResourceType" {
+  {static} +StockItem fromType()
+}
+
+"sloboda::models::abstract::stock_item.dart::StockItem<T>" <|-- "sloboda::models::resources::resource.dart::ResourceType"
+
+class "sloboda::models::resources::resource.dart::Powder" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Powder" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Powder"
+
+class "sloboda::models::resources::resource.dart::Horse" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Horse" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Horse"
+
+class "sloboda::models::resources::resource.dart::Money" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Money" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Money"
+
+class "sloboda::models::resources::resource.dart::Wood" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Wood" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Wood"
+
+class "sloboda::models::resources::resource.dart::Stone" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Stone" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Stone"
+
+class "sloboda::models::resources::resource.dart::FireArm" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::FireArm" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::FireArm"
+
+class "sloboda::models::resources::resource.dart::Fish" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Fish" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Fish"
+
+class "sloboda::models::resources::resource.dart::Food" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Food" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Food"
+
+class "sloboda::models::resources::resource.dart::Fur" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::Fur" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::Fur"
+
+class "sloboda::models::resources::resource.dart::IronOre" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +RESOURCE_TYPES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::resources::resource.dart::IronOre" o-- "sloboda::models::resources::resource.dart::RESOURCE_TYPES"
+"sloboda::models::resources::resource.dart::ResourceType" <|-- "sloboda::models::resources::resource.dart::IronOre"
+
+class "sloboda::models::sich_connector.dart::SichConnector" {
+  +String statsUrl
+  +String send
+  +String money
+  +String cossacks
+  +String root
+  +Future readStats()
+  +Future sendCossacks()
+  +Future sendMoney()
+}
+
+class "sloboda::models::citizen.dart::Citizen" {
+  +dynamic assignedTo
+  +String name
+  +dynamic occupied
+  +void free()
+  -dynamic _generateName()
+  {static} +dynamic getIconPath()
+}
+
+class "sloboda::models::city_properties.dart::CITY_PROPERTIES" {
+  +int index
+  {static} +List<CITY_PROPERTIES> values
+  {static} +CITY_PROPERTIES FAITH
+  {static} +CITY_PROPERTIES DEFENSE
+  {static} +CITY_PROPERTIES GLORY
+  {static} +CITY_PROPERTIES CITIZENS
+  {static} +CITY_PROPERTIES COSSACKS
+}
+
+"sloboda::models::city_properties.dart::CITY_PROPERTIES" o-- "sloboda::models::city_properties.dart::CITY_PROPERTIES"
+
+abstract class "sloboda::models::city_properties.dart::CityProp" {
+  {static} +StockItem fromType()
+}
+
+"sloboda::models::abstract::stock_item.dart::StockItem<T>" <|-- "sloboda::models::city_properties.dart::CityProp"
+
+class "sloboda::models::city_properties.dart::CityFaith" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +CITY_PROPERTIES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::city_properties.dart::CityFaith" o-- "sloboda::models::city_properties.dart::CITY_PROPERTIES"
+"sloboda::models::city_properties.dart::CityProp" <|-- "sloboda::models::city_properties.dart::CityFaith"
+
+class "sloboda::models::city_properties.dart::CityGlory" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +CITY_PROPERTIES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::city_properties.dart::CityGlory" o-- "sloboda::models::city_properties.dart::CITY_PROPERTIES"
+"sloboda::models::city_properties.dart::CityProp" <|-- "sloboda::models::city_properties.dart::CityGlory"
+
+class "sloboda::models::city_properties.dart::CityDefense" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +CITY_PROPERTIES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::city_properties.dart::CityDefense" o-- "sloboda::models::city_properties.dart::CITY_PROPERTIES"
+"sloboda::models::city_properties.dart::CityProp" <|-- "sloboda::models::city_properties.dart::CityDefense"
+
+class "sloboda::models::city_properties.dart::CityCitizens" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +CITY_PROPERTIES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::city_properties.dart::CityCitizens" o-- "sloboda::models::city_properties.dart::CITY_PROPERTIES"
+"sloboda::models::city_properties.dart::CityProp" <|-- "sloboda::models::city_properties.dart::CityCitizens"
+
+class "sloboda::models::city_properties.dart::CityCossacks" {
+  +String localizedKey
+  +String localizedDescriptionKey
+  +CITY_PROPERTIES type
+  +String toImagePath()
+  +String toIconPath()
+}
+
+"sloboda::models::city_properties.dart::CityCossacks" o-- "sloboda::models::city_properties.dart::CITY_PROPERTIES"
+"sloboda::models::city_properties.dart::CityProp" <|-- "sloboda::models::city_properties.dart::CityCossacks"
+
+class "sloboda::models::city_properties.dart::CityProps" {
+  {static} +Map<CITY_PROPERTIES, int> defaultValues
+  {static} +CityProps defaultProps()
+  {static} +CityProps bigProps()
+}
+
+"sloboda::models::abstract::stockable.dart::Stockable<T>" <|-- "sloboda::models::city_properties.dart::CityProps"
+
+class "sloboda::models::url_parser.dart::UrlParser" {
+  {static} +bool isSupported
+  {static} +Map getUrlParams()
+  {static} +dynamic updateLanguage()
+  {static} +String getLanguage()
+}
+
+abstract class "sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" {
+  +String localizedQuestionKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +Function execute()
+  +Function postExecute()
+  {static} +bool onceInYears()
+  +Function makeChoice()
+  +String choiceToStringKey()
+}
+
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent"
+
+class "sloboda::models::events::random_choicable_events.dart::KoshoviyPohid" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::KoshoviyPohid" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::KoshoviyPohid" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::KoshoviyPohid"
+
+class "sloboda::models::events::random_choicable_events.dart::HelpNeighbours" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::HelpNeighbours" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::HelpNeighbours" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::HelpNeighbours"
+
+class "sloboda::models::events::random_choicable_events.dart::BuyPrisoners" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsFailure
+  +CityProps cityPropsSuccess
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::BuyPrisoners" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::BuyPrisoners" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::BuyPrisoners"
+
+class "sloboda::models::events::random_choicable_events.dart::AttackChambul" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::AttackChambul" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::AttackChambul" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::AttackChambul"
+
+class "sloboda::models::events::random_choicable_events.dart::TrapChambulOnWayBack" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::TrapChambulOnWayBack" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::TrapChambulOnWayBack" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::TrapChambulOnWayBack"
+
+class "sloboda::models::events::random_choicable_events.dart::HelpDefendSich" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::HelpDefendSich" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::HelpDefendSich" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::HelpDefendSich"
+
+class "sloboda::models::events::random_choicable_events.dart::AttackPolishLands" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::AttackPolishLands" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::AttackPolishLands" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::AttackPolishLands"
+
+class "sloboda::models::events::random_choicable_events.dart::SendMoneyToSchoolInKaniv" {
+  +String successMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +CityProps cityPropsSuccess
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::SendMoneyToSchoolInKaniv" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::SendMoneyToSchoolInKaniv" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::SendMoneyToSchoolInKaniv"
+
+class "sloboda::models::events::random_choicable_events.dart::SendMerchantToKanev" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+  +Function postExecute()
+}
+
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::SendMerchantToKanev"
+
+class "sloboda::models::events::random_choicable_events.dart::AttackCatholicChurches" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::AttackCatholicChurches" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::AttackCatholicChurches" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::AttackCatholicChurches"
+
+class "sloboda::models::events::random_choicable_events.dart::HelpDefendAgainstCatholicRaiders" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKeyYes
+  +String localizedKeyNo
+  +int probability
+  +Stock stockSuccess
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +int successRate
+  +String localizedKey
+  +String localizedQuestionKey
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_choicable_events.dart::HelpDefendAgainstCatholicRaiders" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_choicable_events.dart::HelpDefendAgainstCatholicRaiders" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_choicable_events.dart::ChoicableRandomTurnEvent" <|-- "sloboda::models::events::random_choicable_events.dart::HelpDefendAgainstCatholicRaiders"
+
+class "sloboda::models::events::random_turn_events.dart::EventMessage" {
+  +Stock stock
+  +String messageKey
+  +RandomTurnEvent event
+  +CityProps cityProps
+}
+
+"sloboda::models::events::random_turn_events.dart::EventMessage" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::EventMessage" o-- "sloboda::models::events::random_turn_events.dart::RandomTurnEvent"
+"sloboda::models::events::random_turn_events.dart::EventMessage" o-- "sloboda::models::city_properties.dart::CityProps"
+
+abstract class "sloboda::models::events::random_turn_events.dart::RandomTurnEvent" {
+  +String localizedKey
+  +List<Function> conditions
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +String successMessageKey
+  +String failureMessageKey
+  +int probability
+  +int successRate
+  {static} +List<RandomTurnEvent> allEvents
+  +bool satisfiesConditions()
+  +Function execute()
+  +bool canHappen()
+}
+
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" o-- "sloboda::models::city_properties.dart::CityProps"
+
+class "sloboda::models::events::random_turn_events.dart::TartarsRaid" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKey
+  +int probability
+  +int successRate
+  +Stock stockFailure
+  +Stock stockSuccess
+  +CityProps cityPropsSuccess
+  +CityProps cityPropsFailure
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::TartarsRaid" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::TartarsRaid" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::TartarsRaid"
+
+class "sloboda::models::events::random_turn_events.dart::SaranaInvasion" {
+  +String localizedKey
+  +String successMessageKey
+  +String failureMessageKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +Stock stockFailure
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::SaranaInvasion" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::SaranaInvasion"
+
+class "sloboda::models::events::random_turn_events.dart::ChildrenPopulation" {
+  +String localizedKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +Stock stockFailure
+  +CityProps cityPropsSuccess
+  +List<Function> conditions
+  +Function execute()
+}
+
+"sloboda::models::events::random_turn_events.dart::ChildrenPopulation" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::ChildrenPopulation" o-- "sloboda::models::city_properties.dart::CityProps"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::ChildrenPopulation"
+
+class "sloboda::models::events::random_turn_events.dart::SteppeFire" {
+  +String successMessageKey
+  +String failureMessageKey
+  +String localizedKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +Stock stockFailure
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::SteppeFire" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::SteppeFire"
+
+class "sloboda::models::events::random_turn_events.dart::RunnersFromSuppression" {
+  +String successMessageKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::RunnersFromSuppression" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::RunnersFromSuppression"
+
+class "sloboda::models::events::random_turn_events.dart::SettlersArrived" {
+  +String successMessageKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::SettlersArrived" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::SettlersArrived"
+
+class "sloboda::models::events::random_turn_events.dart::GuestsFromSich" {
+  +String successMessageKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::GuestsFromSich" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::GuestsFromSich"
+
+class "sloboda::models::events::random_turn_events.dart::ChambulCapture" {
+  +String successMessageKey
+  +String failureMessageKey
+  +int probability
+  +int successRate
+  +Stock stockSuccess
+  +Stock stockFailure
+  +List<Function> conditions
+}
+
+"sloboda::models::events::random_turn_events.dart::ChambulCapture" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::ChambulCapture"
+
+class "sloboda::models::events::random_turn_events.dart::MerchantVisit" {
+  +String localizedKey
+  +int probability
+  +List<Function> conditions
+  +Function execute()
+}
+
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::MerchantVisit"
+
+class "sloboda::models::events::random_turn_events.dart::UniteWithNeighbours" {
+  +String localizedKey
+  +int probability
+  +Stock stockSuccess
+  +List<Function> conditions
+  +Function execute()
+}
+
+"sloboda::models::events::random_turn_events.dart::UniteWithNeighbours" o-- "sloboda::models::stock.dart::Stock"
+"sloboda::models::events::random_turn_events.dart::RandomTurnEvent" <|-- "sloboda::models::events::random_turn_events.dart::UniteWithNeighbours"
+
+class "sloboda::models::stock.dart::Stock" {
+  {static} +Map<RESOURCE_TYPES, int> defaultValues
+  {static} +dynamic defaultStock()
+  {static} +Stock bigStock()
+}
+
+"sloboda::models::abstract::stockable.dart::Stockable<T>" <|-- "sloboda::models::stock.dart::Stock"
+
+class "sloboda::models::city_event.dart::CITY_SEASONS" {
+  +int index
+  {static} +List<CITY_SEASONS> values
+  {static} +CITY_SEASONS AUTUMN
+  {static} +CITY_SEASONS WINTER
+  {static} +CITY_SEASONS SPRING
+  {static} +CITY_SEASONS SUMMER
+}
+
+"sloboda::models::city_event.dart::CITY_SEASONS" o-- "sloboda::models::city_event.dart::CITY_SEASONS"
+
+class "sloboda::models::city_event.dart::CityEvent" {
+  +int yearHappened
+  +CitySeason season
+  +EventMessage sourceEvent
+  {static} +CityEvent copyFrom()
+}
+
+"sloboda::models::city_event.dart::CityEvent" o-- "sloboda::models::city_event.dart::CitySeason"
+"sloboda::models::city_event.dart::CityEvent" o-- "sloboda::models::events::random_turn_events.dart::EventMessage"
+
+abstract class "sloboda::models::city_event.dart::CitySeason" {
+  +CITY_SEASONS type
+  +CitySeason next
+  +CitySeason previous
+  +String toLocalizedKey()
+  +bool isNextTo()
+}
+
+"sloboda::models::city_event.dart::CitySeason" o-- "sloboda::models::city_event.dart::CITY_SEASONS"
+"sloboda::models::city_event.dart::CitySeason" o-- "sloboda::models::city_event.dart::CitySeason"
+
+class "sloboda::models::city_event.dart::WinterSeason" {
+  +CITY_SEASONS type
+  +CitySeason next
+  +CitySeason previous
+  +String toLocalizedKey()
+}
+
+"sloboda::models::city_event.dart::WinterSeason" o-- "sloboda::models::city_event.dart::CITY_SEASONS"
+"sloboda::models::city_event.dart::WinterSeason" o-- "sloboda::models::city_event.dart::CitySeason"
+"sloboda::models::city_event.dart::CitySeason" <|-- "sloboda::models::city_event.dart::WinterSeason"
+
+class "sloboda::models::city_event.dart::SpringSeason" {
+  +CITY_SEASONS type
+  +CitySeason next
+  +CitySeason previous
+  +String toLocalizedKey()
+}
+
+"sloboda::models::city_event.dart::SpringSeason" o-- "sloboda::models::city_event.dart::CITY_SEASONS"
+"sloboda::models::city_event.dart::SpringSeason" o-- "sloboda::models::city_event.dart::CitySeason"
+"sloboda::models::city_event.dart::CitySeason" <|-- "sloboda::models::city_event.dart::SpringSeason"
+
+class "sloboda::models::city_event.dart::SummerSeason" {
+  +CITY_SEASONS type
+  +CitySeason next
+  +CitySeason previous
+  +String toLocalizedKey()
+}
+
+"sloboda::models::city_event.dart::SummerSeason" o-- "sloboda::models::city_event.dart::CITY_SEASONS"
+"sloboda::models::city_event.dart::SummerSeason" o-- "sloboda::models::city_event.dart::CitySeason"
+"sloboda::models::city_event.dart::CitySeason" <|-- "sloboda::models::city_event.dart::SummerSeason"
+
+class "sloboda::models::city_event.dart::AutumnSeason" {
+  +CITY_SEASONS type
+  +CitySeason next
+  +CitySeason previous
+  +String toLocalizedKey()
+}
+
+"sloboda::models::city_event.dart::AutumnSeason" o-- "sloboda::models::city_event.dart::CITY_SEASONS"
+"sloboda::models::city_event.dart::AutumnSeason" o-- "sloboda::models::city_event.dart::CitySeason"
+"sloboda::models::city_event.dart::CitySeason" <|-- "sloboda::models::city_event.dart::AutumnSeason"
+
+class "sloboda::components::button_text.dart::ButtonText" {
+  +String text
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::button_text.dart::ButtonText"
+
+class "sloboda::components::full_width_container.dart::FullWidth" {
+  +Widget child
+  +Widget build()
+}
+
+"sloboda::components::full_width_container.dart::FullWidth" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::full_width_container.dart::FullWidth"
+
+class "sloboda::components::divider.dart::VDivider" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::divider.dart::VDivider"
+
+class "sloboda::components::divider.dart::SVDivider" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::divider.dart::SVDivider"
+
+class "sloboda::components::divider.dart::HDivider" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::divider.dart::HDivider"
+
+class "sloboda::components::divider.dart::AllDivider" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::divider.dart::AllDivider"
+
+class "sloboda::components::actionable_container.dart::ActionableContainer" {
+  +Widget child
+  +Widget build()
+}
+
+"sloboda::components::actionable_container.dart::ActionableContainer" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::actionable_container.dart::ActionableContainer"
+
+class "sloboda::components::title_text.dart::TitleText" {
+  +String text
+  +TextAlign textAlign
+  +Widget build()
+}
+
+"sloboda::components::title_text.dart::TitleText" o-- "dart::ui::TextAlign"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::components::title_text.dart::TitleText"
+
+class "sloboda::main_class.dart::SlobodaApp" {
+  +_SlobodaAppState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::main_class.dart::SlobodaApp"
+
+class "sloboda::main_class.dart::_SlobodaAppState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::main_class.dart::_SlobodaAppState"
+
+class "sloboda::inherited_city.dart::InheritedCity" {
+  +Widget child
+  +Sloboda city
+  +bool updateShouldNotify()
+  {static} +InheritedCity of()
+}
+
+"sloboda::inherited_city.dart::InheritedCity" o-- "flutter::src::widgets::framework.dart::Widget"
+"sloboda::inherited_city.dart::InheritedCity" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::InheritedWidget" <|-- "sloboda::inherited_city.dart::InheritedCity"
+
+class "sloboda::views::sich_stats_view.dart::SichStatsView" {
+  +Sloboda city
+  +_SichStatsViewState createState()
+}
+
+"sloboda::views::sich_stats_view.dart::SichStatsView" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::sich_stats_view.dart::SichStatsView"
+
+class "sloboda::views::sich_stats_view.dart::_SichStatsViewState" {
+  +SichConnector sich
+  +Widget build()
+}
+
+"sloboda::views::sich_stats_view.dart::_SichStatsViewState" o-- "sloboda::models::sich_connector.dart::SichConnector"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::sich_stats_view.dart::_SichStatsViewState"
+
+class "sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuiltListItemView" {
+  +ResourceBuilding building
+  +Widget build()
+}
+
+"sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuiltListItemView" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuiltListItemView"
+
+class "sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuilt" {
+  +ResourceBuilding building
+  +Sloboda city
+  {static} +String routeName
+  +_ResourceBuildingBuiltState createState()
+}
+
+"sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuilt" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuilt" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuilt"
+
+class "sloboda::views::resource_buildings::resource_building_built.dart::_ResourceBuildingBuiltState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::resource_buildings::resource_building_built.dart::_ResourceBuildingBuiltState"
+
+class "sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuiltArguments" {
+  +Sloboda city
+  +ResourceBuilding building
+}
+
+"sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuiltArguments" o-- "sloboda::models::sloboda.dart::Sloboda"
+"sloboda::views::resource_buildings::resource_building_built.dart::ResourceBuildingBuiltArguments" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+
+class "sloboda::views::resource_buildings::resource_building_built.dart::ExtractResourceBuildingBuiltArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_buildings::resource_building_built.dart::ExtractResourceBuildingBuiltArguments"
+
+class "sloboda::views::resource_buildings::resource_building_meta.dart::ResourceBuildingMetaView" {
+  +ResourceBuilding building
+  +bool selected
+  +void Function() onBuildPressed
+  +_ResourceBuildingMetaViewState createState()
+}
+
+"sloboda::views::resource_buildings::resource_building_meta.dart::ResourceBuildingMetaView" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"sloboda::views::resource_buildings::resource_building_meta.dart::ResourceBuildingMetaView" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::resource_buildings::resource_building_meta.dart::ResourceBuildingMetaView"
+
+class "sloboda::views::resource_buildings::resource_building_meta.dart::_ResourceBuildingMetaViewState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::resource_buildings::resource_building_meta.dart::_ResourceBuildingMetaViewState"
+
+class "sloboda::views::resource_buildings::resource_buildings_page.dart::ResourceBuildingsPage" {
+  +_ResourceBuildingsPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::resource_buildings::resource_buildings_page.dart::ResourceBuildingsPage"
+
+class "sloboda::views::resource_buildings::resource_buildings_page.dart::_ResourceBuildingsPageState" {
+  +dynamic selected
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::resource_buildings::resource_buildings_page.dart::_ResourceBuildingsPageState"
+
+class "sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingImageView" {
+  +ResourceBuilding building
+  +Widget build()
+}
+
+"sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingImageView" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingImageView"
+
+class "sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingDetailsScreen" {
+  {static} +String routeName
+  +ResourceBuilding building
+  +Widget build()
+}
+
+"sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingDetailsScreen" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingDetailsScreen"
+
+class "sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingDetailsScreenArguments" {
+  +ResourceBuilding building
+}
+
+"sloboda::views::resource_buildings::resource_building_view.dart::ResourceBuildingDetailsScreenArguments" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+
+class "sloboda::views::resource_buildings::resource_building_view.dart::ExtractResourceBuildingDetailsScreenArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_buildings::resource_building_view.dart::ExtractResourceBuildingDetailsScreenArguments"
+
+class "sloboda::views::create_sloboda.dart::CreateSlobodaView" {
+  {static} +String routeName
+  +_CreateSlobodaViewState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::create_sloboda.dart::CreateSlobodaView"
+
+class "sloboda::views::create_sloboda.dart::_CreateSlobodaViewState" {
+  -AsyncMemoizer _appPreferencesInitter
+  -TextEditingController _textInputController
+  -dynamic _appPreferencesInit()
+  +void initState()
+  +Widget build()
+  -dynamic _buildChildren()
+}
+
+"sloboda::views::create_sloboda.dart::_CreateSlobodaViewState" o-- "async::src::async_memoizer.dart::AsyncMemoizer"
+"sloboda::views::create_sloboda.dart::_CreateSlobodaViewState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::create_sloboda.dart::_CreateSlobodaViewState"
+
+class "sloboda::views::city_dashboard.dart::CityDashboard" {
+  +Sloboda city
+  +_CityDashboardState createState()
+}
+
+"sloboda::views::city_dashboard.dart::CityDashboard" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::city_dashboard.dart::CityDashboard"
+
+class "sloboda::views::city_dashboard.dart::_CityDashboardState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::city_dashboard.dart::_CityDashboardState"
+
+class "sloboda::views::locale_selection.dart::LocaleSelection" {
+  +dynamic Function(Locale) onLocaleChanged
+  +Locale locale
+  +_LocaleSelectionState createState()
+}
+
+"sloboda::views::locale_selection.dart::LocaleSelection" o-- "sloboda::views::locale_selection.dart::dynamic Function(Locale)"
+"sloboda::views::locale_selection.dart::LocaleSelection" o-- "dart::ui::Locale"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::locale_selection.dart::LocaleSelection"
+
+class "sloboda::views::locale_selection.dart::_LocaleSelectionState" {
+  +Widget build()
+  -Widget _buildLocaleSelection()
+  -void _setNewLocale()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::locale_selection.dart::_LocaleSelectionState"
+
+class "sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuiltListItemView" {
+  +CityBuilding building
+  +Widget build()
+}
+
+"sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuiltListItemView" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuiltListItemView"
+
+class "sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuilt" {
+  +CityBuilding building
+  +Sloboda city
+  {static} +String routeName
+  +_ResourceBuildingBuiltState createState()
+}
+
+"sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuilt" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding"
+"sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuilt" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuilt"
+
+class "sloboda::views::city_buildings::city_building_built.dart::_ResourceBuildingBuiltState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::city_buildings::city_building_built.dart::_ResourceBuildingBuiltState"
+
+class "sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuiltArguments" {
+  +Sloboda city
+  +CityBuilding building
+}
+
+"sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuiltArguments" o-- "sloboda::models::sloboda.dart::Sloboda"
+"sloboda::views::city_buildings::city_building_built.dart::CityBuildingBuiltArguments" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding"
+
+class "sloboda::views::city_buildings::city_building_built.dart::ExtractCityBuildingBuiltArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_building_built.dart::ExtractCityBuildingBuiltArguments"
+
+class "sloboda::views::city_buildings::city_property_image_view.dart::CityPropertyImageView" {
+  +CityProp prop
+  +int amount
+  +Widget build()
+}
+
+"sloboda::views::city_buildings::city_property_image_view.dart::CityPropertyImageView" o-- "sloboda::models::city_properties.dart::CityProp"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_property_image_view.dart::CityPropertyImageView"
+
+class "sloboda::views::city_buildings::city_building_view.dart::CityBuildingImageView" {
+  +CITY_BUILDING_TYPES type
+  +Widget build()
+}
+
+"sloboda::views::city_buildings::city_building_view.dart::CityBuildingImageView" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_building_view.dart::CityBuildingImageView"
+
+class "sloboda::views::city_buildings::city_building_view.dart::CityBuildingDetailsScreen" {
+  {static} +String routeName
+  +CITY_BUILDING_TYPES type
+  +Widget build()
+}
+
+"sloboda::views::city_buildings::city_building_view.dart::CityBuildingDetailsScreen" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_building_view.dart::CityBuildingDetailsScreen"
+
+class "sloboda::views::city_buildings::city_building_view.dart::CityBuildingDetailsScreenArguments" {
+  +CITY_BUILDING_TYPES type
+}
+
+"sloboda::views::city_buildings::city_building_view.dart::CityBuildingDetailsScreenArguments" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+
+class "sloboda::views::city_buildings::city_building_view.dart::ExtractCityBuildingDetailsScreenArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_building_view.dart::ExtractCityBuildingDetailsScreenArguments"
+
+class "sloboda::views::city_buildings::city_building_output_view.dart::CityBuildingOutputView" {
+  +CityBuilding building
+  +Widget build()
+}
+
+"sloboda::views::city_buildings::city_building_output_view.dart::CityBuildingOutputView" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CityBuilding"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_buildings::city_building_output_view.dart::CityBuildingOutputView"
+
+class "sloboda::views::city_buildings::city_building_meta.dart::CityBuildingMetaView" {
+  +CITY_BUILDING_TYPES type
+  +bool selected
+  +void Function() onBuildPressed
+  +_CityBuildingMetaViewState createState()
+}
+
+"sloboda::views::city_buildings::city_building_meta.dart::CityBuildingMetaView" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"sloboda::views::city_buildings::city_building_meta.dart::CityBuildingMetaView" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::city_buildings::city_building_meta.dart::CityBuildingMetaView"
+
+class "sloboda::views::city_buildings::city_building_meta.dart::_CityBuildingMetaViewState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::city_buildings::city_building_meta.dart::_CityBuildingMetaViewState"
+
+class "sloboda::views::city_buildings::city_buildings_page.dart::CityBuildingsPage" {
+  +_CityBuildingsPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::city_buildings::city_buildings_page.dart::CityBuildingsPage"
+
+class "sloboda::views::city_buildings::city_buildings_page.dart::_CityBuildingsPageState" {
+  +CITY_BUILDING_TYPES selected
+  +Widget build()
+}
+
+"sloboda::views::city_buildings::city_buildings_page.dart::_CityBuildingsPageState" o-- "sloboda::models::buildings::city_buildings::city_building.dart::CITY_BUILDING_TYPES"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::city_buildings::city_buildings_page.dart::_CityBuildingsPageState"
+
+class "sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingScreen" {
+  +NaturalResource building
+  +Sloboda city
+  {static} +String routeName
+  +_NatureResourceBuildingScreenState createState()
+}
+
+"sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingScreen" o-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource"
+"sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingScreen" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingScreen"
+
+class "sloboda::views::nature_resource_buildings.dart::_NatureResourceBuildingScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::nature_resource_buildings.dart::_NatureResourceBuildingScreenState"
+
+class "sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingArguments" {
+  +Sloboda city
+  +NaturalResource building
+}
+
+"sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingArguments" o-- "sloboda::models::sloboda.dart::Sloboda"
+"sloboda::views::nature_resource_buildings.dart::NatureResourceBuildingArguments" o-- "sloboda::models::buildings::resource_buildings::nature_resource.dart::NaturalResource"
+
+class "sloboda::views::nature_resource_buildings.dart::ExtractNatureResourceBuildingArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::nature_resource_buildings.dart::ExtractNatureResourceBuildingArguments"
+
+class "sloboda::views::sich::sich_view.dart::SichScreen" {
+  {static} +String routeName
+  +Sloboda city
+  +_SichScreenState createState()
+}
+
+"sloboda::views::sich::sich_view.dart::SichScreen" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::sich::sich_view.dart::SichScreen"
+
+class "sloboda::views::sich::sich_view.dart::_SichScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::sich::sich_view.dart::_SichScreenState"
+
+class "sloboda::views::sich::sich_view.dart::SichScreenArguments" {
+  +Sloboda city
+}
+
+"sloboda::views::sich::sich_view.dart::SichScreenArguments" o-- "sloboda::models::sloboda.dart::Sloboda"
+
+class "sloboda::views::sich::sich_view.dart::ExtractSichScreenArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::sich::sich_view.dart::ExtractSichScreenArguments"
+
+class "sloboda::views::sich::send_support_view.dart::SendSupportView" {
+  +Sloboda city
+  +_SendSupportViewState createState()
+}
+
+"sloboda::views::sich::send_support_view.dart::SendSupportView" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::sich::send_support_view.dart::SendSupportView"
+
+class "sloboda::views::sich::send_support_view.dart::_SendSupportViewState" {
+  +SichConnector sich
+  -int _amountOfCossackToSend
+  -int _amountOfGoldToSend
+  +Widget build()
+}
+
+"sloboda::views::sich::send_support_view.dart::_SendSupportViewState" o-- "sloboda::models::sich_connector.dart::SichConnector"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::sich::send_support_view.dart::_SendSupportViewState"
+
+class "sloboda::views::components::lined_container.dart::LineContainer" {
+  +Widget child
+  +Widget build()
+}
+
+"sloboda::views::components::lined_container.dart::LineContainer" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::lined_container.dart::LineContainer"
+
+class "sloboda::views::components::soft_container.dart::SoftContainer" {
+  +Widget child
+  +bool onlyTop
+  +double borderRadiusValue
+  +Widget build()
+}
+
+"sloboda::views::components::soft_container.dart::SoftContainer" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::soft_container.dart::SoftContainer"
+
+class "sloboda::views::components::built_building_listview.dart::BuiltBuildingListView" {
+  +void Function() onPress
+  +String buildingIconPath
+  +String title
+  +String producesIconPath
+  +int amount
+  +Widget build()
+}
+
+"sloboda::views::components::built_building_listview.dart::BuiltBuildingListView" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::built_building_listview.dart::BuiltBuildingListView"
+
+class "sloboda::views::components::resource_building_input_view.dart::ResourceBuildingInputView" {
+  +ResourceBuilding building
+  +Widget build()
+}
+
+"sloboda::views::components::resource_building_input_view.dart::ResourceBuildingInputView" o-- "sloboda::models::buildings::resource_buildings::resource_building.dart::ResourceBuilding"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::resource_building_input_view.dart::ResourceBuildingInputView"
+
+class "sloboda::views::components::buildable_requires_to_build.dart::BuildableRequiredToBuildView" {
+  +Buildable building
+  +Widget build()
+}
+
+"sloboda::views::components::buildable_requires_to_build.dart::BuildableRequiredToBuildView" o-- "sloboda::models::abstract::buildable.dart::Buildable"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::buildable_requires_to_build.dart::BuildableRequiredToBuildView"
+
+class "sloboda::views::components::resource_building_output_view.dart::ResourceBuildingOutputView" {
+  +Producable building
+  +Widget build()
+}
+
+"sloboda::views::components::resource_building_output_view.dart::ResourceBuildingOutputView" o-- "sloboda::models::abstract::producable.dart::Producable"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::resource_building_output_view.dart::ResourceBuildingOutputView"
+
+class "sloboda::views::components::arrow_right.dart::ArrowRight" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::arrow_right.dart::ArrowRight"
+
+class "sloboda::views::components::arrow_right.dart::ArrowLeft" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::components::arrow_right.dart::ArrowLeft"
+
+class "sloboda::views::resource_view.dart::ResourceDetailsScreen" {
+  {static} +String routeName
+  +ResourceType type
+  +Widget build()
+}
+
+"sloboda::views::resource_view.dart::ResourceDetailsScreen" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_view.dart::ResourceDetailsScreen"
+
+class "sloboda::views::resource_view.dart::ResourceDetailsView" {
+  +ResourceType type
+  +Widget build()
+}
+
+"sloboda::views::resource_view.dart::ResourceDetailsView" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_view.dart::ResourceDetailsView"
+
+class "sloboda::views::resource_view.dart::ResourceDetailsScreenArguments" {
+  +ResourceType type
+}
+
+"sloboda::views::resource_view.dart::ResourceDetailsScreenArguments" o-- "sloboda::models::resources::resource.dart::ResourceType"
+
+class "sloboda::views::resource_view.dart::ExtractResourceDetailsScreenArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_view.dart::ExtractResourceDetailsScreenArguments"
+
+class "sloboda::views::resource_view.dart::ResourceImageView" {
+  +ResourceType type
+  +int amount
+  +Widget build()
+}
+
+"sloboda::views::resource_view.dart::ResourceImageView" o-- "sloboda::models::resources::resource.dart::ResourceType"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::resource_view.dart::ResourceImageView"
+
+class "sloboda::views::stock_view.dart::StockMiniView" {
+  +Stock stock
+  +Map<RESOURCE_TYPES, int> stockSimulation
+  +Widget build()
+}
+
+"sloboda::views::stock_view.dart::StockMiniView" o-- "sloboda::models::stock.dart::Stock"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::stock_view.dart::StockMiniView"
+
+class "sloboda::views::stock_view.dart::StockFullView" {
+  +Stock stock
+  +Map<RESOURCE_TYPES, int> stockSimulation
+  +Widget build()
+}
+
+"sloboda::views::stock_view.dart::StockFullView" o-- "sloboda::models::stock.dart::Stock"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::stock_view.dart::StockFullView"
+
+class "sloboda::views::stock_view.dart::SaldoViewShower" {
+  +int value
+  +int reference
+  +bool showValue
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::stock_view.dart::SaldoViewShower"
+
+class "sloboda::views::shooting_range_view.dart::ShootingRangeView" {
+  +ShootingRange building
+  +Widget build()
+}
+
+"sloboda::views::shooting_range_view.dart::ShootingRangeView" o-- "sloboda::models::buildings::shooting_range.dart::ShootingRange"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::shooting_range_view.dart::ShootingRangeView"
+
+class "sloboda::views::shooting_range_view.dart::ShootingRangeBuilt" {
+  +ShootingRange building
+  +Sloboda city
+  {static} +String routeName
+  +_ShootingRangeBuiltState createState()
+}
+
+"sloboda::views::shooting_range_view.dart::ShootingRangeBuilt" o-- "sloboda::models::buildings::shooting_range.dart::ShootingRange"
+"sloboda::views::shooting_range_view.dart::ShootingRangeBuilt" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::shooting_range_view.dart::ShootingRangeBuilt"
+
+class "sloboda::views::shooting_range_view.dart::_ShootingRangeBuiltState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::shooting_range_view.dart::_ShootingRangeBuiltState"
+
+class "sloboda::views::shooting_range_view.dart::ShootingRangeViewArguments" {
+  +Sloboda city
+  +ShootingRange building
+}
+
+"sloboda::views::shooting_range_view.dart::ShootingRangeViewArguments" o-- "sloboda::models::sloboda.dart::Sloboda"
+"sloboda::views::shooting_range_view.dart::ShootingRangeViewArguments" o-- "sloboda::models::buildings::shooting_range.dart::ShootingRange"
+
+class "sloboda::views::shooting_range_view.dart::ExtractShootingRangeBuiltArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::shooting_range_view.dart::ExtractShootingRangeBuiltArguments"
+
+class "sloboda::views::city_props_view.dart::CityPropsMiniView" {
+  +CityProps props
+  +bool showLabels
+  +Widget build()
+}
+
+"sloboda::views::city_props_view.dart::CityPropsMiniView" o-- "sloboda::models::city_properties.dart::CityProps"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_props_view.dart::CityPropsMiniView"
+
+class "sloboda::views::city_props_view.dart::CityPropScreen" {
+  {static} +String routeName
+  +CityProp prop
+  +_CityPropScreenState createState()
+}
+
+"sloboda::views::city_props_view.dart::CityPropScreen" o-- "sloboda::models::city_properties.dart::CityProp"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::city_props_view.dart::CityPropScreen"
+
+class "sloboda::views::city_props_view.dart::_CityPropScreenState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::city_props_view.dart::_CityPropScreenState"
+
+class "sloboda::views::city_props_view.dart::CityPropScreenArguments" {
+  +CityProp prop
+}
+
+"sloboda::views::city_props_view.dart::CityPropScreenArguments" o-- "sloboda::models::city_properties.dart::CityProp"
+
+class "sloboda::views::city_props_view.dart::ExtractCityPropScreenArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_props_view.dart::ExtractCityPropScreenArguments"
+
+class "sloboda::views::city_game.dart::DialogAnswer" {
+  +int index
+  {static} +List<DialogAnswer> values
+  {static} +DialogAnswer YES
+  {static} +DialogAnswer NO
+}
+
+"sloboda::views::city_game.dart::DialogAnswer" o-- "sloboda::views::city_game.dart::DialogAnswer"
+
+class "sloboda::views::city_game.dart::CityGame" {
+  {static} +String routeName
+  +Sloboda city
+  +_CityGameState createState()
+}
+
+"sloboda::views::city_game.dart::CityGame" o-- "sloboda::models::sloboda.dart::Sloboda"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::city_game.dart::CityGame"
+
+class "sloboda::views::city_game.dart::_CityGameState" {
+  -List<String> Function() _pageTitles
+  -TabController _tabController
+  +void initState()
+  +Widget build()
+  -Widget _makeTurn()
+}
+
+"sloboda::views::city_game.dart::_CityGameState" o-- "sloboda::views::city_game.dart::List<String> Function()"
+"sloboda::views::city_game.dart::_CityGameState" o-- "flutter::src::material::tab_controller.dart::TabController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::city_game.dart::_CityGameState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "sloboda::views::city_game.dart::_CityGameState"
+
+class "sloboda::views::city_game.dart::CityGameArguments" {
+  +Sloboda city
+}
+
+"sloboda::views::city_game.dart::CityGameArguments" o-- "sloboda::models::sloboda.dart::Sloboda"
+
+class "sloboda::views::city_game.dart::ExtractCityGameArguments" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_game.dart::ExtractCityGameArguments"
+
+class "sloboda::views::city_property.dart::CityProperty" {
+  +CityProp property
+  +Widget build()
+}
+
+"sloboda::views::city_property.dart::CityProperty" o-- "sloboda::models::city_properties.dart::CityProp"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::city_property.dart::CityProperty"
+
+class "sloboda::views::events_view.dart::EventsView" {
+  -Map<String, List<CityEvent>> _events
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "sloboda::views::events_view.dart::EventsView"
+
+class "sloboda::views::events_view.dart::PendingEventsView" {
+  +Queue<RandomTurnEvent> events
+  +_PendingEventsViewState createState()
+}
+
+"sloboda::views::events_view.dart::PendingEventsView" o-- "dart::collection::Queue<RandomTurnEvent>"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::views::events_view.dart::PendingEventsView"
+
+class "sloboda::views::events_view.dart::_PendingEventsViewState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::views::events_view.dart::_PendingEventsViewState"
+
+class "sloboda::animations::slideable_button.dart::Direction" {
+  +int index
+  {static} +List<Direction> values
+  {static} +Direction Left
+  {static} +Direction Right
+}
+
+"sloboda::animations::slideable_button.dart::Direction" o-- "sloboda::animations::slideable_button.dart::Direction"
+
+class "sloboda::animations::slideable_button.dart::SlideableButton" {
+  +Widget child
+  +Function onPress
+  +Direction direction
+  +Duration duration
+  +_SlideableButtonState createState()
+}
+
+"sloboda::animations::slideable_button.dart::SlideableButton" o-- "flutter::src::widgets::framework.dart::Widget"
+"sloboda::animations::slideable_button.dart::SlideableButton" o-- "sloboda::animations::slideable_button.dart::Direction"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "sloboda::animations::slideable_button.dart::SlideableButton"
+
+class "sloboda::animations::slideable_button.dart::_SlideableButtonState" {
+  +AnimationController controller
+  +void initState()
+  +void dispose()
+  +Widget build()
+}
+
+"sloboda::animations::slideable_button.dart::_SlideableButtonState" o-- "flutter::src::animation::animation_controller.dart::AnimationController"
+"flutter::src::widgets::framework.dart::State<T>" <|-- "sloboda::animations::slideable_button.dart::_SlideableButtonState"
+"flutter::src::widgets::ticker_provider.dart::SingleTickerProviderStateMixin<T>" <|-- "sloboda::animations::slideable_button.dart::_SlideableButtonState"
+
+
+@enduml

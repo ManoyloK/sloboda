@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sloboda/components/rotatable_image.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
@@ -36,8 +37,8 @@ class _SichScreenState extends State<SichScreen> {
                   city: widget.city,
                 ),
                 VDivider(),
-                Image.asset(
-                  'images/city_buildings/sich.png',
+                RotatableImage(
+                  imagePath: 'images/city_buildings/sich_0.png',
                   width: MediaQuery.of(context).size.width,
                 ),
               ],

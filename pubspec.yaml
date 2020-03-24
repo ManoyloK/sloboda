@@ -82,7 +82,10 @@ flutter:
     - images/city_buildings/church_64.png
     - images/city_buildings/tower_64.png
     - images/city_buildings/shooting_range_64.png
-    - images/city_buildings/sich.png
+    - images/city_buildings/sich_0.png
+    - images/city_buildings/sich_1.png
+    - images/city_buildings/sich_2.png
+    - images/city_buildings/sich_3.png
     - images/city_buildings/sich_64.png
     # city props
     - images/city_props/glory.png
