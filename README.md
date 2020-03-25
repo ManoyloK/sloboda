@@ -62,3 +62,6 @@ Web:
 ```sh
 ./build/web/
 ```
+
+# Voxel Art
+Use [Goxel](https://goxel.xyz/) application for creating the voxel art.
