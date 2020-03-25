@@ -11,13 +11,6 @@ abstract class ChoicableRandomTurnEvent extends RandomTurnEvent {
   String localizedQuestionKey;
   String localizedKeyYes;
   String localizedKeyNo;
-  CityProps cityPropsSuccess;
-  CityProps cityPropsFailure;
-  int successRate;
-
-  Function execute(Sloboda city) {
-    return () {};
-  }
 
   Function postExecute(Sloboda city) {
     var r = Random().nextInt(100);
@@ -42,7 +35,6 @@ abstract class ChoicableRandomTurnEvent extends RandomTurnEvent {
 
   Function makeChoice(bool yes, Sloboda city) {
     if (yes) {
-      this.execute(city);
       return this.postExecute(city);
     } else {
       return () {};
