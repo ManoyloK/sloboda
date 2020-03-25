@@ -1,16 +1,64 @@
-# sloboda
+# Sloboda
 
-A new Flutter project.
+A city building turn-based game written in Flutter and Dart.
 
-## Getting Started
+# Supported platforms:
 
-This project is a starting point for a Flutter application.
+- ✅ Android
+- ✅ iOS
+- ✅ Windows
+- ✅ Linux
+- ✅ Web
 
-A few resources to get you started if this is your first Flutter project:
+# Try online
+[Sloboda Online](https://locadeserta.com/sloboda)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## How to run
+Open the project in Android Studio and run against supported platforms.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Prerequisites
+The project is always run on flutter master branch:
+
+```sh
+flutter channel master
+flutter upgrade
+
+flutter config --enable-web
+flutter config --enable-windows
+flutter config --enable-linux
+```
+
+## How to build native binaries:
+
+Android:
+```sh
+flutter build apk
+```
+
+macOS:
+```sh
+flutter build macos 
+```
+
+Windows:
+```
+flutter build windows
+```
+
+iOS:
+```sh
+flutter build ios
+```
+
+##
+macOS binaries are at:
+
+ ```sh
+ cd ./build/macos/Build/Products/Release/
+```
+
+Web:
+
+```sh
+./build/web/
+```
