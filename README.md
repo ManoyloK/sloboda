@@ -65,3 +65,12 @@ Web:
 
 # Voxel Art
 Use [Goxel](https://goxel.xyz/) application for creating the voxel art.
+
+# Screenshots
+
+- ![Main View](/screeenshots/screenshot0.png)
+- ![Events View](/screeenshots/screenshot1.png)
+- ![Build View](/screeenshots/screenshot2.png)
+- ![Drawer View](/screeenshots/screenshot3.png)
+- ![Building View](/screeenshots/screenshot4.png)
+
