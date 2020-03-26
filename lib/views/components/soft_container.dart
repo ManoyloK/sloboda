@@ -16,34 +16,15 @@ class SoftContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.black,
-            width: 3.0,
-          ),
-          borderRadius: onlyTop
-              ? BorderRadius.only(
-                  topLeft: Radius.circular(borderRadiusValue),
-                  topRight: Radius.circular(borderRadiusValue))
-              : BorderRadius.all(
-                  Radius.circular(borderRadiusValue),
-                ),
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: Center(
+        child: ClayContainer(
+          child: child,
+          color: Theme.of(context).backgroundColor,
+          borderRadius: 15,
         ),
-        child: child,
-      );
-    } else {
-      return Container(
-        color: Theme.of(context).backgroundColor,
-        child: Center(
-          child: ClayContainer(
-            child: child,
-            color: Theme.of(context).backgroundColor,
-            borderRadius: 15,
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 }
