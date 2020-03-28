@@ -84,30 +84,71 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
               var building = ResourceBuilding.fromType(value);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  child: ResourceBuildingMetaView(
-                      building: building,
-                      selected: selected == value,
-                      onBuildPressed: () {
-                        try {
-                          city.buildBuilding(building);
-                        } catch (e) {
-                          final snackBar = SnackBar(
-                              content: Text(
-                                  'Cannot build. Missing: ${e.toLocalizedString()}'));
-                          Scaffold.of(context).showSnackBar(snackBar);
-                        }
-                      }),
-                  onTap: () {
-                    setState(() {
-                      if (selected == value) {
-                        selected = null;
-                      } else {
-                        selected = value;
-                      }
-                    });
+                child: OpenContainerWrapper(
+                  child: Scaffold(
+                    appBar: AppBar(
+                      title: Text(
+                        building.toLocalizedString(),
+                      ),
+                    ),
+                    body: ResourceBuildingMetaView(
+                        building: building,
+                        selected: true,
+                        onBuildPressed: () {
+                          try {
+                            city.buildBuilding(building);
+                          } catch (e) {
+                            final snackBar = SnackBar(
+                                content: Text(
+                                    'Cannot build. Missing: ${e.toLocalizedString()}'));
+                            Scaffold.of(context).showSnackBar(snackBar);
+                          }
+                        }),
+                  ),
+                  transitionType: ContainerTransitionType.fade,
+                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                    return InkWellOverlay(
+                      openContainer: openContainer,
+                      child: ResourceBuildingMetaView(
+                          building: building,
+                          selected: false,
+                          onBuildPressed: () {
+                            try {
+                              city.buildBuilding(building);
+                            } catch (e) {
+                              final snackBar = SnackBar(
+                                  content: Text(
+                                      'Cannot build. Missing: ${e.toLocalizedString()}'));
+                              Scaffold.of(context).showSnackBar(snackBar);
+                            }
+                          }),
+                    );
                   },
                 ),
+//                child: InkWell(
+//                  child: ResourceBuildingMetaView(
+//                      building: building,
+//                      selected: selected == value,
+//                      onBuildPressed: () {
+//                        try {
+//                          city.buildBuilding(building);
+//                        } catch (e) {
+//                          final snackBar = SnackBar(
+//                              content: Text(
+//                                  'Cannot build. Missing: ${e.toLocalizedString()}'));
+//                          Scaffold.of(context).showSnackBar(snackBar);
+//                        }
+//                      }),
+//                  onTap: () {
+//                    setState(() {
+//                      if (selected == value) {
+//                        selected = null;
+//                      } else {
+//                        selected = value;
+//                      }
+//                    });
+//                  },
+//                ),
               );
             }).toList(),
           ]),
