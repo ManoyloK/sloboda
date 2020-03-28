@@ -53,9 +53,10 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
                             height: widget.selected ? 256 : 128,
                           ),
                         ),
-                        CityBuildingOutputView(
-                          building: building,
-                        ),
+                        if (!widget.selected)
+                          CityBuildingOutputView(
+                            building: building,
+                          ),
                       ],
                     ),
                   ],
