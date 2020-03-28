@@ -18,7 +18,7 @@ class _RotatableImageState extends State<RotatableImage> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         _rotate();
       },

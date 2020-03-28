@@ -37,9 +37,12 @@ class _SichScreenState extends State<SichScreen> {
                   city: widget.city,
                 ),
                 VDivider(),
-                RotatableImage(
-                  imagePath: 'images/city_buildings/sich_0.png',
-                  width: MediaQuery.of(context).size.width,
+                Hero(
+                  tag: 'sich',
+                  child: RotatableImage(
+                    imagePath: 'images/city_buildings/sich_0.png',
+                    width: MediaQuery.of(context).size.width,
+                  ),
                 ),
               ],
             ),

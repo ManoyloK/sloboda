@@ -68,9 +68,12 @@ class _CityDashboardState extends State<CityDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Image.asset(
-                            'images/city_buildings/sich_64.png',
-                            width: 128,
+                          Hero(
+                            tag: 'sich',
+                            child: Image.asset(
+                              'images/city_buildings/sich_64.png',
+                              width: 128,
+                            ),
                           ),
                           Text(SlobodaLocalizations.sichName),
                         ],
