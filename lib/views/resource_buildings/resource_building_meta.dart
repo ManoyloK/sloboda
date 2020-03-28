@@ -54,7 +54,8 @@ class _ResourceBuildingMetaViewState extends State<ResourceBuildingMetaView> {
                             height: widget.selected ? 256 : 128,
                           ),
                         ),
-                        ResourceBuildingOutputView(building: building),
+                        if (!widget.selected)
+                          ResourceBuildingOutputView(building: building),
                       ],
                     ),
                   ],
