@@ -1,8 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
+import 'package:sloboda/views/animations/ink_well_overlay.dart';
+import 'package:sloboda/views/animations/open_container_wrapper.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
 import 'package:sloboda/views/nature_resource_buildings.dart';
 import 'package:sloboda/views/resource_buildings/resource_building_built.dart';
@@ -27,18 +30,24 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
             ...city.naturalResources.map<Widget>((el) {
               return Container(
                 padding: EdgeInsets.all(8.0),
-                child: BuiltBuildingListView(
-                  title: el.toLocalizedString(),
-                  buildingIconPath: el.getIconPath(),
-                  producesIconPath: el.produces.toIconPath(),
-                  amount: el.outputAmount,
-                  onPress: () {
-                    Navigator.pushNamed(
-                        context, NatureResourceBuildingScreen.routeName,
-                        arguments: NatureResourceBuildingArguments(
-                          city: city,
-                          building: el,
-                        ));
+                child: OpenContainerWrapper(
+                  // what View to show after you click on element
+                  child: NatureResourceBuildingScreen(
+                    building: el,
+                    city: city,
+                  ),
+                  transitionType: ContainerTransitionType.fade,
+                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                    // what to show initially. Must be clickable
+                    return InkWellOverlay(
+                      openContainer: openContainer,
+                      child: BuiltBuildingListView(
+                        title: el.toLocalizedString(),
+                        buildingIconPath: el.getIconPath(),
+                        producesIconPath: el.produces.toIconPath(),
+                        amount: el.outputAmount,
+                      ),
+                    );
                   },
                 ),
               );
@@ -48,8 +57,24 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                 .map<Widget>(
                   (building) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ResourceBuildingBuiltListItemView(
-                      building: building,
+                    child: OpenContainerWrapper(
+                      // what View to show after you click on element
+                      child: ResourceBuildingBuilt(
+                        building: building,
+                        city: city,
+                      ),
+                      transitionType: ContainerTransitionType.fade,
+                      closedBuilder:
+                          (BuildContext _, VoidCallback openContainer) {
+                        // what to show initially. Must be clickable
+                        return InkWellOverlay(
+                          openContainer: openContainer,
+                          child: ResourceBuildingBuiltListItemView(
+                            building: building,
+                            city: city,
+                          ),
+                        );
+                      },
                     ),
                   ),
                 )

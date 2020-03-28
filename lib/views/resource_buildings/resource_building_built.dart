@@ -3,7 +3,6 @@ import 'package:sloboda/animations/slideable_button.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
-import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
@@ -14,12 +13,13 @@ import 'package:sloboda/views/components/soft_container.dart';
 
 class ResourceBuildingBuiltListItemView extends StatelessWidget {
   final ResourceBuilding building;
-
-  ResourceBuildingBuiltListItemView({this.building});
+  final Sloboda city;
+  ResourceBuildingBuiltListItemView(
+      {@required this.building, @required this.city});
 
   @override
   Widget build(BuildContext context) {
-    Sloboda city = InheritedCity.of(context).city;
+//    Sloboda city = InheritedCity.of(context).city;
     return BuiltBuildingListView(
       title: building.toLocalizedString(),
       producesIconPath: building.produces.toIconPath(),

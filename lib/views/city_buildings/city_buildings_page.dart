@@ -1,7 +1,10 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
+import 'package:sloboda/views/animations/ink_well_overlay.dart';
+import 'package:sloboda/views/animations/open_container_wrapper.dart';
 import 'package:sloboda/views/city_buildings/city_building_built.dart';
 import 'package:sloboda/views/city_buildings/city_building_meta.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
@@ -26,17 +29,22 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
             (cb) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: BuiltBuildingListView(
-                  title: localizedCityBuildingByType(cb.type),
-                  buildingIconPath: cityTypeToIconPath(cb.type),
-                  producesIconPath: cb.produces.toIconPath(),
-                  amount: 1,
-                  onPress: () {
-                    Navigator.pushNamed(context, CityBuildingBuilt.routeName,
-                        arguments: CityBuildingBuiltArguments(
-                          city: city,
-                          building: cb,
-                        ));
+                child: OpenContainerWrapper(
+                  child: CityBuildingBuilt(
+                    building: cb,
+                    city: city,
+                  ),
+                  transitionType: ContainerTransitionType.fade,
+                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
+                    return InkWellOverlay(
+                      openContainer: openContainer,
+                      child: BuiltBuildingListView(
+                        title: localizedCityBuildingByType(cb.type),
+                        buildingIconPath: cityTypeToIconPath(cb.type),
+                        producesIconPath: cb.produces.toIconPath(),
+                        amount: 1,
+                      ),
+                    );
                   },
                 ),
               );
