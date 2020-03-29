@@ -21,7 +21,7 @@ class TrapperHouse extends ResourceBuilding {
   Map<RESOURCE_TYPES, int> requires = {
     RESOURCE_TYPES.FOOD: 5,
   };
-  int maxWorkers = 1;
+  int maxWorkers = 10;
   int workMultiplier = 2;
 
   ResourceType produces = Fur();

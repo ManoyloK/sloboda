@@ -18,7 +18,7 @@ class Field extends ResourceBuilding {
     RESOURCE_TYPES.FOOD: 5,
   };
 
-  int maxWorkers = 20;
+  int maxWorkers = 50;
 
   int workMultiplier = 5;
 

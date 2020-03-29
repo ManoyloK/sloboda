@@ -19,7 +19,7 @@ class NaturalResource with Producable {
 
 class Forest extends NaturalResource {
   NATURAL_RESOURCES type = NATURAL_RESOURCES.FOREST;
-  int maxWorkers = 100;
+  int maxWorkers = 300;
   int workMultiplier = 2;
   ResourceType produces = Wood();
   Map<RESOURCE_TYPES, int> requires = {

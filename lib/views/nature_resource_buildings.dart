@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
 import 'package:sloboda/models/sloboda.dart';
@@ -73,15 +74,22 @@ class _NatureResourceBuildingScreenState
                     ),
                   ),
                 ],
-                SizedBox(
-                  height: 32,
-                ),
+                VDivider(),
+                if (building.assignedHumans.isNotEmpty) ...[
+                  SoftContainer(
+                    child: ResourceBuildingOutputView(
+                      building: building,
+                    ),
+                  ),
+                  VDivider(),
+                ],
                 if (building.assignedHumans.isNotEmpty)
                   SoftContainer(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(children: [
-                        Center(child: Text(SlobodaLocalizations.assignedWorkers)),
+                        Center(
+                            child: Text(SlobodaLocalizations.assignedWorkers)),
                         ...building.assignedHumans.map(
                           (h) {
                             return Padding(
@@ -113,19 +121,7 @@ class _NatureResourceBuildingScreenState
                       ]),
                     ),
                   ),
-                SizedBox(
-                  height: 32,
-                ),
-                if (building.assignedHumans.isNotEmpty) ...[
-                  SoftContainer(
-                    child: ResourceBuildingOutputView(
-                      building: building,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 32,
-                  ),
-                ],
+                VDivider(),
               ],
             ),
           ),

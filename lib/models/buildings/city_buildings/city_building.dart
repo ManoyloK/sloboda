@@ -15,7 +15,7 @@ abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
 
   StockItem<CITY_PROPERTIES> produces;
 
-  int outputAmount = 1;
+//  int outputAmount = 1;
 
   static CityBuilding fromType(CITY_BUILDING_TYPES type) {
     switch (type) {
@@ -35,7 +35,7 @@ abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
   }
 
   Map<CITY_PROPERTIES, int> generate() {
-    return Map.fromEntries([MapEntry(produces.type, outputAmount)]);
+    return Map.fromEntries([MapEntry(produces.type, produces.value)]);
   }
 }
 

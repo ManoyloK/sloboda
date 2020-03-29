@@ -5,7 +5,7 @@ import 'package:sloboda/models/resources/resource.dart';
 
 class Tower extends CityBuilding {
   CITY_BUILDING_TYPES type = CITY_BUILDING_TYPES.TOWER;
-  StockItem<CITY_PROPERTIES> produces = CityDefense();
+  StockItem<CITY_PROPERTIES> produces = CityDefense(1);
 
   Map<RESOURCE_TYPES, int> requiredToBuild = {
     RESOURCE_TYPES.FOOD: 100,

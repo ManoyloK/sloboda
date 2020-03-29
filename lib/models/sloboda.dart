@@ -352,7 +352,7 @@ class Sloboda {
         cityBuildings.fold(props.asMap(), (Map value, cb) {
       var prod = cb.produces;
       if (value.containsKey(prod)) {
-        value[prod.type] += cb.outputAmount;
+        value[prod.type] += cb.produces.value;
       } else {
         value[prod.type] = props.getByType(prod.type);
       }

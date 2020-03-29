@@ -10,7 +10,7 @@ class Producable {
   ResourceType produces;
   Map<RESOURCE_TYPES, int> requires = Map();
   List<Citizen> assignedHumans = [];
-  int maxWorkers = 5;
+  int maxWorkers = 30;
   int workMultiplier = 1;
 
   get outputAmount => workMultiplier * assignedHumans.length;

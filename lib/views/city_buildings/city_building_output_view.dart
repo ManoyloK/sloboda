@@ -16,7 +16,7 @@ class CityBuildingOutputView extends StatelessWidget {
         Text(SlobodaLocalizations.output),
         CityPropertyImageView(
           prop: building.produces,
-          amount: building.outputAmount,
+          amount: building.produces.value,
         )
       ],
     );

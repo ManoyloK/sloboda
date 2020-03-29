@@ -42,7 +42,7 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                         title: localizedCityBuildingByType(cb.type),
                         buildingIconPath: cityTypeToIconPath(cb.type),
                         producesIconPath: cb.produces.toIconPath(),
-                        amount: 1,
+                        amount: cb.produces.value,
                       ),
                     );
                   },

@@ -25,7 +25,5 @@ class PowderCellar extends ResourceBuilding {
 
   int workMultiplier = 2;
 
-  int maxWorkers = 3;
-
   ResourceType produces = Powder();
 }
