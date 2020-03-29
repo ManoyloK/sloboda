@@ -10,10 +10,12 @@ import 'package:sloboda/views/components/built_building_listview.dart';
 import 'package:sloboda/views/components/resource_building_input_view.dart';
 import 'package:sloboda/views/components/resource_building_output_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
+import 'package:sloboda/views/components/workers_assigned_view.dart';
 
 class ResourceBuildingBuiltListItemView extends StatelessWidget {
   final ResourceBuilding building;
   final Sloboda city;
+
   ResourceBuildingBuiltListItemView(
       {@required this.building, @required this.city});
 
@@ -83,12 +85,24 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                 ),
                 VDivider(),
                 SoftContainer(
-                  child: Text(
-                    building.toLocalizedDescriptionString(),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: WorkersAssignedView(
+                      building: building,
+                    ),
                   ),
                 ),
                 VDivider(),
-                if (!building.isFull())
+                SoftContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      building.toLocalizedDescriptionString(),
+                    ),
+                  ),
+                ),
+                VDivider(),
+                if (!building.isFull()) ...[
                   SoftContainer(
                     child: SlideableButton(
                       onPress: !building.isFull()
@@ -108,10 +122,30 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                       ),
                     ),
                   ),
-                if (building.assignedHumans.isNotEmpty) ...[
-                  SizedBox(
-                    height: 35,
+                  VDivider(),
+                ],
+                if (!building.isFull())
+                  SoftContainer(
+                    child: SlideableButton(
+                      onPress: !building.isFull()
+                          ? () {
+                              setState(() {
+                                building.addWorker(city.getFirstFreeCitizen());
+                              });
+                            }
+                          : null,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                          child: TitleText(
+                            SlobodaLocalizations.addMaxWorkers,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
+                if (building.assignedHumans.isNotEmpty) ...[
+                  VDivider(),
                   SoftContainer(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -150,18 +184,14 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                     ),
                   ),
                 ],
-                SizedBox(
-                  height: 32,
-                ),
+                VDivider(),
                 if (building.requires.isNotEmpty && building.hasWorkers()) ...[
                   SoftContainer(
                     child: ResourceBuildingInputView(
                       building: building,
                     ),
                   ),
-                  SizedBox(
-                    height: 32,
-                  ),
+                  VDivider(),
                 ],
                 if (building.assignedHumans.isNotEmpty) ...[
                   SoftContainer(
@@ -169,9 +199,7 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                       building: building,
                     ),
                   ),
-                  SizedBox(
-                    height: 32,
-                  ),
+                  VDivider(),
                 ],
                 SizedBox(
                   height: 64,

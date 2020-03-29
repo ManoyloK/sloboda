@@ -48,7 +48,8 @@ class CityPropsLocalizations extends InternalLocalizations {
       'gloryDescription':
           'Glory influences chance of getting certain military random events. Even nearby Slobodas might join your forces and unite with you. The higher the Glory, the more known your settlement is. This means epic events might occur. Can be increased only by participating in events.',
       'defense': 'Defense',
-      'defenseDescription': 'In future will protect you from some type of events. On the other hand, more prepared Tartar forces might attack you.',
+      'defenseDescription':
+          'In future will protect you from some type of events. On the other hand, more prepared Tartar forces might attack you.',
       'defenseLevel':
           'Defense. Decreases chances for tartar raids. Can lower the level of damage done by enemy forces. Can be increased by City Defense Buildings.',
       'citizens': 'Citizens',
@@ -614,6 +615,7 @@ class SlobodaLocalizations {
       'sendMoneyToSich': 'Send money',
       'incomingEventLabel': 'New incoming event',
       'labelInputSlobodaName': 'Sloboda Name',
+      'addMaxWorkers': 'Add max workers',
     },
     'uk': {
       'overview': 'Головна',
@@ -656,6 +658,7 @@ class SlobodaLocalizations {
       'sendMoneyToSich': 'Відіслати гроші',
       'incomingEventLabel': 'Нова подія',
       'labelInputSlobodaName': 'Назва слободи',
+      'addMaxWorkers': 'Додати максимум робітників'
     }
   };
 
@@ -806,5 +809,10 @@ class SlobodaLocalizations {
   static String get labelInputSlobodaName {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['labelInputSlobodaName'];
+  }
+
+  static String get addMaxWorkers {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['addMaxWorkers'];
   }
 }
