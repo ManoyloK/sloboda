@@ -71,7 +71,6 @@ class _CityGameState extends State<CityGame>
                         child: DefaultTabController(
                           length: 4,
                           child: Scaffold(
-                            backgroundColor: Theme.of(context).backgroundColor,
                             appBar: AppBar(
                               bottom: TabBar(
                                 controller: _tabController,

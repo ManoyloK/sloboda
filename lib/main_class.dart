@@ -85,7 +85,7 @@ var whiteTheme = ThemeData(
     color: Colors.black,
   ),
   appBarTheme: AppBarTheme(
-    color: Colors.white,
+    color: Colors.grey[300],
     iconTheme: IconThemeData(
       color: Colors.black,
     ),

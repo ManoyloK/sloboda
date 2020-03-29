@@ -8,6 +8,7 @@ import 'package:sloboda/views/animations/open_container_wrapper.dart';
 import 'package:sloboda/views/city_buildings/city_building_built.dart';
 import 'package:sloboda/views/city_buildings/city_building_meta.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
+import 'package:sloboda/views/components/soft_container.dart';
 
 class CityBuildingsPage extends StatefulWidget {
   @override
@@ -29,23 +30,26 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
             (cb) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: OpenContainerWrapper(
-                  child: CityBuildingBuilt(
-                    building: cb,
-                    city: city,
+                child: SoftContainer(
+                  child: OpenContainerWrapper(
+                    child: CityBuildingBuilt(
+                      building: cb,
+                      city: city,
+                    ),
+                    transitionType: ContainerTransitionType.fade,
+                    closedBuilder:
+                        (BuildContext _, VoidCallback openContainer) {
+                      return InkWellOverlay(
+                        openContainer: openContainer,
+                        child: BuiltBuildingListItem(
+                          title: localizedCityBuildingByType(cb.type),
+                          buildingIconPath: cityTypeToIconPath(cb.type),
+                          producesIconPath: cb.produces.toIconPath(),
+                          amount: cb.produces.value,
+                        ),
+                      );
+                    },
                   ),
-                  transitionType: ContainerTransitionType.fade,
-                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                    return InkWellOverlay(
-                      openContainer: openContainer,
-                      child: BuiltBuildingListView(
-                        title: localizedCityBuildingByType(cb.type),
-                        buildingIconPath: cityTypeToIconPath(cb.type),
-                        producesIconPath: cb.produces.toIconPath(),
-                        amount: cb.produces.value,
-                      ),
-                    );
-                  },
                 ),
               );
             },

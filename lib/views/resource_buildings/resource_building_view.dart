@@ -52,7 +52,6 @@ class ResourceBuildingDetailsScreen extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
         title: TitleText(
           building.toLocalizedString(),
         ),

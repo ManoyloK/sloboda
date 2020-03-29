@@ -50,7 +50,6 @@ class _SichScreenState extends State<SichScreen> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
         title: TitleText(
           SlobodaLocalizations.sichName,
         ),

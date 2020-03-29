@@ -7,6 +7,7 @@ import 'package:sloboda/models/buildings/resource_buildings/resource_building.da
 import 'package:sloboda/views/animations/ink_well_overlay.dart';
 import 'package:sloboda/views/animations/open_container_wrapper.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
+import 'package:sloboda/views/components/soft_container.dart';
 import 'package:sloboda/views/nature_resource_buildings.dart';
 import 'package:sloboda/views/resource_buildings/resource_building_built.dart';
 import 'package:sloboda/views/resource_buildings/resource_building_meta.dart';
@@ -28,27 +29,30 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ...city.naturalResources.map<Widget>((el) {
-              return Container(
-                padding: EdgeInsets.all(8.0),
-                child: OpenContainerWrapper(
-                  // what View to show after you click on element
-                  child: NatureResourceBuildingScreen(
-                    building: el,
-                    city: city,
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SoftContainer(
+                  child: OpenContainerWrapper(
+                    // what View to show after you click on element
+                    child: NatureResourceBuildingScreen(
+                      building: el,
+                      city: city,
+                    ),
+                    transitionType: ContainerTransitionType.fade,
+                    closedBuilder:
+                        (BuildContext _, VoidCallback openContainer) {
+                      // what to show initially. Must be clickable
+                      return InkWellOverlay(
+                        openContainer: openContainer,
+                        child: BuiltBuildingListItem(
+                          title: el.toLocalizedString(),
+                          buildingIconPath: el.getIconPath(),
+                          producesIconPath: el.produces.toIconPath(),
+                          amount: el.outputAmount,
+                        ),
+                      );
+                    },
                   ),
-                  transitionType: ContainerTransitionType.fade,
-                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                    // what to show initially. Must be clickable
-                    return InkWellOverlay(
-                      openContainer: openContainer,
-                      child: BuiltBuildingListView(
-                        title: el.toLocalizedString(),
-                        buildingIconPath: el.getIconPath(),
-                        producesIconPath: el.produces.toIconPath(),
-                        amount: el.outputAmount,
-                      ),
-                    );
-                  },
                 ),
               );
             }).toList(),
@@ -57,24 +61,26 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                 .map<Widget>(
                   (building) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: OpenContainerWrapper(
-                      // what View to show after you click on element
-                      child: ResourceBuildingBuilt(
-                        building: building,
-                        city: city,
+                    child: SoftContainer(
+                      child: OpenContainerWrapper(
+                        // what View to show after you click on element
+                        child: ResourceBuildingBuilt(
+                          building: building,
+                          city: city,
+                        ),
+                        transitionType: ContainerTransitionType.fade,
+                        closedBuilder:
+                            (BuildContext _, VoidCallback openContainer) {
+                          // what to show initially. Must be clickable
+                          return InkWellOverlay(
+                            openContainer: openContainer,
+                            child: ResourceBuildingBuiltListItemView(
+                              building: building,
+                              city: city,
+                            ),
+                          );
+                        },
                       ),
-                      transitionType: ContainerTransitionType.fade,
-                      closedBuilder:
-                          (BuildContext _, VoidCallback openContainer) {
-                        // what to show initially. Must be clickable
-                        return InkWellOverlay(
-                          openContainer: openContainer,
-                          child: ResourceBuildingBuiltListItemView(
-                            building: building,
-                            city: city,
-                          ),
-                        );
-                      },
                     ),
                   ),
                 )
@@ -84,34 +90,17 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
               var building = ResourceBuilding.fromType(value);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: OpenContainerWrapper(
-                  child: Scaffold(
-                    appBar: AppBar(
-                      title: Text(
-                        building.toLocalizedString(),
+                child: SoftContainer(
+                  child: OpenContainerWrapper(
+                    child: Scaffold(
+                      appBar: AppBar(
+                        title: Text(
+                          building.toLocalizedString(),
+                        ),
                       ),
-                    ),
-                    body: ResourceBuildingMetaView(
-                        building: building,
-                        selected: true,
-                        onBuildPressed: () {
-                          try {
-                            city.buildBuilding(building);
-                          } catch (e) {
-                            final snackBar = SnackBar(
-                                content: Text(
-                                    'Cannot build. Missing: ${e.toLocalizedString()}'));
-                            Scaffold.of(context).showSnackBar(snackBar);
-                          }
-                        }),
-                  ),
-                  transitionType: ContainerTransitionType.fade,
-                  closedBuilder: (BuildContext _, VoidCallback openContainer) {
-                    return InkWellOverlay(
-                      openContainer: openContainer,
-                      child: ResourceBuildingMetaView(
+                      body: ResourceBuildingMetaView(
                           building: building,
-                          selected: false,
+                          selected: true,
                           onBuildPressed: () {
                             try {
                               city.buildBuilding(building);
@@ -122,8 +111,28 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                               Scaffold.of(context).showSnackBar(snackBar);
                             }
                           }),
-                    );
-                  },
+                    ),
+                    transitionType: ContainerTransitionType.fade,
+                    closedBuilder:
+                        (BuildContext _, VoidCallback openContainer) {
+                      return InkWellOverlay(
+                        openContainer: openContainer,
+                        child: ResourceBuildingMetaView(
+                            building: building,
+                            selected: false,
+                            onBuildPressed: () {
+                              try {
+                                city.buildBuilding(building);
+                              } catch (e) {
+                                final snackBar = SnackBar(
+                                    content: Text(
+                                        'Cannot build. Missing: ${e.toLocalizedString()}'));
+                                Scaffold.of(context).showSnackBar(snackBar);
+                              }
+                            }),
+                      );
+                    },
+                  ),
                 ),
 //                child: InkWell(
 //                  child: ResourceBuildingMetaView(

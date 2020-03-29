@@ -12,7 +12,7 @@ class ShootingRangeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BuiltBuildingListView(
+    return BuiltBuildingListItem(
       title: SlobodaLocalizations.getForKey(building.localizedKey),
       buildingIconPath: building.icon,
       producesIconPath: building.produces.toIconPath(),

@@ -28,13 +28,12 @@ class _NatureResourceBuildingScreenState
     var building = widget.building;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
         title: TitleText(building.toLocalizedString()),
       ),
       body: SingleChildScrollView(
-        child: SoftContainer(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SoftContainer(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -56,19 +55,23 @@ class _NatureResourceBuildingScreenState
                   SizedBox(
                     height: 35,
                   ),
-                  SoftContainer(
-                    child: SlideableButton(
-                      onPress: !building.isFull()
-                          ? () {
-                              setState(() {
-                                building.addWorker(city.getFirstFreeCitizen());
-                              });
-                            }
-                          : null,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: TitleText(SlobodaLocalizations.addWorker),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SoftContainer(
+                      child: SlideableButton(
+                        onPress: !building.isFull()
+                            ? () {
+                                setState(() {
+                                  building
+                                      .addWorker(city.getFirstFreeCitizen());
+                                });
+                              }
+                            : null,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: TitleText(SlobodaLocalizations.addWorker),
+                          ),
                         ),
                       ),
                     ),

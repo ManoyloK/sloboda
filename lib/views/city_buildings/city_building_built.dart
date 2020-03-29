@@ -15,7 +15,7 @@ class CityBuildingBuiltListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BuiltBuildingListView(
+    return BuiltBuildingListItem(
       title: localizedCityBuildingByType(building.type),
       buildingIconPath: cityTypeToIconPath(building.type),
       producesIconPath: building.produces.toIconPath(),

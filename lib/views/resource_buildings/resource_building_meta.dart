@@ -28,109 +28,108 @@ class _ResourceBuildingMetaViewState extends State<ResourceBuildingMetaView> {
   @override
   Widget build(BuildContext context) {
     var building = widget.building;
-    return SingleChildScrollView(
-      child: SoftContainer(
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: SoftContainer(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      if (!widget.selected)
-                        TitleText(
-                          building.toLocalizedString(),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    if (!widget.selected)
+                      TitleText(
+                        building.toLocalizedString(),
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            building.toImagePath(),
+                            height: widget.selected ? 256 : 128,
+                          ),
                         ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              building.toImagePath(),
-                              height: widget.selected ? 256 : 128,
-                            ),
-                          ),
-                          if (!widget.selected)
-                            ResourceBuildingOutputView(building: building),
-                        ],
-                      ),
-                    ],
-                  ),
-                  if (widget.selected)
-                    SoftContainer(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(building.toLocalizedDescriptionString()),
-                      ),
-                    ),
-                  if (widget.selected)
-                    SizedBox(
-                      height: 35,
-                    ),
-                  if (widget.selected) ...[
-                    SoftContainer(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: BuildableRequiredToBuildView(building: building),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    SoftContainer(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(SlobodaLocalizations.maxNumberOfWorkers),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(Citizen.getIconPath()),
-                              Text(' ${building.maxWorkers}'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    if (building.requires.isNotEmpty)
-                      SoftContainer(
-                        child: ResourceBuildingInputView(building: building),
-                      ),
-                    SizedBox(
-                      height: 35,
-                    ),
-                    SoftContainer(
-                        child: ResourceBuildingOutputView(building: building)),
-                    SizedBox(
-                      height: 35,
+                        if (!widget.selected)
+                          ResourceBuildingOutputView(building: building),
+                      ],
                     ),
                   ],
-                  if (widget.onBuildPressed != null)
+                ),
+                if (widget.selected)
+                  SoftContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(building.toLocalizedDescriptionString()),
+                    ),
+                  ),
+                if (widget.selected)
+                  SizedBox(
+                    height: 35,
+                  ),
+                if (widget.selected) ...[
+                  SoftContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: BuildableRequiredToBuildView(building: building),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  SoftContainer(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(SlobodaLocalizations.maxNumberOfWorkers),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(Citizen.getIconPath()),
+                            Text(' ${building.maxWorkers}'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  if (building.requires.isNotEmpty)
                     SoftContainer(
-                      child: SlideableButton(
-                        direction: Direction.Left,
-                        child: Container(
-                          height: 64,
-                          child: Center(
-                            child: ButtonText(
-                              SlobodaLocalizations.build,
-                            ),
+                      child: ResourceBuildingInputView(building: building),
+                    ),
+                  SizedBox(
+                    height: 35,
+                  ),
+                  SoftContainer(
+                      child: ResourceBuildingOutputView(building: building)),
+                  SizedBox(
+                    height: 35,
+                  ),
+                ],
+                if (widget.onBuildPressed != null)
+                  SoftContainer(
+                    child: SlideableButton(
+                      direction: Direction.Left,
+                      child: Container(
+                        height: 64,
+                        child: Center(
+                          child: ButtonText(
+                            SlobodaLocalizations.build,
                           ),
                         ),
-                        onPress: widget.onBuildPressed,
                       ),
+                      onPress: widget.onBuildPressed,
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ),

@@ -21,8 +21,7 @@ class ResourceBuildingBuiltListItemView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-//    Sloboda city = InheritedCity.of(context).city;
-    return BuiltBuildingListView(
+    return BuiltBuildingListItem(
       title: building.toLocalizedString(),
       producesIconPath: building.produces.toIconPath(),
       amount: building.outputAmount,
@@ -58,9 +57,7 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
     var city = widget.city;
     var building = widget.building;
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
         title: TitleText(
           building.toLocalizedString(),
         ),
@@ -101,8 +98,8 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                     ),
                   ),
                 ),
-                VDivider(),
                 if (!building.isFull()) ...[
+                  VDivider(),
                   SoftContainer(
                     child: SlideableButton(
                       onPress: !building.isFull()
@@ -130,7 +127,14 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                       onPress: !building.isFull()
                           ? () {
                               setState(() {
-                                building.addWorker(city.getFirstFreeCitizen());
+                                var freeCitizens =
+                                    city.getAllFreeCitizens().take(
+                                          building.maxWorkers -
+                                              building.assignedHumans.length,
+                                        );
+                                for (var citizen in freeCitizens) {
+                                  building.addWorker(citizen);
+                                }
                               });
                             }
                           : null,
@@ -183,8 +187,8 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                       ]),
                     ),
                   ),
+                  VDivider(),
                 ],
-                VDivider(),
                 if (building.requires.isNotEmpty && building.hasWorkers()) ...[
                   SoftContainer(
                     child: ResourceBuildingInputView(
