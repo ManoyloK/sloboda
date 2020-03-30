@@ -9,7 +9,7 @@ import 'package:sloboda/views/resource_view.dart';
 
 class StockMiniView extends StatelessWidget {
   final Stock stock;
-  final Map<RESOURCE_TYPES, int> stockSimulation;
+  final Stock stockSimulation;
 
   StockMiniView({@required this.stock, @required this.stockSimulation});
 
@@ -35,7 +35,7 @@ class StockMiniView extends StatelessWidget {
                 ),
                 if (stockSimulation != null)
                   SaldoViewShower(
-                    value: stockSimulation[key],
+                    value: stockSimulation.getByType(key),
                     reference: stock.getByType(key),
                     showValue: false,
                   ),
@@ -50,7 +50,7 @@ class StockMiniView extends StatelessWidget {
 
 class StockFullView extends StatelessWidget {
   final Stock stock;
-  final Map<RESOURCE_TYPES, int> stockSimulation;
+  final Stock stockSimulation;
 
   StockFullView({
     @required this.stock,
@@ -74,24 +74,22 @@ class StockFullView extends StatelessWidget {
                 return LineContainer(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: keys
-                        .map(
-                          (key) => Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ResourceImageView(
-                                type: ResourceType.fromType(key),
-                                amount: stock.getByType(key),
-                              ),
-                              if (stockSimulation != null)
-                                SaldoViewShower(
-                                    value: stockSimulation[key],
-                                    reference: stock.getByType(key),
-                                    showValue: true),
-                            ],
+                    children: keys.map((key) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ResourceImageView(
+                            type: ResourceType.fromType(key),
+                            amount: stock.getByType(key),
                           ),
-                        )
-                        .toList(),
+                          if (stockSimulation != null)
+                            SaldoViewShower(
+                                value: stockSimulation.getByType(key),
+                                reference: stock.getByType(key),
+                                showValue: true),
+                        ],
+                      );
+                    }).toList(),
                   ),
                 );
               },

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:sloboda/extensions/list.dart';
+import 'package:sloboda/extensions/string.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
@@ -301,7 +302,9 @@ class Sloboda {
       Map<CITY_PROPERTIES, int> generated = cb.generate();
       generated.entries.forEach((e) {
         if (e.key == CITY_PROPERTIES.CITIZENS) {
-          citizens.add(Citizen());
+          e.value.toString().repeatTimes(() {
+            citizens.add(Citizen());
+          });
         }
         props.addToType(e.key, e.value);
       });
@@ -362,10 +365,10 @@ class Sloboda {
     return newMap;
   }
 
-  Map<RESOURCE_TYPES, int> simulateStock() {
+  Stock simulateStock() {
     List<Producable> list = [...naturalResources, ...resourceBuildings];
 
-    Map requires = list.fold({}, (Map value, building) {
+    Map<RESOURCE_TYPES, int> requires = list.fold({}, (Map value, building) {
       var req = building.requires.map((k, v) {
         return MapEntry(
             k, v * building.amountOfWorkers() * building.workMultiplier);
@@ -381,12 +384,12 @@ class Sloboda {
       return value;
     });
 
-    Map produces = list.fold({}, (Map value, building) {
-      if (value.containsKey(building.produces)) {
-        value[building.produces] +=
+    Map<RESOURCE_TYPES, int> produces = list.fold({}, (Map value, building) {
+      if (value.containsKey(building.produces.type)) {
+        value[building.produces.type] +=
             building.workMultiplier * building.amountOfWorkers();
       } else {
-        value[building.produces] =
+        value[building.produces.type] =
             building.workMultiplier * building.amountOfWorkers();
       }
 
@@ -411,8 +414,7 @@ class Sloboda {
         print(e);
       }
     });
-
-    return newStock;
+    return Stock(values: newStock);
   }
 
   CitySeason nextSeason(CitySeason currentSeason) {

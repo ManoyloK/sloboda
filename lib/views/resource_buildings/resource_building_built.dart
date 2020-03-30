@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/animations/slideable_button.dart';
-import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/components/add_worker_view.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
 import 'package:sloboda/views/components/resource_building_input_view.dart';
 import 'package:sloboda/views/components/resource_building_output_view.dart';
@@ -101,27 +101,17 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                 if (!building.isFull()) ...[
                   VDivider(),
                   SoftContainer(
-                    child: SlideableButton(
-                      onPress: !building.isFull()
-                          ? () {
-                              setState(() {
-                                building.addWorker(city.getFirstFreeCitizen());
-                              });
-                            }
-                          : null,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: TitleText(
-                            SlobodaLocalizations.addWorker,
-                          ),
-                        ),
-                      ),
+                    child: AddWorker(
+                      onWorkerAdded: () {
+                        setState(() {});
+                      },
+                      building: building,
+                      city: city,
                     ),
                   ),
                   VDivider(),
                 ],
-                if (!building.isFull())
+                if (!building.isFull()) ...[
                   SoftContainer(
                     child: SlideableButton(
                       onPress: !building.isFull()
@@ -148,8 +138,9 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                       ),
                     ),
                   ),
+                ],
+                VDivider(),
                 if (building.assignedHumans.isNotEmpty) ...[
-                  VDivider(),
                   SoftContainer(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -210,7 +201,7 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                   child: SoftContainer(
                     child: SlideableButton(
                       child: Center(
-                          child: ButtonText(
+                          child: Text(
                         SlobodaLocalizations.destroyBuilding,
                       )),
                       onPress: () {

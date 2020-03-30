@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sloboda/animations/slideable_button.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/components/add_worker_view.dart';
 import 'package:sloboda/views/components/resource_building_output_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 
@@ -58,21 +58,12 @@ class _NatureResourceBuildingScreenState
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SoftContainer(
-                      child: SlideableButton(
-                        onPress: !building.isFull()
-                            ? () {
-                                setState(() {
-                                  building
-                                      .addWorker(city.getFirstFreeCitizen());
-                                });
-                              }
-                            : null,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: TitleText(SlobodaLocalizations.addWorker),
-                          ),
-                        ),
+                      child: AddWorker(
+                        onWorkerAdded: () {
+                          setState(() {});
+                        },
+                        city: city,
+                        building: building,
                       ),
                     ),
                   ),
