@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:rxdart/rxdart.dart';
+import 'package:sloboda/extensions/int.dart';
 import 'package:sloboda/extensions/list.dart';
-import 'package:sloboda/extensions/string.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
@@ -55,7 +55,7 @@ class Sloboda {
     }
 
     var citizensCount = props.getByType(CITY_PROPERTIES.CITIZENS);
-    citizensCount.toString().timesRepeat(() => citizens.add(Citizen()));
+    citizensCount.timesRepeat(() => citizens.add(Citizen()));
 
     changes = _innerChanges.stream;
 
@@ -306,7 +306,7 @@ class Sloboda {
       Map<CITY_PROPERTIES, int> generated = cb.generate();
       generated.entries.forEach((e) {
         if (e.key == CITY_PROPERTIES.CITIZENS) {
-          e.value.toString().timesRepeat(() {
+          e.value.timesRepeat(() {
             citizens.add(Citizen());
           });
         }
