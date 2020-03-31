@@ -199,7 +199,7 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                     child: SoftContainer(
                       child: SlideableButton(
                         child: Center(
-                            child: Text(
+                            child: TitleText(
                           SlobodaLocalizations.destroyBuilding,
                         )),
                         onPress: () {

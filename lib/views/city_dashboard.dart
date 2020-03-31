@@ -34,20 +34,20 @@ class _CityDashboardState extends State<CityDashboard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SoftContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () async {
-                    await Navigator.pushNamed(
-                      context,
-                      ShootingRangeBuilt.routeName,
-                      arguments: ShootingRangeViewArguments(
-                        city: widget.city,
-                        building: ShootingRange(),
-                      ),
-                    );
-                  },
+            GestureDetector(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
+                  ShootingRangeBuilt.routeName,
+                  arguments: ShootingRangeViewArguments(
+                    city: widget.city,
+                    building: ShootingRange(),
+                  ),
+                );
+              },
+              child: SoftContainer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -65,21 +65,21 @@ class _CityDashboardState extends State<CityDashboard> {
               ),
             ),
             VDivider(),
-            SoftContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FullWidth(
-                  child: Center(
-                    child: GestureDetector(
-                      onTap: () async {
-                        await Navigator.pushNamed(
-                          context,
-                          SichScreen.routeName,
-                          arguments: SichScreenArguments(
-                            city: widget.city,
-                          ),
-                        );
-                      },
+            GestureDetector(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
+                  SichScreen.routeName,
+                  arguments: SichScreenArguments(
+                    city: widget.city,
+                  ),
+                );
+              },
+              child: SoftContainer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FullWidth(
+                    child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
