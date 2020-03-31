@@ -40,6 +40,10 @@ class _CityDashboardState extends State<CityDashboard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Image.asset(
+                      ShootingRange().icon,
+                      width: 32,
+                    ),
                     SlideableButton(
                       child: Text(SlobodaLocalizations.trainCossacks),
                       onPress: () async {
@@ -51,7 +55,6 @@ class _CityDashboardState extends State<CityDashboard> {
                             building: ShootingRange(),
                           ),
                         );
-                        setState(() {});
                       },
                     ),
                   ],

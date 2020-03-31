@@ -97,9 +97,7 @@ class _NatureResourceBuildingScreenState
                                       icon: Icon(Icons.remove),
                                       onPressed: !building.isEmpty()
                                           ? () {
-                                              setState(() {
-                                                building.removeWorker(h);
-                                              });
+                                              building.removeWorker(h);
                                             }
                                           : null,
                                     ),
