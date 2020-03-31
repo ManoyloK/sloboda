@@ -35,7 +35,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
         cityProps.getByType(CITY_PROPERTIES.CITIZENS) >= 1;
   }
 
-  Widget build(BuildContext context, Function callback, Sloboda city) {
+  Widget build(BuildContext context, Sloboda city) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -50,9 +50,12 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                     Navigator.pop(context);
                   },
                   child: SoftContainer(
-                    child: Image.asset(
-                      image,
-                      height: 320,
+                    child: Hero(
+                      tag: localizedKey,
+                      child: Image.asset(
+                        image,
+                        height: 320,
+                      ),
                     ),
                   ),
                 ),
@@ -85,7 +88,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                                 ButtonText(SlobodaLocalizations.trainCossacks)),
                         onPress: canProduceCossack(city.props, city.stock)
                             ? () {
-                                _tryToCreateCossack(city, callback);
+                                tryToCreateCossack(city);
                               }
                             : null,
                       ),
@@ -137,7 +140,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
     );
   }
 
-  void _tryToCreateCossack(Sloboda city, Function callback) {
+  void tryToCreateCossack(Sloboda city) {
     if (canProduceCossack(city.props, city.stock)) {
       city.stock - requiresForCossack;
       city.removeCitizens(amount: 1);
@@ -148,7 +151,6 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
           },
         ),
       );
-      callback();
     }
   }
 

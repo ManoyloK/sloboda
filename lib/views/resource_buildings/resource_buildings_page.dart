@@ -106,8 +106,10 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                               city.buildBuilding(building);
                             } catch (e) {
                               final snackBar = SnackBar(
-                                  content: Text(
-                                      'Cannot build. Missing: ${e.toLocalizedString()}'));
+                                content: Text(
+                                  'Cannot build. Missing: ${e.toLocalizedString()}',
+                                ),
+                              );
                               Scaffold.of(context).showSnackBar(snackBar);
                             }
                           }),
@@ -134,30 +136,6 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                     },
                   ),
                 ),
-//                child: InkWell(
-//                  child: ResourceBuildingMetaView(
-//                      building: building,
-//                      selected: selected == value,
-//                      onBuildPressed: () {
-//                        try {
-//                          city.buildBuilding(building);
-//                        } catch (e) {
-//                          final snackBar = SnackBar(
-//                              content: Text(
-//                                  'Cannot build. Missing: ${e.toLocalizedString()}'));
-//                          Scaffold.of(context).showSnackBar(snackBar);
-//                        }
-//                      }),
-//                  onTap: () {
-//                    setState(() {
-//                      if (selected == value) {
-//                        selected = null;
-//                      } else {
-//                        selected = value;
-//                      }
-//                    });
-//                  },
-//                ),
               );
             }).toList(),
           ]),

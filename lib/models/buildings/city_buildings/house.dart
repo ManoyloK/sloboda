@@ -11,4 +11,15 @@ class House extends CityBuilding {
     RESOURCE_TYPES.STONE: 3,
     RESOURCE_TYPES.WOOD: 10,
   };
+
+  String localizedKey = 'cityBuildings.house';
+  String localizedDescriptionKey = 'cityBuildings.houseDescription';
+
+  String toIconPath() {
+    return 'images/city_buildings/house_64.png';
+  }
+
+  String toImagePath() {
+    return 'images/city_buildings/house.png';
+  }
 }

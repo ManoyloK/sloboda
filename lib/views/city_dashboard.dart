@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
@@ -34,36 +34,51 @@ class _CityDashboardState extends State<CityDashboard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            SoftContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SlideableButton(
-                      child: Text(SlobodaLocalizations.trainCossacks),
-                      onPress: () async {
-                        await Navigator.pushNamed(
-                          context,
-                          ShootingRangeBuilt.routeName,
-                          arguments: ShootingRangeViewArguments(
-                            city: widget.city,
-                            building: ShootingRange(),
-                          ),
-                        );
-                        setState(() {});
-                      },
-                    ),
-                  ],
+            GestureDetector(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
+                  ShootingRangeBuilt.routeName,
+                  arguments: ShootingRangeViewArguments(
+                    city: widget.city,
+                    building: ShootingRange(),
+                  ),
+                );
+              },
+              child: SoftContainer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Hero(
+                        tag: ShootingRange().localizedKey,
+                        child: Image.asset(
+                          ShootingRange().icon,
+                          width: 64,
+                        ),
+                      ),
+                      ButtonText(SlobodaLocalizations.trainCossacks),
+                    ],
+                  ),
                 ),
               ),
             ),
             VDivider(),
-            SoftContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FullWidth(
-                  child: SlideableButton(
+            GestureDetector(
+              onTap: () async {
+                await Navigator.pushNamed(
+                  context,
+                  SichScreen.routeName,
+                  arguments: SichScreenArguments(
+                    city: widget.city,
+                  ),
+                );
+              },
+              child: SoftContainer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FullWidth(
                     child: Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -75,19 +90,12 @@ class _CityDashboardState extends State<CityDashboard> {
                               width: 128,
                             ),
                           ),
-                          Text(SlobodaLocalizations.sichName),
+                          ButtonText(
+                            SlobodaLocalizations.sichName,
+                          ),
                         ],
                       ),
                     ),
-                    onPress: () async {
-                      await Navigator.pushNamed(
-                        context,
-                        SichScreen.routeName,
-                        arguments: SichScreenArguments(
-                          city: widget.city,
-                        ),
-                      );
-                    },
                   ),
                 ),
               ),

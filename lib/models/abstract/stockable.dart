@@ -8,7 +8,6 @@ abstract class Stockable<T> {
       _map = Map.from(props);
     }
   }
-
   List<T> getTypeKeys() {
     return _map.keys.toList();
   }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sloboda/animations/slideable_button.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/components/add_worker_view.dart';
 import 'package:sloboda/views/components/resource_building_output_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
+
+import 'components/CityBuilder.dart';
 
 class NatureResourceBuildingScreen extends StatefulWidget {
   final NaturalResource building;
@@ -30,102 +32,92 @@ class _NatureResourceBuildingScreenState
       appBar: AppBar(
         title: TitleText(building.toLocalizedString()),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SoftContainer(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        building.getIconPath(),
-                        height: 320,
-                      ),
-                    ),
-                  ),
-                ),
-                if (!building.isFull()) ...[
-                  SizedBox(
-                    height: 35,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+      body: CityBuilder(
+        city: city,
+        builder: (context) => SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SoftContainer(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                     child: SoftContainer(
-                      child: SlideableButton(
-                        onPress: !building.isFull()
-                            ? () {
-                                setState(() {
-                                  building
-                                      .addWorker(city.getFirstFreeCitizen());
-                                });
-                              }
-                            : null,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: TitleText(SlobodaLocalizations.addWorker),
-                          ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Image.asset(
+                          building.getIconPath(),
+                          height: 320,
                         ),
                       ),
                     ),
                   ),
-                ],
-                VDivider(),
-                if (building.assignedHumans.isNotEmpty) ...[
-                  SoftContainer(
-                    child: ResourceBuildingOutputView(
-                      building: building,
+                  if (!building.isFull()) ...[
+                    SizedBox(
+                      height: 35,
                     ),
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SoftContainer(
+                        child: AddWorker(
+                          city: city,
+                          building: building,
+                        ),
+                      ),
+                    ),
+                  ],
+                  VDivider(),
+                  if (building.assignedHumans.isNotEmpty) ...[
+                    SoftContainer(
+                      child: ResourceBuildingOutputView(
+                        building: building,
+                      ),
+                    ),
+                    VDivider(),
+                  ],
+                  if (building.assignedHumans.isNotEmpty)
+                    SoftContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(children: [
+                          Center(
+                              child:
+                                  Text(SlobodaLocalizations.assignedWorkers)),
+                          ...building.assignedHumans.map(
+                            (h) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      h.name,
+                                    ),
+                                    SoftContainer(
+                                      child: IconButton(
+                                        icon: Icon(Icons.remove),
+                                        onPressed: !building.isEmpty()
+                                            ? () {
+                                                building.removeWorker(h);
+                                              }
+                                            : null,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ).toList(),
+                        ]),
+                      ),
+                    ),
                   VDivider(),
                 ],
-                if (building.assignedHumans.isNotEmpty)
-                  SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(children: [
-                        Center(
-                            child: Text(SlobodaLocalizations.assignedWorkers)),
-                        ...building.assignedHumans.map(
-                          (h) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    h.name,
-                                  ),
-                                  SoftContainer(
-                                    child: IconButton(
-                                      icon: Icon(Icons.remove),
-                                      onPressed: !building.isEmpty()
-                                          ? () {
-                                              setState(() {
-                                                building.removeWorker(h);
-                                              });
-                                            }
-                                          : null,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ).toList(),
-                      ]),
-                    ),
-                  ),
-                VDivider(),
-              ],
+              ),
             ),
           ),
         ),

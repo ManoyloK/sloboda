@@ -13,4 +13,15 @@ class WatchTower extends CityBuilding {
     RESOURCE_TYPES.WOOD: 50,
     RESOURCE_TYPES.MONEY: 20
   };
+
+  String localizedKey = 'cityBuildings.watchTower';
+  String localizedDescriptionKey = 'cityBuildings.watchTowerDescription';
+
+  String toIconPath() {
+    return 'images/city_buildings/watch_tower_64.png';
+  }
+
+  String toImagePath() {
+    return 'images/city_buildings/watch_tower.png';
+  }
 }

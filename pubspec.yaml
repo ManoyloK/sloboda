@@ -70,14 +70,14 @@ flutter:
     - images/resources/firearm_64.png
     # city buildings
     - images/city_buildings/citizen.png
-    - images/city_buildings/kurin.png
+    - images/city_buildings/house.png
     - images/city_buildings/wall.png
     - images/city_buildings/watch_tower.png
     - images/city_buildings/church.png
     - images/city_buildings/tower.png
     - images/city_buildings/shooting_range.png
     - images/city_buildings/citizen_64.png
-    - images/city_buildings/kurin_64.png
+    - images/city_buildings/house_64.png
     - images/city_buildings/wall_64.png
     - images/city_buildings/watch_tower_64.png
     - images/city_buildings/church_64.png
@@ -105,6 +105,12 @@ flutter:
     - images/events/failed_event.png
     - images/events/failed_event_128.png
     - images/events/failed_event_64.png
+    - images/events/merchant_visit.png
+    - images/events/merchant_visit_0.png
+    - images/events/merchant_visit_1.png
+    - images/events/merchant_visit_2.png
+    - images/events/merchant_visit_3.png
+    - images/events/merchant_visit_128.png
 
   fonts:
     - family: Roboto

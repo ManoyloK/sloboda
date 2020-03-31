@@ -9,11 +9,12 @@ class ResourceBuildingOutputView extends StatelessWidget {
     @required this.building,
   }) : super(key: key);
 
-  final Producable building;
+  final Producible building;
 
   @override
   Widget build(BuildContext context) {
-    var multiplier = building.amountOfWorkers() == 0 ? 1 : building.amountOfWorkers();
+    var multiplier =
+        building.amountOfWorkers() == 0 ? 1 : building.amountOfWorkers();
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

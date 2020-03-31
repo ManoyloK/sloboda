@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
+import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/animations/ink_well_overlay.dart';
 import 'package:sloboda/views/animations/open_container_wrapper.dart';
 import 'package:sloboda/views/city_buildings/city_building_built.dart';
@@ -42,8 +43,9 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                       return InkWellOverlay(
                         openContainer: openContainer,
                         child: BuiltBuildingListItem(
-                          title: localizedCityBuildingByType(cb.type),
-                          buildingIconPath: cityTypeToIconPath(cb.type),
+                          title:
+                              SlobodaLocalizations.getForKey(cb.localizedKey),
+                          buildingIconPath: cb.toIconPath(),
                           producesIconPath: cb.produces.toIconPath(),
                           amount: cb.produces.value,
                         ),
@@ -54,38 +56,60 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
               );
             },
           ).toList(),
-          ...CITY_BUILDING_TYPES.values
-              .map(
-                (v) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        if (selected == v) {
-                          selected = null;
-                        } else {
-                          selected = v;
-                        }
-                      });
-                    },
-                    child: CityBuildingMetaView(
-                      type: v,
-                      selected: selected == v,
-                      onBuildPressed: () {
-                        try {
-                          city.buildBuilding(CityBuilding.fromType(v));
-                        } catch (e) {
-                          final snackBar = SnackBar(
-                              content: Text(
-                                  'Cannot build. Missing: ${e.toLocalizedString()}'));
-                          Scaffold.of(context).showSnackBar(snackBar);
-                        }
-                      },
+          ...CITY_BUILDING_TYPES.values.map(
+            (v) {
+              var building = CityBuilding.fromType(v);
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SoftContainer(
+                  child: OpenContainerWrapper(
+                    child: Scaffold(
+                      appBar: AppBar(
+                        title: Text(
+                          SlobodaLocalizations.getForKey(building.localizedKey),
+                        ),
+                      ),
+                      body: CityBuildingMetaView(
+                          building: building,
+                          selected: true,
+                          onBuildPressed: () {
+                            try {
+                              city.buildBuilding(building);
+                            } catch (e) {
+                              final snackBar = SnackBar(
+                                content: Text(
+                                  'Cannot build. Missing: ${e.toLocalizedString()}',
+                                ),
+                              );
+                              Scaffold.of(context).showSnackBar(snackBar);
+                            }
+                          }),
                     ),
+                    transitionType: ContainerTransitionType.fade,
+                    closedBuilder:
+                        (BuildContext _, VoidCallback openContainer) {
+                      return InkWellOverlay(
+                        openContainer: openContainer,
+                        child: CityBuildingMetaView(
+                            building: building,
+                            selected: false,
+                            onBuildPressed: () {
+                              try {
+                                city.buildBuilding(building);
+                              } catch (e) {
+                                final snackBar = SnackBar(
+                                    content: Text(
+                                        'Cannot build. Missing: ${e.toLocalizedString()}'));
+                                Scaffold.of(context).showSnackBar(snackBar);
+                              }
+                            }),
+                      );
+                    },
                   ),
                 ),
-              )
-              .toList(),
+              );
+            },
+          ).toList(),
         ],
       ),
     );

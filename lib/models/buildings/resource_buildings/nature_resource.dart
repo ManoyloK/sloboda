@@ -4,7 +4,7 @@ import 'package:sloboda/models/sloboda_localizations.dart';
 
 enum NATURAL_RESOURCES { RIVER, FOREST }
 
-class NaturalResource with Producable {
+class NaturalResource with Producible {
   NATURAL_RESOURCES type;
   ResourceType produces;
 

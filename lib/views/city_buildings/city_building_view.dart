@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
+import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/city_buildings/city_building_meta.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 
 class CityBuildingImageView extends StatelessWidget {
-  final CITY_BUILDING_TYPES type;
+  final CityBuilding building;
 
-  CityBuildingImageView({this.type});
+  CityBuildingImageView({this.building});
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +20,12 @@ class CityBuildingImageView extends StatelessWidget {
               context,
               CityBuildingDetailsScreen.routeName,
               arguments: CityBuildingDetailsScreenArguments(
-                type: type,
+                building: building,
               ),
             );
           },
           child: Image.asset(
-            '${cityTypeToIconPath(type)}',
+            building.toIconPath(),
             height: 64,
           ),
         ),
@@ -35,21 +36,21 @@ class CityBuildingImageView extends StatelessWidget {
 
 class CityBuildingDetailsScreen extends StatelessWidget {
   static final String routeName = '/city_building/city_building_details';
-  final CITY_BUILDING_TYPES type;
+  final CityBuilding building;
 
-  CityBuildingDetailsScreen({this.type});
+  CityBuildingDetailsScreen({this.building});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: TitleText(
-          localizedCityBuildingByType(type),
+          SlobodaLocalizations.getForKey(building.localizedKey),
         ),
       ),
       body: SingleChildScrollView(
         child: CityBuildingMetaView(
-          type: type,
+          building: building,
           selected: true,
         ),
       ),
@@ -58,9 +59,9 @@ class CityBuildingDetailsScreen extends StatelessWidget {
 }
 
 class CityBuildingDetailsScreenArguments {
-  final CITY_BUILDING_TYPES type;
+  final CityBuilding building;
 
-  CityBuildingDetailsScreenArguments({this.type});
+  CityBuildingDetailsScreenArguments({this.building});
 }
 
 class ExtractCityBuildingDetailsScreenArguments extends StatelessWidget {
@@ -69,7 +70,7 @@ class ExtractCityBuildingDetailsScreenArguments extends StatelessWidget {
         ModalRoute.of(context).settings.arguments;
 
     return CityBuildingDetailsScreen(
-      type: args.type,
+      building: args.building,
     );
   }
 }

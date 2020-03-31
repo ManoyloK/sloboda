@@ -3,6 +3,7 @@ import 'package:sloboda/components/rotatable_image.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/sich/send_support_view.dart';
 import 'package:sloboda/views/sich_stats_view.dart';
 
@@ -22,9 +23,9 @@ class _SichScreenState extends State<SichScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: StreamBuilder(
-        stream: widget.city.changes,
-        builder: (context, snapshot) => SingleChildScrollView(
+      body: CityBuilder(
+        city: widget.city,
+        builder: (context) => SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(

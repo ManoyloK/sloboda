@@ -16,6 +16,11 @@ class _RotatableImageState extends State<RotatableImage> {
   int position = 0;
   bool _visible = true;
 
+  _getPrefix(String fullPath) {
+    var noExtension = fullPath.split(".png");
+    return noExtension[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -28,7 +33,7 @@ class _RotatableImageState extends State<RotatableImage> {
           milliseconds: 50,
         ),
         child: Image.asset(
-          'images/city_buildings/sich_${position}.png',
+          _getPrefix(widget.imagePath) + '_${position}.png',
           width: widget.width,
         ),
       ),

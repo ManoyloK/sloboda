@@ -16,8 +16,8 @@ class CityBuildingBuiltListItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BuiltBuildingListItem(
-      title: localizedCityBuildingByType(building.type),
-      buildingIconPath: cityTypeToIconPath(building.type),
+      title: SlobodaLocalizations.getForKey(building.localizedKey),
+      buildingIconPath: building.toIconPath(),
       producesIconPath: building.produces.toIconPath(),
       amount: 1,
     );
@@ -43,7 +43,7 @@ class _ResourceBuildingBuiltState extends State<CityBuildingBuilt> {
     return Scaffold(
       appBar: AppBar(
         title: TitleText(
-          localizedCityBuildingByType(building.type),
+          SlobodaLocalizations.getForKey(building.localizedKey),
         ),
       ),
       body: SingleChildScrollView(
@@ -61,7 +61,7 @@ class _ResourceBuildingBuiltState extends State<CityBuildingBuilt> {
                     },
                     child: SoftContainer(
                       child: Image.asset(
-                        cityTypeToImagePath(building.type),
+                        building.toImagePath(),
                         height: 320,
                       ),
                     ),

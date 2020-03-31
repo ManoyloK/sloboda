@@ -616,6 +616,7 @@ class SlobodaLocalizations {
       'incomingEventLabel': 'New incoming event',
       'labelInputSlobodaName': 'Sloboda Name',
       'addMaxWorkers': 'Add max workers',
+      'noFreeWorkers': 'No free workers',
     },
     'uk': {
       'overview': 'Головна',
@@ -658,7 +659,8 @@ class SlobodaLocalizations {
       'sendMoneyToSich': 'Відіслати гроші',
       'incomingEventLabel': 'Нова подія',
       'labelInputSlobodaName': 'Назва слободи',
-      'addMaxWorkers': 'Додати максимум робітників'
+      'addMaxWorkers': 'Додати максимум робітників',
+      'noFreeWorkers': 'Немає вільних робітників'
     }
   };
 
@@ -814,5 +816,10 @@ class SlobodaLocalizations {
   static String get addMaxWorkers {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['addMaxWorkers'];
+  }
+
+  static String get noFreeWorkers {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['noFreeWorkers'];
   }
 }

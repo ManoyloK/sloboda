@@ -10,11 +10,12 @@ import 'package:sloboda/views/components/buildable_requires_to_build.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 
 class CityBuildingMetaView extends StatefulWidget {
-  final CITY_BUILDING_TYPES type;
+  final CityBuilding building;
   final bool selected;
   final VoidCallback onBuildPressed;
 
-  CityBuildingMetaView({this.type, this.selected = false, this.onBuildPressed});
+  CityBuildingMetaView(
+      {this.building, this.selected = false, this.onBuildPressed});
 
   @override
   _CityBuildingMetaViewState createState() => _CityBuildingMetaViewState();
@@ -23,7 +24,7 @@ class CityBuildingMetaView extends StatefulWidget {
 class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
   @override
   Widget build(BuildContext context) {
-    var building = CityBuilding.fromType(widget.type);
+    var building = widget.building;
     return SoftContainer(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -38,7 +39,7 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${localizedCityBuildingByType(widget.type)}',
+                      SlobodaLocalizations.getForKey(building.localizedKey),
                       style: Theme.of(context).textTheme.headline6.merge(
                           TextStyle(fontSize: widget.selected ? 30 : 25)),
                     ),
@@ -49,7 +50,7 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Image.asset(
-                            cityTypeToImagePath(widget.type),
+                            building.toImagePath(),
                             height: widget.selected ? 256 : 128,
                           ),
                         ),
