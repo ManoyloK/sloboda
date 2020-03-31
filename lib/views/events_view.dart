@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
+import 'package:sloboda/components/rotatable_image.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/city_event.dart';
@@ -164,6 +165,10 @@ class _PendingEventsViewState extends State<PendingEventsView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+            RotatableImage(
+              width: 320,
+              imagePath: event.iconPath,
+            ),
             Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               TitleText(
                 SlobodaLocalizations.incomingEventLabel,

@@ -31,6 +31,7 @@ abstract class RandomTurnEvent {
   Stock stockFailure;
   String successIconPath = "images/events/failed_event.png";
   String failureIconPath = "images/events/failed_event.png";
+  String iconPath = "images/events/merchant_visit.png";
 
   CityProps cityPropsSuccess;
   CityProps cityPropsFailure;

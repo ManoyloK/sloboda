@@ -105,6 +105,12 @@ flutter:
     - images/events/failed_event.png
     - images/events/failed_event_128.png
     - images/events/failed_event_64.png
+    - images/events/merchant_visit.png
+    - images/events/merchant_visit_0.png
+    - images/events/merchant_visit_1.png
+    - images/events/merchant_visit_2.png
+    - images/events/merchant_visit_3.png
+    - images/events/merchant_visit_128.png
 
   fonts:
     - family: Roboto
