@@ -59,7 +59,6 @@ class _NatureResourceBuildingScreenState
                     padding: const EdgeInsets.all(8.0),
                     child: SoftContainer(
                       child: AddWorker(
-                        onWorkerAdded: () {},
                         city: city,
                         building: building,
                       ),

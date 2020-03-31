@@ -8,9 +8,8 @@ import 'package:sloboda/models/sloboda_localizations.dart';
 class AddWorker extends StatefulWidget {
   final Sloboda city;
   final Producible building;
-  final VoidCallback onWorkerAdded;
 
-  AddWorker({@required this.city, @required this.building, this.onWorkerAdded});
+  AddWorker({@required this.city, @required this.building});
 
   @override
   _AddWorkerState createState() => _AddWorkerState();
@@ -23,10 +22,7 @@ class _AddWorkerState extends State<AddWorker> {
     return SlideableButton(
       onPress: () {
         if (bCanAdd) {
-          setState(() {
-            widget.building.addWorker(widget.city.getFirstFreeCitizen());
-            widget.onWorkerAdded();
-          });
+          widget.building.addWorker(widget.city.getFirstFreeCitizen());
         }
       },
       child: Padding(

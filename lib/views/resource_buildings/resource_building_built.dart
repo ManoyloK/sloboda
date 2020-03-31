@@ -105,7 +105,6 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                     VDivider(),
                     SoftContainer(
                       child: AddWorker(
-                        onWorkerAdded: () {},
                         building: building,
                         city: city,
                       ),
@@ -117,16 +116,14 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                       child: SlideableButton(
                         onPress: !building.isFull()
                             ? () {
-                                setState(() {
-                                  var freeCitizens = city
-                                      .getAllFreeCitizens()
-                                      .take(
-                                        building.maxWorkers -
-                                            building.assignedHumans.length,
-                                      )
-                                      .toList();
-                                  building.addWorkers(freeCitizens);
-                                });
+                                var freeCitizens = city
+                                    .getAllFreeCitizens()
+                                    .take(
+                                      building.maxWorkers -
+                                          building.assignedHumans.length,
+                                    )
+                                    .toList();
+                                building.addWorkers(freeCitizens);
                               }
                             : null,
                         child: Padding(
@@ -165,9 +162,7 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                                         icon: Icon(Icons.remove),
                                         onPressed: !building.isEmpty()
                                             ? () {
-                                                setState(() {
-                                                  building.removeWorker(h);
-                                                });
+                                                building.removeWorker(h);
                                               }
                                             : null,
                                       ),
