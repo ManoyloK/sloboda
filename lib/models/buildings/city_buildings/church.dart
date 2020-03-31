@@ -12,4 +12,15 @@ class Church extends CityBuilding {
     RESOURCE_TYPES.WOOD: 50,
     RESOURCE_TYPES.MONEY: 20
   };
+
+  String localizedKey = 'cityBuildings.church';
+  String localizedDescriptionKey = 'cityBuildings.churchDescription';
+
+  String toIconPath() {
+    return 'images/city_buildings/church_64.png';
+  }
+
+  String toImagePath() {
+    return 'images/city_buildings/church.png';
+  }
 }

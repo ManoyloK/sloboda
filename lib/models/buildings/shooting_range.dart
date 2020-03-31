@@ -50,9 +50,12 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                     Navigator.pop(context);
                   },
                   child: SoftContainer(
-                    child: Image.asset(
-                      image,
-                      height: 320,
+                    child: Hero(
+                      tag: localizedKey,
+                      child: Image.asset(
+                        image,
+                        height: 320,
+                      ),
                     ),
                   ),
                 ),

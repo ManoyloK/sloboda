@@ -13,4 +13,15 @@ class Tower extends CityBuilding {
     RESOURCE_TYPES.WOOD: 50,
     RESOURCE_TYPES.MONEY: 20
   };
+
+  String localizedKey = 'cityBuildings.tower';
+  String localizedDescriptionKey = 'cityBuildings.towerDescription';
+
+  String toIconPath() {
+    return 'images/city_buildings/tower_64.png';
+  }
+
+  String toImagePath() {
+    return 'images/city_buildings/tower.png';
+  }
 }

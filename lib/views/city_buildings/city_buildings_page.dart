@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
+import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/animations/ink_well_overlay.dart';
 import 'package:sloboda/views/animations/open_container_wrapper.dart';
 import 'package:sloboda/views/city_buildings/city_building_built.dart';
@@ -42,8 +43,9 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                       return InkWellOverlay(
                         openContainer: openContainer,
                         child: BuiltBuildingListItem(
-                          title: localizedCityBuildingByType(cb.type),
-                          buildingIconPath: cityTypeToIconPath(cb.type),
+                          title:
+                              SlobodaLocalizations.getForKey(cb.localizedKey),
+                          buildingIconPath: cb.toIconPath(),
                           producesIconPath: cb.produces.toIconPath(),
                           amount: cb.produces.value,
                         ),
@@ -69,7 +71,7 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                       });
                     },
                     child: CityBuildingMetaView(
-                      type: v,
+                      building: CityBuilding.fromType(v),
                       selected: selected == v,
                       onBuildPressed: () {
                         try {

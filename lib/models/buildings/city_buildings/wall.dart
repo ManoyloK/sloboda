@@ -11,4 +11,15 @@ class Wall extends CityBuilding {
     RESOURCE_TYPES.FOOD: 20,
     RESOURCE_TYPES.WOOD: 100,
   };
+
+  String localizedKey = 'cityBuildings.wall';
+  String localizedDescriptionKey = 'cityBuildings.wallDescription';
+
+  String toIconPath() {
+    return 'images/city_buildings/wall_64.png';
+  }
+
+  String toImagePath() {
+    return 'images/city_buildings/wall.png';
+  }
 }
