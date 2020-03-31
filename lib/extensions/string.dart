@@ -1,5 +1,5 @@
-extension RepeatTimes on String {
-  void repeatTimes(Function f) {
+extension TimesRepeat on String {
+  void timesRepeat(Function f) {
     var parsed;
     try {
       parsed = int.parse(this);

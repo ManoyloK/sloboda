@@ -302,7 +302,7 @@ class Sloboda {
       Map<CITY_PROPERTIES, int> generated = cb.generate();
       generated.entries.forEach((e) {
         if (e.key == CITY_PROPERTIES.CITIZENS) {
-          e.value.toString().repeatTimes(() {
+          e.value.toString().timesRepeat(() {
             citizens.add(Citizen());
           });
         }
