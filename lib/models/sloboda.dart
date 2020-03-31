@@ -53,9 +53,10 @@ class Sloboda {
     if (props == null) {
       props = CityProps.defaultProps();
     }
-    for (var i = 0; i < props.getByType(CITY_PROPERTIES.CITIZENS); i++) {
-      citizens.add(Citizen());
-    }
+
+    var citizensCount = props.getByType(CITY_PROPERTIES.CITIZENS);
+    citizensCount.toString().timesRepeat(() => citizens.add(Citizen()));
+
     changes = _innerChanges.stream;
 
     for (var nr in naturalResources) {
@@ -107,12 +108,11 @@ class Sloboda {
       removeFromStock(buildable.requiredToBuild);
       if (buildable is ResourceBuilding) {
         resourceBuildings.add(buildable);
-        Producable producible = buildable;
+        Producible producible = buildable;
         producible.changes.stream.listen(_buildingChangesListener);
       } else if (buildable is CityBuilding) {
         cityBuildings.add(buildable);
       }
-
       _innerChanges.add(this);
     }
   }
@@ -229,12 +229,16 @@ class Sloboda {
       c.free();
       citizens.remove(c);
     }
+
+    _innerChanges.add(this);
   }
 
   void addCitizens({amount = 1}) {
     for (var i = 0; i < amount; i++) {
       citizens.add(Citizen());
     }
+
+    _innerChanges.add(this);
   }
 
   void addProps(CityProps aProps) {
@@ -252,7 +256,7 @@ class Sloboda {
 
     List<Exception> exceptions = [];
     simulateStock();
-    List<Producable> list = [...naturalResources, ...resourceBuildings];
+    List<Producible> list = [...naturalResources, ...resourceBuildings];
 
     list.forEach((resBuilding) {
       try {
@@ -366,7 +370,7 @@ class Sloboda {
   }
 
   Stock simulateStock() {
-    List<Producable> list = [...naturalResources, ...resourceBuildings];
+    List<Producible> list = [...naturalResources, ...resourceBuildings];
 
     Map<RESOURCE_TYPES, int> requires = list.fold({}, (Map value, building) {
       var req = building.requires.map((k, v) {

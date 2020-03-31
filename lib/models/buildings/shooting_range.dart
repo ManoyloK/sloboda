@@ -85,7 +85,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                                 ButtonText(SlobodaLocalizations.trainCossacks)),
                         onPress: canProduceCossack(city.props, city.stock)
                             ? () {
-                                _tryToCreateCossack(city, callback);
+                                tryToCreateCossack(city, callback);
                               }
                             : null,
                       ),
@@ -137,7 +137,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
     );
   }
 
-  void _tryToCreateCossack(Sloboda city, Function callback) {
+  void tryToCreateCossack(Sloboda city, Function callback) {
     if (canProduceCossack(city.props, city.stock)) {
       city.stock - requiresForCossack;
       city.removeCitizens(amount: 1);

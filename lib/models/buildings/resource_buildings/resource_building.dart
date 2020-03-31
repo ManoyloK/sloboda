@@ -12,7 +12,7 @@ import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 
 abstract class ResourceBuilding
-    with Producable
+    with Producible
     implements Buildable<RESOURCE_TYPES> {
   Map<RESOURCE_TYPES, int> requiredToBuild;
 

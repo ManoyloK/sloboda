@@ -7,7 +7,7 @@ import 'package:sloboda/models/sloboda_localizations.dart';
 
 class AddWorker extends StatefulWidget {
   final Sloboda city;
-  final Producable building;
+  final Producible building;
   final VoidCallback onWorkerAdded;
 
   AddWorker({@required this.city, @required this.building, this.onWorkerAdded});

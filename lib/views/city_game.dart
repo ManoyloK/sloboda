@@ -11,6 +11,7 @@ import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/city_buildings/city_buildings_page.dart';
 import 'package:sloboda/views/city_dashboard.dart';
+import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 import 'package:sloboda/views/create_sloboda.dart';
 import 'package:sloboda/views/events_view.dart';
@@ -54,153 +55,141 @@ class _CityGameState extends State<CityGame>
   @override
   Widget build(BuildContext context) {
     var city = widget.city;
-    return StreamBuilder(
-      stream: city.changes,
-      builder: (context, snapshot) {
+    return CityBuilder(
+      city: city,
+      builder: (context) {
         return InheritedCity(
           city: city,
           child: Scaffold(
             backgroundColor: Theme.of(context).backgroundColor,
-            body: StreamBuilder(
-                stream: city.changes,
-                builder: (context, snapshot) {
-                  return Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 9,
-                        child: DefaultTabController(
-                          length: 4,
-                          child: Scaffold(
-                            appBar: AppBar(
-                              bottom: TabBar(
-                                controller: _tabController,
-                                tabs: _pageTitles()
-                                    .map(
-                                      (tab) => Tab(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: <Widget>[
-                                            Text(
-                                              tab,
-                                            ),
-                                            if (tab ==
-                                                SlobodaLocalizations.events)
-                                              Text(
-                                                city.pendingNextEvents.length
-                                                    .toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline6,
-                                              ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                              backgroundColor:
-                                  Theme.of(context).backgroundColor,
-                              title: StockMiniView(
-                                stock: city.stock,
-                                stockSimulation: city.simulateStock(),
-                              ),
-                            ),
-                            drawer: Drawer(
-                              child: Container(
-                                height: MediaQuery.of(context).size.height,
-                                color: Theme.of(context).backgroundColor,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  flex: 9,
+                  child: DefaultTabController(
+                    length: 4,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        bottom: TabBar(
+                          controller: _tabController,
+                          tabs: _pageTitles()
+                              .map(
+                                (tab) => Tab(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: <Widget>[
-                                      VDivider(),
-                                      LocaleSelection(
-                                        locale: SlobodaLocalizations.locale,
-                                        onLocaleChanged: (Locale locale) {
-                                          setState(() {
-                                            SlobodaLocalizations.locale =
-                                                locale;
-                                          });
-                                        },
+                                      Text(
+                                        tab,
                                       ),
-                                      TitleText(
-                                        city.name,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SoftContainer(
-                                          child: StockFullView(
-                                            stock: city.stock,
-                                            stockSimulation:
-                                                city.simulateStock(),
-                                          ),
+                                      if (tab == SlobodaLocalizations.events)
+                                        Text(
+                                          city.pendingNextEvents.length
+                                              .toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
                                         ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SoftContainer(
-                                          child: _makeTurn(context),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SoftContainer(
-                                          child: FullWidth(
-                                            child: FlatButton(
-                                              child: Text(
-                                                  SlobodaLocalizations.reset),
-                                              onPressed: () {
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        CreateSlobodaView
-                                                            .routeName,
-                                                        (route) => false);
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ),
-                            body: TabBarView(
-                              physics: kIsWeb
-                                  ? NeverScrollableScrollPhysics()
-                                  : BouncingScrollPhysics(),
-                              controller: _tabController,
+                              )
+                              .toList(),
+                        ),
+                        backgroundColor: Theme.of(context).backgroundColor,
+                        title: StockMiniView(
+                          stock: city.stock,
+                          stockSimulation: city.simulateStock(),
+                        ),
+                      ),
+                      drawer: Drawer(
+                        child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          color: Theme.of(context).backgroundColor,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                CityDashboard(city: city),
-                                EventsView(
-                                  events: city.events,
+                                VDivider(),
+                                LocaleSelection(
+                                  locale: SlobodaLocalizations.locale,
+                                  onLocaleChanged: (Locale locale) {
+                                    setState(() {
+                                      SlobodaLocalizations.locale = locale;
+                                    });
+                                  },
                                 ),
-                                ResourceBuildingsPage(),
-                                CityBuildingsPage(),
+                                TitleText(
+                                  city.name,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: StockFullView(
+                                      stock: city.stock,
+                                      stockSimulation: city.simulateStock(),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: _makeTurn(context),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: FullWidth(
+                                      child: FlatButton(
+                                        child: Text(SlobodaLocalizations.reset),
+                                        onPressed: () {
+                                          Navigator.pushNamedAndRemoveUntil(
+                                              context,
+                                              CreateSlobodaView.routeName,
+                                              (route) => false);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 16,
-                          right: 16,
-                          top: 16,
-                          bottom: 24.0,
-                        ),
-                        child: SoftContainer(
-                          child: FullWidth(
-                            child: _makeTurn(context),
+                      body: TabBarView(
+                        physics: kIsWeb
+                            ? NeverScrollableScrollPhysics()
+                            : BouncingScrollPhysics(),
+                        controller: _tabController,
+                        children: <Widget>[
+                          CityDashboard(city: city),
+                          EventsView(
+                            events: city.events,
                           ),
-                        ),
+                          ResourceBuildingsPage(),
+                          CityBuildingsPage(),
+                        ],
                       ),
-                    ],
-                  );
-                }),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 16,
+                    bottom: 24.0,
+                  ),
+                  child: SoftContainer(
+                    child: FullWidth(
+                      child: _makeTurn(context),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

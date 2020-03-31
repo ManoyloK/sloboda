@@ -5,6 +5,7 @@ import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/components/add_worker_view.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
 import 'package:sloboda/views/components/resource_building_input_view.dart';
@@ -62,156 +63,159 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
           building.toLocalizedString(),
         ),
       ),
-      body: SingleChildScrollView(
-        child: SoftContainer(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SoftContainer(
-                    child: Image.asset(
-                      building.toImagePath(),
-                      height: 320,
-                    ),
-                  ),
-                ),
-                VDivider(),
-                SoftContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: WorkersAssignedView(
-                      building: building,
-                    ),
-                  ),
-                ),
-                VDivider(),
-                SoftContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      building.toLocalizedDescriptionString(),
-                    ),
-                  ),
-                ),
-                if (!building.isFull()) ...[
-                  VDivider(),
-                  SoftContainer(
-                    child: AddWorker(
-                      onWorkerAdded: () {
-                        setState(() {});
-                      },
-                      building: building,
-                      city: city,
+      body: CityBuilder(
+        city: city,
+        builder: (context) => SingleChildScrollView(
+          child: SoftContainer(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: SoftContainer(
+                      child: Image.asset(
+                        building.toImagePath(),
+                        height: 320,
+                      ),
                     ),
                   ),
                   VDivider(),
-                ],
-                if (!building.isFull()) ...[
                   SoftContainer(
-                    child: SlideableButton(
-                      onPress: !building.isFull()
-                          ? () {
-                              setState(() {
-                                var freeCitizens =
-                                    city.getAllFreeCitizens().take(
-                                          building.maxWorkers -
-                                              building.assignedHumans.length,
-                                        );
-                                for (var citizen in freeCitizens) {
-                                  building.addWorker(citizen);
-                                }
-                              });
-                            }
-                          : null,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: TitleText(
-                            SlobodaLocalizations.addMaxWorkers,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: WorkersAssignedView(
+                        building: building,
+                      ),
+                    ),
+                  ),
+                  VDivider(),
+                  SoftContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        building.toLocalizedDescriptionString(),
+                      ),
+                    ),
+                  ),
+                  if (!building.isFull()) ...[
+                    VDivider(),
+                    SoftContainer(
+                      child: AddWorker(
+                        onWorkerAdded: () {},
+                        building: building,
+                        city: city,
+                      ),
+                    ),
+                    VDivider(),
+                  ],
+                  if (!building.isFull()) ...[
+                    SoftContainer(
+                      child: SlideableButton(
+                        onPress: !building.isFull()
+                            ? () {
+                                setState(() {
+                                  var freeCitizens = city
+                                      .getAllFreeCitizens()
+                                      .take(
+                                        building.maxWorkers -
+                                            building.assignedHumans.length,
+                                      )
+                                      .toList();
+                                  building.addWorkers(freeCitizens);
+                                });
+                              }
+                            : null,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: TitleText(
+                              SlobodaLocalizations.addMaxWorkers,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-                VDivider(),
-                if (building.assignedHumans.isNotEmpty) ...[
-                  SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(children: [
-                        Center(
-                            child: Text(SlobodaLocalizations.assignedWorkers)),
-                        ...building.assignedHumans.map(
-                          (h) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    h.name,
-                                  ),
-                                  SoftContainer(
-                                    child: IconButton(
-                                      icon: Icon(Icons.remove),
-                                      onPressed: !building.isEmpty()
-                                          ? () {
-                                              setState(() {
-                                                building.removeWorker(h);
-                                              });
-                                            }
-                                          : null,
+                  ],
+                  VDivider(),
+                  if (building.assignedHumans.isNotEmpty) ...[
+                    SoftContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(children: [
+                          Center(
+                              child:
+                                  Text(SlobodaLocalizations.assignedWorkers)),
+                          ...building.assignedHumans.map(
+                            (h) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Text(
+                                      h.name,
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ).toList(),
-                      ]),
+                                    SoftContainer(
+                                      child: IconButton(
+                                        icon: Icon(Icons.remove),
+                                        onPressed: !building.isEmpty()
+                                            ? () {
+                                                setState(() {
+                                                  building.removeWorker(h);
+                                                });
+                                              }
+                                            : null,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ).toList(),
+                        ]),
+                      ),
                     ),
-                  ),
-                  VDivider(),
+                    VDivider(),
+                  ],
+                  if (building.requires.isNotEmpty &&
+                      building.hasWorkers()) ...[
+                    SoftContainer(
+                      child: ResourceBuildingInputView(
+                        building: building,
+                      ),
+                    ),
+                    VDivider(),
+                  ],
+                  if (building.assignedHumans.isNotEmpty) ...[
+                    SoftContainer(
+                      child: ResourceBuildingOutputView(
+                        building: building,
+                      ),
+                    ),
+                    VDivider(),
+                  ],
+                  SizedBox(
+                    height: 64,
+                    child: SoftContainer(
+                      child: SlideableButton(
+                        child: Center(
+                            child: Text(
+                          SlobodaLocalizations.destroyBuilding,
+                        )),
+                        onPress: () {
+                          city.removeResourceBuilding(building);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  )
                 ],
-                if (building.requires.isNotEmpty && building.hasWorkers()) ...[
-                  SoftContainer(
-                    child: ResourceBuildingInputView(
-                      building: building,
-                    ),
-                  ),
-                  VDivider(),
-                ],
-                if (building.assignedHumans.isNotEmpty) ...[
-                  SoftContainer(
-                    child: ResourceBuildingOutputView(
-                      building: building,
-                    ),
-                  ),
-                  VDivider(),
-                ],
-                SizedBox(
-                  height: 64,
-                  child: SoftContainer(
-                    child: SlideableButton(
-                      child: Center(
-                          child: Text(
-                        SlobodaLocalizations.destroyBuilding,
-                      )),
-                      onPress: () {
-                        city.removeResourceBuilding(building);
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                )
-              ],
+              ),
             ),
           ),
         ),

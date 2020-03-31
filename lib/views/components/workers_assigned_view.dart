@@ -3,7 +3,7 @@ import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/city_properties.dart';
 
 class WorkersAssignedView extends StatelessWidget {
-  final Producable building;
+  final Producible building;
 
   WorkersAssignedView({this.building});
 

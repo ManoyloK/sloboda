@@ -5,7 +5,7 @@ import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/models/stock.dart';
 
-class Producable {
+class Producible {
   BehaviorSubject changes = BehaviorSubject();
   ResourceType produces;
   Map<RESOURCE_TYPES, int> requires = Map();
@@ -43,6 +43,14 @@ class Producable {
     citizen.assignedTo = this;
 
     changes.add(this);
+  }
+
+  void addWorkers(List<Citizen> citizens) {
+    for (var citizen in citizens) {
+      if (!citizen.occupied) {
+        addWorker(citizen);
+      }
+    }
   }
 
   Citizen removeWorker(Citizen h) {
@@ -103,7 +111,7 @@ class Producable {
 class NotEnoughResourcesException implements Exception {
   final int amount;
   final ResourceType resource;
-  final Producable building;
+  final Producible building;
 
   final String localizedKey = 'notEnoughResources';
 
@@ -112,7 +120,7 @@ class NotEnoughResourcesException implements Exception {
 
 class NotEnoughWorkers implements Exception {
   String cause;
-  Producable building;
+  Producible building;
 
   NotEnoughWorkers({this.cause, this.building});
 }
