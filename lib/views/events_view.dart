@@ -45,9 +45,11 @@ class EventsView extends StatelessWidget {
       children: <Widget>[
         if (pendingEvents.isNotEmpty)
           Expanded(
-            flex: 3,
-            child: PendingEventsView(
-              events: pendingEvents,
+            flex: 10,
+            child: SingleChildScrollView(
+              child: PendingEventsView(
+                events: pendingEvents,
+              ),
             ),
           ),
         if (pendingEvents.isEmpty)
