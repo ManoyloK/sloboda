@@ -61,7 +61,7 @@ class Powder extends ResourceType {
 class Horse extends ResourceType {
   String localizedKey = 'resources.horse';
   String localizedDescriptionKey = 'resources.horseDescription';
-  RESOURCE_TYPES type = RESOURCE_TYPES.WOOD;
+  RESOURCE_TYPES type = RESOURCE_TYPES.HORSE;
 
   String toImagePath() {
     return 'images/resources/horse.png';
