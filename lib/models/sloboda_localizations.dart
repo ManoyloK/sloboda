@@ -213,11 +213,15 @@ class NatureResourceBuildingsLocalizations extends InternalLocalizations {
   Map<String, Map<String, String>> _localizedMap = {
     'en': {
       'forest': 'Forest',
+      'forestDescription': 'Assign workers to cut wood.',
       'river': 'River',
+      'riverDescription': 'Assign workers to catch fish. Fish can be sold.',
     },
     'uk': {
       'forest': 'Ліс',
+      'forestDescription': 'Додайте працівників для видобутку деревини.',
       'river': 'Річка',
+      'riverDescription': 'Додайте працівників для виловленя риби.',
     }
   };
 }

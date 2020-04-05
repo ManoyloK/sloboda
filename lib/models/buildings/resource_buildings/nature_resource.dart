@@ -1,6 +1,5 @@
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/resources/resource.dart';
-import 'package:sloboda/models/sloboda_localizations.dart';
 
 enum NATURAL_RESOURCES { RIVER, FOREST }
 
@@ -8,12 +7,16 @@ class NaturalResource with Producible {
   NATURAL_RESOURCES type;
   ResourceType produces;
 
-  String getIconPath() {
+  String get iconPath {
     return 'images/resource_buildings/mill.png';
   }
 
-  String toLocalizedString() {
-    throw 'Must be implemented by a child';
+  String get localizedKey {
+    throw UnimplementedError();
+  }
+
+  String get localizedDescriptionKey {
+    throw UnimplementedError();
   }
 }
 
@@ -26,20 +29,16 @@ class Forest extends NaturalResource {
     RESOURCE_TYPES.FOOD: 1,
   };
 
-  String getIconPath() {
+  String get iconPath {
     return 'images/resource_buildings/forest.png';
   }
 
-  String getKey() {
+  String get localizedKey {
     return 'natureResources.forest';
   }
 
-  String toLocalizedString() {
-    return SlobodaLocalizations.getForKey(getKey());
-  }
-
-  String toString() {
-    return toLocalizedString();
+  String get localizedDescriptionKey {
+    return 'natureResources.forestDescription';
   }
 }
 
@@ -52,15 +51,15 @@ class River extends NaturalResource {
     RESOURCE_TYPES.FOOD: 1,
   };
 
-  String getIconPath() {
+  String get iconPath {
     return 'images/resource_buildings/river.png';
   }
 
-  String getKey() {
+  String get localizedKey {
     return 'natureResources.river';
   }
 
-  String toLocalizedString() {
-    return SlobodaLocalizations.getForKey(getKey());
+  String get localizedDescriptionKey {
+    return 'natureResources.riverDescription';
   }
 }

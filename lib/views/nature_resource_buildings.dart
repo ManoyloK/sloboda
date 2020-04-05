@@ -30,7 +30,11 @@ class _NatureResourceBuildingScreenState
     var building = widget.building;
     return Scaffold(
       appBar: AppBar(
-        title: TitleText(building.toLocalizedString()),
+        title: TitleText(
+          SlobodaLocalizations.getForKey(
+            building.localizedKey,
+          ),
+        ),
       ),
       body: CityBuilder(
         city: city,
@@ -49,16 +53,25 @@ class _NatureResourceBuildingScreenState
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
-                          building.getIconPath(),
+                          building.iconPath,
                           height: 320,
                         ),
                       ),
                     ),
                   ),
-                  if (!building.isFull()) ...[
-                    SizedBox(
-                      height: 35,
+                  VDivider(),
+                  SoftContainer(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        SlobodaLocalizations.getForKey(
+                          building.localizedDescriptionKey,
+                        ),
+                      ),
                     ),
+                  ),
+                  if (!building.isFull()) ...[
+                    VDivider(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(
