@@ -9,7 +9,6 @@ import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
 
 abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
-  CITY_BUILDING_TYPES type;
   StockItem<CITY_PROPERTIES> produces;
 
   static CityBuilding fromType(CITY_BUILDING_TYPES type) {

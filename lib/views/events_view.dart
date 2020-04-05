@@ -169,7 +169,7 @@ class _PendingEventsViewState extends State<PendingEventsView> {
           children: <Widget>[
             RotatableImage(
               width: 320,
-              imagePath: event.iconPath,
+              imagePath: event.imagePath,
             ),
             Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               TitleText(

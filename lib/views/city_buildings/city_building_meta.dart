@@ -25,73 +25,75 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
   @override
   Widget build(BuildContext context) {
     var building = widget.building;
-    return SoftContainer(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SoftContainer(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      SlobodaLocalizations.getForKey(building.localizedKey),
-                      style: Theme.of(context).textTheme.headline6.merge(
-                          TextStyle(fontSize: widget.selected ? 30 : 25)),
+    return SingleChildScrollView(
+      child: SoftContainer(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SoftContainer(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        SlobodaLocalizations.getForKey(building.localizedKey),
+                        style: Theme.of(context).textTheme.headline6.merge(
+                            TextStyle(fontSize: widget.selected ? 30 : 25)),
+                      ),
+                      VDivider(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Image.asset(
+                              building.toImagePath(),
+                              height: widget.selected ? 256 : 128,
+                            ),
+                          ),
+                          if (!widget.selected)
+                            CityBuildingOutputView(
+                              building: building,
+                            ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  if (widget.selected) ...[
+                    SoftContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: BuildableRequiredToBuildView(
+                          building: building,
+                        ),
+                      ),
                     ),
                     VDivider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            building.toImagePath(),
-                            height: widget.selected ? 256 : 128,
-                          ),
-                        ),
-                        if (!widget.selected)
-                          CityBuildingOutputView(
-                            building: building,
-                          ),
-                      ],
-                    ),
-                  ],
-                ),
-                if (widget.selected) ...[
-                  SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BuildableRequiredToBuildView(
+                    SoftContainer(
+                      child: CityBuildingOutputView(
                         building: building,
                       ),
                     ),
-                  ),
-                  VDivider(),
-                  SoftContainer(
-                    child: CityBuildingOutputView(
-                      building: building,
+                    VDivider(),
+                  ],
+                  if (widget.onBuildPressed != null)
+                    SoftContainer(
+                      child: SlideableButton(
+                        direction: Direction.Left,
+                        child: Container(
+                            height: 64,
+                            child: Center(
+                              child: ButtonText(SlobodaLocalizations.build),
+                            )),
+                        onPress: widget.onBuildPressed,
+                      ),
                     ),
-                  ),
-                  VDivider(),
                 ],
-                if (widget.onBuildPressed != null)
-                  SoftContainer(
-                    child: SlideableButton(
-                      direction: Direction.Left,
-                      child: Container(
-                          height: 64,
-                          child: Center(
-                            child: ButtonText(SlobodaLocalizations.build),
-                          )),
-                      onPress: widget.onBuildPressed,
-                    ),
-                  ),
-              ],
+              ),
             ),
           ),
         ),
