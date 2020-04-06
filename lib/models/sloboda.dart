@@ -35,6 +35,7 @@ class Sloboda {
 
   final List<CityEvent> events = [];
   final Queue<RandomTurnEvent> pendingNextEvents = Queue();
+  bool disableRandomEvents;
 
   Stock stock;
   CityProps props;
@@ -44,7 +45,8 @@ class Sloboda {
 
   List<Function> _nextRandomEvents = [];
 
-  Sloboda({this.name, this.stock, this.props}) {
+  Sloboda(
+      {this.name, this.stock, this.props, this.disableRandomEvents = false}) {
     if (stock == null) {
       stock = Stock.defaultStock();
     }
@@ -271,7 +273,8 @@ class Sloboda {
           CityEvent(
             sourceEvent: EventMessage(
               event: null,
-              messageKey: exception.building.toLocalizedString() +
+              messageKey: SlobodaLocalizations.getForKey(
+                      exception.building.localizedKey) +
                   ' ' +
                   exception.cause,
             ),
@@ -285,7 +288,8 @@ class Sloboda {
           CityEvent(
             sourceEvent: EventMessage(
               event: null,
-              messageKey: exception.building.toLocalizedString() +
+              messageKey: SlobodaLocalizations.getForKey(
+                      exception.building.localizedKey) +
                   ' ' +
                   SlobodaLocalizations.getForKey(exception.localizedKey) +
                   ' ' +
@@ -312,27 +316,29 @@ class Sloboda {
       });
     });
 
-    // generate random events
-    try {
-      final _events = RandomTurnEvent.allEvents.where((event) {
-        return event.canHappen(this) && !(event is ChoicableRandomTurnEvent);
-      });
+    if (!disableRandomEvents) {
+      // generate random events
+      try {
+        final _events = RandomTurnEvent.allEvents.where((event) {
+          return event.canHappen(this) && !(event is ChoicableRandomTurnEvent);
+        });
 
-      for (var event in _events) {
-        if (event != null) {
-          EventMessage eventResult = event.execute(this)();
-          this.stock + eventResult.stock;
-          events.add(
-            CityEvent(
-              sourceEvent: eventResult,
-              yearHappened: currentYear,
-              season: currentSeason,
-            ),
-          );
+        for (var event in _events) {
+          if (event != null) {
+            EventMessage eventResult = event.execute(this)();
+            this.stock + eventResult.stock;
+            events.add(
+              CityEvent(
+                sourceEvent: eventResult,
+                yearHappened: currentYear,
+                season: currentSeason,
+              ),
+            );
+          }
         }
+      } catch (e) {
+        print(e);
       }
-    } catch (e) {
-      print(e);
     }
 
     _queueNextEvents();

@@ -69,8 +69,7 @@ abstract class RandomTurnEvent {
   bool canHappen(Sloboda city) {
     bool canHappen =
         Random().nextInt(100) < probability && satisfiesConditions(city);
-    debugPrint(
-        'Event: $localizedKey satisfies: ${satisfiesConditions(city)}, will happen: $canHappen');
+
     return canHappen;
   }
 

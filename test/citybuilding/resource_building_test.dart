@@ -1,5 +1,7 @@
+import 'package:sloboda/extensions/int.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
+import 'package:sloboda/models/buildings/resource_buildings/smith.dart';
 import 'package:sloboda/models/citizen.dart';
 import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/stock.dart';
@@ -7,7 +9,7 @@ import 'package:test/test.dart';
 
 void main() {
   group("Smith Main Tests", () {
-    var smith = ResourceBuilding.fromType(RESOURCE_BUILDING_TYPES.SMITH);
+    var smith = Smith();
     Stock stock = Stock(values: {
       RESOURCE_TYPES.FOOD: 5,
       RESOURCE_TYPES.FIREARM: 0,
@@ -47,11 +49,8 @@ void main() {
     });
 
     test("Cannot add more workers than allowed", () {
-      smith.addWorker(Citizen());
-      smith.addWorker(Citizen());
-      smith.addWorker(Citizen());
-      smith.addWorker(Citizen());
-      smith.addWorker(Citizen());
+      30.timesRepeat(() => smith.addWorker(Citizen()));
+
       expect(() => smith.addWorker(Citizen()),
           throwsA(TypeMatcher<BuildingFull>()));
     });

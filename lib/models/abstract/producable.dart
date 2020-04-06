@@ -103,7 +103,7 @@ class Producible {
     changes.close();
   }
 
-  String toLocalizedString() {
+  String get localizedKey {
     throw 'Must Implement';
   }
 }
