@@ -1,9 +1,8 @@
 import 'dart:math';
-
-import 'package:sloboda/models/city_event.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/events/random_turn_events.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/seasons.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/stock.dart';
 

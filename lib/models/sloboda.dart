@@ -14,6 +14,7 @@ import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/events/random_choicable_events.dart';
 import 'package:sloboda/models/events/random_turn_events.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/seasons.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/models/stock.dart';
 
@@ -438,6 +439,23 @@ class Sloboda {
       default:
         return SpringSeason();
     }
+  }
+
+  factory Sloboda.fromJson(Map<String, dynamic> json) {
+    Sloboda city = new Sloboda(name: json["name"])
+      ..currentYear = json["currentYear"]
+      ..foundedYear = json["foundedYear"]
+      ..currentSeason = CitySeason.fromJson(json["currentSeason"]);
+    return city;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "currentYear": currentYear,
+      "foundedYear": foundedYear,
+      "currentSeason": currentSeason.toJson()
+    };
   }
 
   void dispose() {

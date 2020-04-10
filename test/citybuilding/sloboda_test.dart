@@ -5,6 +5,7 @@ import 'package:sloboda/models/buildings/resource_buildings/smith.dart';
 import 'package:sloboda/models/citizen.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/seasons.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/stock.dart';
 import 'package:test/test.dart';
@@ -140,4 +141,41 @@ void main() {
       );
     },
   );
+
+  group("Can serialize and restore state", () {
+    var city = Sloboda(name: 'Dimitrova');
+    city.currentYear = 1555;
+    city.foundedYear = 1551;
+    city.currentSeason = SummerSeason();
+    city.makeTurn();
+    test("Can (de)serialize name", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.name, equals(city.name));
+    });
+
+    test("Can (de)serialize currentYear", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.currentYear, equals(city.currentYear));
+    });
+
+    test("Can (de)serialize foundedYear", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.foundedYear, equals(city.foundedYear));
+    });
+
+    test("Can (de)serialize foundedYear", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.foundedYear, equals(city.foundedYear));
+    });
+
+    test("Can (de)serialize currentSeason", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.currentSeason.type, equals(CITY_SEASONS.AUTUMN));
+    });
+  });
 }

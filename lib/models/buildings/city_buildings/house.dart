@@ -4,6 +4,7 @@ import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
 
 class House extends CityBuilding {
+  CITY_BUILDING_TYPES type = CITY_BUILDING_TYPES.HOUSE;
   StockItem<CITY_PROPERTIES> produces = CityCitizens(3);
   Map<RESOURCE_TYPES, int> requiredToBuild = {
     RESOURCE_TYPES.FOOD: 10,
@@ -20,5 +21,9 @@ class House extends CityBuilding {
 
   String toImagePath() {
     return 'images/city_buildings/house.png';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"type": "HOUSE"};
   }
 }
