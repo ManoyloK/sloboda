@@ -6,6 +6,7 @@ import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
+import 'package:sloboda/models/buildings/city_buildings/house.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/citizen.dart';
@@ -23,9 +24,7 @@ class Sloboda {
   int foundedYear = 1550;
   int currentYear = 1550;
   CitySeason currentSeason = WinterSeason();
-  List<CityBuilding> cityBuildings = [
-    CityBuilding.fromType(CITY_BUILDING_TYPES.HOUSE),
-  ];
+  List<CityBuilding> cityBuildings = [House()];
   List<Citizen> citizens = [];
 
   List<ResourceBuilding> resourceBuildings = [];
@@ -445,7 +444,10 @@ class Sloboda {
     Sloboda city = new Sloboda(name: json["name"])
       ..currentYear = json["currentYear"]
       ..foundedYear = json["foundedYear"]
-      ..currentSeason = CitySeason.fromJson(json["currentSeason"]);
+      ..currentSeason = CitySeason.fromJson(json["currentSeason"])
+      ..cityBuildings = (json["cityBuildings"] as List)
+          .map((json) => CityBuilding.fromJson(json as Map<String, dynamic>))
+          .toList() as List<CityBuilding>;
     return city;
   }
 
@@ -454,7 +456,8 @@ class Sloboda {
       "name": name,
       "currentYear": currentYear,
       "foundedYear": foundedYear,
-      "currentSeason": currentSeason.toJson()
+      "currentSeason": currentSeason.toJson(),
+      "cityBuildings": cityBuildings.map((cb) => cb.toJson()).toList()
     };
   }
 

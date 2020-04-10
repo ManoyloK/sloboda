@@ -1,4 +1,9 @@
+import 'package:sloboda/models/buildings/city_buildings/church.dart';
+import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
 import 'package:sloboda/models/buildings/city_buildings/house.dart';
+import 'package:sloboda/models/buildings/city_buildings/tower.dart';
+import 'package:sloboda/models/buildings/city_buildings/wall.dart';
+import 'package:sloboda/models/buildings/city_buildings/watch_tower.dart';
 import 'package:sloboda/models/buildings/resource_buildings/field.dart';
 import 'package:sloboda/models/buildings/resource_buildings/mill.dart';
 import 'package:sloboda/models/buildings/resource_buildings/smith.dart';
@@ -143,11 +148,15 @@ void main() {
   );
 
   group("Can serialize and restore state", () {
-    var city = Sloboda(name: 'Dimitrova');
-    city.currentYear = 1555;
-    city.foundedYear = 1551;
-    city.currentSeason = SummerSeason();
-    city.makeTurn();
+    Sloboda city;
+    setUp(() {
+      city = Sloboda(name: 'Dimitrova', stock: Stock.bigStock());
+      city.currentYear = 1555;
+      city.foundedYear = 1551;
+      city.currentSeason = SummerSeason();
+      city.makeTurn();
+    });
+
     test("Can (de)serialize name", () {
       var map = city.toJson();
       var newCity = Sloboda.fromJson(map);
@@ -176,6 +185,22 @@ void main() {
       var map = city.toJson();
       var newCity = Sloboda.fromJson(map);
       expect(newCity.currentSeason.type, equals(CITY_SEASONS.AUTUMN));
+    });
+
+    test("Can (de)serialize city buildings", () {
+      city.buildBuilding(House());
+      city.buildBuilding(Church());
+      city.buildBuilding(Tower());
+      city.buildBuilding(WatchTower());
+      city.buildBuilding(Wall());
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.cityBuildings[1].type, equals(CITY_BUILDING_TYPES.HOUSE));
+      expect(newCity.cityBuildings[2].type, equals(CITY_BUILDING_TYPES.CHURCH));
+      expect(newCity.cityBuildings[3].type, equals(CITY_BUILDING_TYPES.TOWER));
+      expect(newCity.cityBuildings[4].type,
+          equals(CITY_BUILDING_TYPES.WATCH_TOWER));
+      expect(newCity.cityBuildings[5].type, equals(CITY_BUILDING_TYPES.WALL));
     });
   });
 }
