@@ -7,6 +7,7 @@ import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/inherited_city.dart';
+import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/city_buildings/city_buildings_page.dart';
@@ -148,6 +149,21 @@ class _CityGameState extends State<CityGame>
                                               context,
                                               CreateSlobodaView.routeName,
                                               (route) => false);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: FullWidth(
+                                      child: FlatButton(
+                                        child: Text("Save"),
+                                        onPressed: () {
+                                          AppPreferences.instance.saveSloboda(
+                                            city.toJson(),
+                                          );
                                         },
                                       ),
                                     ),

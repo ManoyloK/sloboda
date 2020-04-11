@@ -8,20 +8,32 @@ class Citizen {
     assignedTo = null;
   }
 
-  Citizen() {
-    _generateName();
+  Citizen({fullName}) {
+    if (fullName == null) {
+      name = _generateName();
+    } else {
+      name = fullName;
+    }
   }
 
   get occupied {
     return assignedTo != null;
   }
 
-  _generateName() {
-    name = '${firstNames.takeRandom()} ${lastName.takeRandom()}';
+  String _generateName() {
+    return '${firstNames.takeRandom()} ${lastName.takeRandom()}';
   }
 
   static getIconPath() {
     return 'images/city_buildings/citizen_64.png';
+  }
+
+  factory Citizen.fromJson(Map<String, dynamic> json) {
+    return Citizen(fullName: json["name"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"name": name};
   }
 }
 

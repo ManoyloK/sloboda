@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sloboda/models/sloboda.dart';
 
 class AppPreferences {
   AppPreferences._internal();
@@ -37,14 +36,21 @@ class AppPreferences {
     return await _preferences.setString(_languageCode, languageCode);
   }
 
-  Sloboda readSloboda() {
+  Map<String, dynamic> readSloboda() {
     var s = _preferences.getString("saved_sloboda");
-    var map = jsonDecode(s);
-    return Sloboda.fromJson(map);
+    if (s != null) {
+      var map = jsonDecode(s);
+      return map;
+    } else {
+      return null;
+    }
   }
 
-  Future saveSloboda(Sloboda city) async {
-    var json = city.toJson();
+  Future saveSloboda(Map<String, dynamic> json) async {
     return await _preferences.setString("saved_sloboda", json.toString());
+  }
+
+  Future<bool> removeSavedSloboda() async {
+    return await _preferences.remove("saved_sloboda");
   }
 }

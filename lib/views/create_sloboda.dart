@@ -39,6 +39,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
         future: _appPreferencesInit(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            var savedSlobodaJson = AppPreferences.instance.readSloboda();
             return SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -85,6 +86,40 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                       ),
                     ),
                   ),
+                  if (savedSlobodaJson != null)
+                    Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            SoftContainer(
+                              child: FlatButton(
+                                child: Text("Load game"),
+                                onPressed: () {
+                                  Sloboda city =
+                                      Sloboda.fromJson(savedSlobodaJson);
+                                  Navigator.pushNamed(
+                                    context,
+                                    CityGame.routeName,
+                                    arguments: CityGameArguments(
+                                      city: city,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            HDivider(),
+                            SoftContainer(
+                              child: FlatButton(
+                                child: Text("Remove game"),
+                                onPressed: () {
+                                  AppPreferences.instance.removeSavedSloboda();
+                                  setState(() {});
+                                },
+                              ),
+                            ),
+                          ],
+                        )),
                   Expanded(
                     flex: 9,
                     child: Padding(

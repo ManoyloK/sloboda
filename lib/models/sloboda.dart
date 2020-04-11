@@ -447,7 +447,10 @@ class Sloboda {
       ..currentSeason = CitySeason.fromJson(json["currentSeason"])
       ..cityBuildings = (json["cityBuildings"] as List)
           .map((json) => CityBuilding.fromJson(json as Map<String, dynamic>))
-          .toList() as List<CityBuilding>;
+          .toList() as List<CityBuilding>
+      ..citizens = (json["citizens"] as List)
+          .map((json) => Citizen.fromJson(json as Map<String, dynamic>))
+          .toList() as List<Citizen>;
     return city;
   }
 
@@ -457,7 +460,8 @@ class Sloboda {
       "currentYear": currentYear,
       "foundedYear": foundedYear,
       "currentSeason": currentSeason.toJson(),
-      "cityBuildings": cityBuildings.map((cb) => cb.toJson()).toList()
+      "cityBuildings": cityBuildings.map((cb) => cb.toJson()).toList(),
+      "citizens": citizens.map((c) => c.toJson()).toList(),
     };
   }
 

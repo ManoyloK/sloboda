@@ -202,5 +202,14 @@ void main() {
           equals(CITY_BUILDING_TYPES.WATCH_TOWER));
       expect(newCity.cityBuildings[5].type, equals(CITY_BUILDING_TYPES.WALL));
     });
+
+    test("Can (de)serialize list of citizens", () {
+      city.addCitizens(amount: 5);
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.citizens[0].name, equals(city.citizens[0].name));
+      expect(newCity.citizens[3].name, equals(city.citizens[3].name));
+      expect(newCity.citizens[5].name, equals(city.citizens[5].name));
+    });
   });
 }
