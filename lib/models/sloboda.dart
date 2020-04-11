@@ -450,7 +450,11 @@ class Sloboda {
           .toList() as List<CityBuilding>
       ..citizens = (json["citizens"] as List)
           .map((json) => Citizen.fromJson(json as Map<String, dynamic>))
-          .toList() as List<Citizen>;
+          .toList() as List<Citizen>
+      ..naturalResources = (json["naturalResources"] as List)
+          .map((json) => NaturalResource.fromJson(json))
+          .toList();
+    city._fixCitizenOccupations();
     return city;
   }
 
@@ -462,7 +466,25 @@ class Sloboda {
       "currentSeason": currentSeason.toJson(),
       "cityBuildings": cityBuildings.map((cb) => cb.toJson()).toList(),
       "citizens": citizens.map((c) => c.toJson()).toList(),
+      "naturalResources": naturalResources.map((nr) => nr.toJson()).toList(),
     };
+  }
+
+  _fixCitizenOccupations() {
+    var amountOfCitizens = citizens.length;
+    citizens.clear();
+    var addedBackCounter = 0;
+    for (var nb in naturalResources) {
+      nb.assignedHumans.forEach((element) {
+        element.assignedTo = nb;
+        citizens.add(element);
+        addedBackCounter++;
+      });
+    }
+
+    var leftToAdd = amountOfCitizens - addedBackCounter;
+    addCitizens(amount: leftToAdd);
+    props.setType(CITY_PROPERTIES.CITIZENS, citizens.length);
   }
 
   void dispose() {

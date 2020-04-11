@@ -56,6 +56,10 @@ abstract class Stockable<T> {
     }
   }
 
+  setType(T type, int amount) {
+    _map[type] = amount;
+  }
+
   Map<T, int> asMap() {
     return Map.from(_map);
   }

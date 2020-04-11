@@ -47,7 +47,8 @@ class AppPreferences {
   }
 
   Future saveSloboda(Map<String, dynamic> json) async {
-    return await _preferences.setString("saved_sloboda", json.toString());
+    var string = jsonEncode(json);
+    return await _preferences.setString("saved_sloboda", string);
   }
 
   Future<bool> removeSavedSloboda() async {

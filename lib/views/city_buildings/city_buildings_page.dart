@@ -99,7 +99,7 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                               } catch (e) {
                                 final snackBar = SnackBar(
                                     content: Text(
-                                        'Cannot build. Missing: ${e.localizedKey()}'));
+                                        'Cannot build. Missing: ${e.toLocalizedString()}'));
                                 Scaffold.of(context).showSnackBar(snackBar);
                               }
                             }),
