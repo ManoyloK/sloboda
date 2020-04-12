@@ -16,7 +16,6 @@ class Stock extends Stockable<RESOURCE_TYPES> {
   };
 
   Stock({Map<RESOURCE_TYPES, int> values}) : super(values);
-
   static defaultStock() {
     return Stock(values: defaultValues);
   }
@@ -34,5 +33,14 @@ class Stock extends Stockable<RESOURCE_TYPES> {
       RESOURCE_TYPES.FUR: 50,
       RESOURCE_TYPES.FISH: 50,
     });
+  }
+
+  Map<String, dynamic> toJson() {
+    var keys = values.keys;
+    Map<String, dynamic> result = {};
+    for (var key in keys) {
+      result[resourceTypesToString(key)] = values[key];
+    }
+    return result;
   }
 }

@@ -225,5 +225,30 @@ void main() {
       expect(newCity.resourceBuildings[1].type,
           equals(RESOURCE_BUILDING_TYPES.STABLES));
     });
+
+    test("Can (de)serialize CityProps", () {
+      city.props.setType(CITY_PROPERTIES.COSSACKS, 100);
+      city.props.setType(CITY_PROPERTIES.CITIZENS, 20);
+      city.props.setType(CITY_PROPERTIES.FAITH, 25);
+      city.props.setType(CITY_PROPERTIES.GLORY, 13);
+      city.props.setType(CITY_PROPERTIES.DEFENSE, 130);
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+
+      expect(newCity.props.getByType(CITY_PROPERTIES.COSSACKS),
+          equals(city.props.getByType(CITY_PROPERTIES.COSSACKS)));
+
+      expect(newCity.props.getByType(CITY_PROPERTIES.CITIZENS),
+          equals(city.props.getByType(CITY_PROPERTIES.CITIZENS)));
+
+      expect(newCity.props.getByType(CITY_PROPERTIES.FAITH),
+          equals(city.props.getByType(CITY_PROPERTIES.FAITH)));
+
+      expect(newCity.props.getByType(CITY_PROPERTIES.GLORY),
+          equals(city.props.getByType(CITY_PROPERTIES.GLORY)));
+
+      expect(newCity.props.getByType(CITY_PROPERTIES.DEFENSE),
+          equals(newCity.props.getByType(CITY_PROPERTIES.DEFENSE)));
+    });
   });
 }
