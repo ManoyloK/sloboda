@@ -108,8 +108,7 @@ class Sloboda {
       removeFromStock(buildable.requiredToBuild);
       if (buildable is ResourceBuilding) {
         resourceBuildings.add(buildable);
-        Producible producible = buildable;
-        producible.changes.stream.listen(_buildingChangesListener);
+        buildable.changes.stream.listen(_buildingChangesListener);
       } else if (buildable is CityBuilding) {
         cityBuildings.add(buildable);
       }
@@ -458,7 +457,14 @@ class Sloboda {
           .map((json) => ResourceBuilding.fromJson(json))
           .toList();
     city._fixCitizenOccupations();
+    city._subscribeToBuildings();
     return city;
+  }
+
+  _subscribeToBuildings() {
+    for (Producible rb in [...resourceBuildings, ...naturalResources]) {
+      rb.changes.stream.listen(_buildingChangesListener);
+    }
   }
 
   Map<String, dynamic> toJson() {
