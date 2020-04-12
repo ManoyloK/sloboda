@@ -106,6 +106,16 @@ class Producible {
   String get localizedKey {
     throw 'Must Implement';
   }
+
+  static assignedHumansFromJson(Map<String, dynamic> json) {
+    return (json["assignedHumans"] as List)
+        .map((humanJson) => Citizen.fromJson(humanJson))
+        .toList();
+  }
+
+  Map<String, dynamic> partialMap() {
+    return {"assignedHumans": assignedHumans.map((h) => h.toJson()).toList()};
+  }
 }
 
 class NotEnoughResourcesException implements Exception {

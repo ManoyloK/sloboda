@@ -6,7 +6,9 @@ import 'package:sloboda/models/buildings/city_buildings/wall.dart';
 import 'package:sloboda/models/buildings/city_buildings/watch_tower.dart';
 import 'package:sloboda/models/buildings/resource_buildings/field.dart';
 import 'package:sloboda/models/buildings/resource_buildings/mill.dart';
+import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/buildings/resource_buildings/smith.dart';
+import 'package:sloboda/models/buildings/resource_buildings/stables.dart';
 import 'package:sloboda/models/citizen.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
@@ -208,6 +210,20 @@ void main() {
       var map = city.toJson();
       var newCity = Sloboda.fromJson(map);
       expect(newCity.citizens.length, equals(city.citizens.length));
+    });
+
+    test("Can (de)serialize list resource buildings", () {
+      city.buildBuilding(Smith());
+      city.buildBuilding(Stables());
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+      expect(newCity.resourceBuildings.length,
+          equals(city.resourceBuildings.length));
+      expect(newCity.resourceBuildings[0].type,
+          equals(RESOURCE_BUILDING_TYPES.SMITH));
+
+      expect(newCity.resourceBuildings[1].type,
+          equals(RESOURCE_BUILDING_TYPES.STABLES));
     });
   });
 }

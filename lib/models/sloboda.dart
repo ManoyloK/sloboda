@@ -447,12 +447,15 @@ class Sloboda {
       ..currentSeason = CitySeason.fromJson(json["currentSeason"])
       ..cityBuildings = (json["cityBuildings"] as List)
           .map((json) => CityBuilding.fromJson(json as Map<String, dynamic>))
-          .toList() as List<CityBuilding>
+          .toList()
       ..citizens = (json["citizens"] as List)
           .map((json) => Citizen.fromJson(json as Map<String, dynamic>))
-          .toList() as List<Citizen>
+          .toList()
       ..naturalResources = (json["naturalResources"] as List)
           .map((json) => NaturalResource.fromJson(json))
+          .toList()
+      ..resourceBuildings = (json["resourceBuildings"] as List)
+          .map((json) => ResourceBuilding.fromJson(json))
           .toList();
     city._fixCitizenOccupations();
     return city;
@@ -467,6 +470,7 @@ class Sloboda {
       "cityBuildings": cityBuildings.map((cb) => cb.toJson()).toList(),
       "citizens": citizens.map((c) => c.toJson()).toList(),
       "naturalResources": naturalResources.map((nr) => nr.toJson()).toList(),
+      "resourceBuildings": resourceBuildings.map((rb) => rb.toJson()).toList(),
     };
   }
 
@@ -477,6 +481,14 @@ class Sloboda {
     for (var nb in naturalResources) {
       nb.assignedHumans.forEach((element) {
         element.assignedTo = nb;
+        citizens.add(element);
+        addedBackCounter++;
+      });
+    }
+
+    for (var rb in resourceBuildings) {
+      rb.assignedHumans.forEach((element) {
+        element.assignedTo = rb;
         citizens.add(element);
         addedBackCounter++;
       });
