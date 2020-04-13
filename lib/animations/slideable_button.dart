@@ -63,7 +63,9 @@ class _SlideableButtonState extends State<SlideableButton>
             child: InkWell(
                 child: child,
                 onTap: () {
-                  controller.forward();
+                  if (widget.onPress != null) {
+                    controller.forward();
+                  }
                 }),
           );
         },

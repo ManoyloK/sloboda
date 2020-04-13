@@ -6,12 +6,14 @@ class SoftContainer extends StatelessWidget {
   final Widget child;
   final bool onlyTop;
   final double borderRadiusValue;
+  final bool pressedIn;
 
   const SoftContainer(
       {Key key,
       this.child,
       this.onlyTop = false,
-      this.borderRadiusValue = 40.0})
+      this.borderRadiusValue = 40.0,
+      this.pressedIn: false})
       : super(key: key);
 
   @override
@@ -21,6 +23,7 @@ class SoftContainer extends StatelessWidget {
         child: child,
         color: Theme.of(context).backgroundColor,
         borderRadius: 15,
+        emboss: pressedIn,
       ),
     );
   }

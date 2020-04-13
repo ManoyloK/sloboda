@@ -224,7 +224,7 @@ class Sloboda {
 
   void removeCitizens({amount}) {
     for (var i = 0; i < amount; i++) {
-      final c = citizens.takeRandom();
+      final c = citizens.where((c) => !c.occupied).toList().takeRandom();
       c.free();
       citizens.remove(c);
     }
