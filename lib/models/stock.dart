@@ -41,6 +41,16 @@ class Stock extends Stockable<RESOURCE_TYPES> {
     for (var key in keys) {
       result[resourceTypesToString(key)] = values[key];
     }
+
     return result;
+  }
+
+  static fromJson(Map<String, dynamic> json) {
+    var keys = json.keys;
+    Map<RESOURCE_TYPES, int> values = {};
+    for (var key in keys) {
+      values[stringToResourceType(key)] = json[key];
+    }
+    return Stock(values: values);
   }
 }

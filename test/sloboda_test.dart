@@ -250,5 +250,51 @@ void main() {
       expect(newCity.props.getByType(CITY_PROPERTIES.DEFENSE),
           equals(newCity.props.getByType(CITY_PROPERTIES.DEFENSE)));
     });
+
+    test("Can (de)serialize Stock", () {
+      city.stock.setType(RESOURCE_TYPES.IRON_ORE, 100);
+      city.stock.setType(RESOURCE_TYPES.STONE, 20);
+      city.stock.setType(RESOURCE_TYPES.FIREARM, 25);
+      city.stock.setType(RESOURCE_TYPES.POWDER, 13);
+      city.stock.setType(RESOURCE_TYPES.HORSE, 130);
+      city.stock.setType(RESOURCE_TYPES.FUR, 131);
+      city.stock.setType(RESOURCE_TYPES.WOOD, 132);
+      city.stock.setType(RESOURCE_TYPES.FOOD, 133);
+      city.stock.setType(RESOURCE_TYPES.FISH, 134);
+      city.stock.setType(RESOURCE_TYPES.MONEY, 135);
+
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.IRON_ORE),
+          equals(city.stock.getByType(RESOURCE_TYPES.IRON_ORE)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.STONE),
+          equals(city.stock.getByType(RESOURCE_TYPES.STONE)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.FIREARM),
+          equals(city.stock.getByType(RESOURCE_TYPES.FIREARM)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.POWDER),
+          equals(city.stock.getByType(RESOURCE_TYPES.POWDER)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.HORSE),
+          equals(city.stock.getByType(RESOURCE_TYPES.HORSE)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.FUR),
+          equals(city.stock.getByType(RESOURCE_TYPES.FUR)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.WOOD),
+          equals(city.stock.getByType(RESOURCE_TYPES.WOOD)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.FOOD),
+          equals(city.stock.getByType(RESOURCE_TYPES.FOOD)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.FISH),
+          equals(city.stock.getByType(RESOURCE_TYPES.FISH)));
+
+      expect(newCity.stock.getByType(RESOURCE_TYPES.MONEY),
+          equals(city.stock.getByType(RESOURCE_TYPES.MONEY)));
+    });
   });
 }

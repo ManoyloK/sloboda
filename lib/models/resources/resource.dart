@@ -40,6 +40,33 @@ String resourceTypesToString(RESOURCE_TYPES type) {
   }
 }
 
+RESOURCE_TYPES stringToResourceType(String type) {
+  switch (type) {
+    case "MONEY":
+      return RESOURCE_TYPES.MONEY;
+    case "WOOD":
+      return RESOURCE_TYPES.WOOD;
+    case "FOOD":
+      return RESOURCE_TYPES.FOOD;
+    case "STONE":
+      return RESOURCE_TYPES.STONE;
+    case "POWDER":
+      return RESOURCE_TYPES.POWDER;
+    case "FUR":
+      return RESOURCE_TYPES.FUR;
+    case "FISH":
+      return RESOURCE_TYPES.FISH;
+    case "FIREARM":
+      return RESOURCE_TYPES.FIREARM;
+    case "HORSE":
+      return RESOURCE_TYPES.HORSE;
+    case "IRON_ORE":
+      return RESOURCE_TYPES.IRON_ORE;
+    default:
+      throw 'Resource type $type is not recognized';
+  }
+}
+
 abstract class ResourceType extends StockItem<RESOURCE_TYPES> {
   static StockItem<RESOURCE_TYPES> fromType(RESOURCE_TYPES type, [int value]) {
     switch (type) {

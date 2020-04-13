@@ -456,7 +456,8 @@ class Sloboda {
       ..resourceBuildings = (json["resourceBuildings"] as List)
           .map((json) => ResourceBuilding.fromJson(json))
           .toList()
-      ..props = CityProps.fromJson(json["props"]);
+      ..props = CityProps.fromJson(json["props"])
+      ..stock = Stock.fromJson(json["stock"]);
     city._fixCitizenOccupations();
     city._subscribeToBuildings();
     return city;
@@ -479,6 +480,7 @@ class Sloboda {
       "naturalResources": naturalResources.map((nr) => nr.toJson()).toList(),
       "resourceBuildings": resourceBuildings.map((rb) => rb.toJson()).toList(),
       "props": props.toJson(),
+      "stock": stock.toJson(),
     };
   }
 
