@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
@@ -82,21 +82,19 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                   ),
                 ),
                 VDivider(),
-                SoftContainer(
-                  pressedIn: !canProduce,
+                PressedInContainer(
+                  onPress: canProduceCossack(
+                          city.props, city.stock, city.hasFreeCitizens())
+                      ? () {
+                          tryToCreateCossack(city);
+                        }
+                      : null,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: FullWidth(
-                      child: SlideableButton(
-                        child: Center(
-                            child:
-                                ButtonText(SlobodaLocalizations.trainCossacks)),
-                        onPress: canProduce
-                            ? () {
-                                tryToCreateCossack(city);
-                              }
-                            : null,
-                      ),
+                      child: Center(
+                          child:
+                              ButtonText(SlobodaLocalizations.trainCossacks)),
                     ),
                   ),
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
@@ -34,8 +35,8 @@ class _CityDashboardState extends State<CityDashboard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            GestureDetector(
-              onTap: () async {
+            PressedInContainer(
+              onPress: () async {
                 await Navigator.pushNamed(
                   context,
                   ShootingRangeBuilt.routeName,
@@ -65,8 +66,8 @@ class _CityDashboardState extends State<CityDashboard> {
               ),
             ),
             VDivider(),
-            GestureDetector(
-              onTap: () async {
+            PressedInContainer(
+              onPress: () async {
                 await Navigator.pushNamed(
                   context,
                   SichScreen.routeName,

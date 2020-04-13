@@ -1,5 +1,7 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
+import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/models/app_preferences.dart';
@@ -176,9 +178,12 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                   "images/city_props/citizen.png",
                   width: imageWidth,
                 ),
-                RaisedButton(
-                  child: Text(SlobodaLocalizations.normalSloboda),
-                  onPressed: () {
+                PressedInContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ButtonText(SlobodaLocalizations.normalSloboda),
+                  ),
+                  onPress: () {
                     Navigator.pushNamed(
                       context,
                       CityGame.routeName,
@@ -208,9 +213,12 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                   "images/city_props/cossack.png",
                   width: imageWidth,
                 ),
-                RaisedButton(
-                  child: Text(SlobodaLocalizations.bigSloboda),
-                  onPressed: () {
+                PressedInContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ButtonText(SlobodaLocalizations.bigSloboda),
+                  ),
+                  onPress: () {
                     Navigator.pushNamed(
                       context,
                       CityGame.routeName,

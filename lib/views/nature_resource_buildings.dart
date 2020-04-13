@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
@@ -111,9 +112,9 @@ class _NatureResourceBuildingScreenState
                                       h.name,
                                     ),
                                     SoftContainer(
-                                      child: IconButton(
-                                        icon: Icon(Icons.remove),
-                                        onPressed: !building.isEmpty()
+                                      child: PressedInContainer(
+                                        child: Icon(Icons.remove),
+                                        onPress: !building.isEmpty()
                                             ? () {
                                                 building.removeWorker(h);
                                               }
