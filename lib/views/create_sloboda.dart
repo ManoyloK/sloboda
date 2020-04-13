@@ -4,6 +4,7 @@ import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
+import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/sloboda.dart';
@@ -44,7 +45,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
             var savedSlobodaJson = AppPreferences.instance.readSloboda();
             return SafeArea(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Expanded(
@@ -64,7 +65,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                     ),
                   ),
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(
@@ -90,42 +91,57 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                   ),
                   if (savedSlobodaJson != null)
                     Expanded(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            PressedInContainer(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ButtonText("Load game"),
-                              ),
-                              onPress: () {
-                                Sloboda city =
-                                    Sloboda.fromJson(savedSlobodaJson);
-                                Navigator.pushNamed(
-                                  context,
-                                  CityGame.routeName,
-                                  arguments: CityGameArguments(
-                                    city: city,
-                                  ),
-                                );
-                              },
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Center(
+                              child: TitleText(
+                                  SlobodaLocalizations.youHaveSavedGame),
                             ),
-                            HDivider(),
-                            PressedInContainer(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ButtonText("Remove game"),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              PressedInContainer(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child:
+                                      ButtonText(SlobodaLocalizations.loadGame),
+                                ),
+                                onPress: () {
+                                  Sloboda city =
+                                      Sloboda.fromJson(savedSlobodaJson);
+                                  Navigator.pushNamed(
+                                    context,
+                                    CityGame.routeName,
+                                    arguments: CityGameArguments(
+                                      city: city,
+                                    ),
+                                  );
+                                },
                               ),
-                              onPress: () {
-                                AppPreferences.instance.removeSavedSloboda();
-                                setState(() {});
-                              },
-                            ),
-                          ],
-                        )),
+                              HDivider(),
+                              PressedInContainer(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ButtonText(
+                                      SlobodaLocalizations.deleteGame),
+                                ),
+                                onPress: () {
+                                  AppPreferences.instance.removeSavedSloboda();
+                                  setState(() {});
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   Expanded(
-                    flex: 9,
+                    flex: 5,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(

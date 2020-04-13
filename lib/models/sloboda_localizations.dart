@@ -621,6 +621,9 @@ class SlobodaLocalizations {
       'labelInputSlobodaName': 'Sloboda Name',
       'addMaxWorkers': 'Add max workers',
       'noFreeWorkers': 'No free workers',
+      'loadGame': 'Load game',
+      'deleteGame': 'Delete game',
+      'youHaveSavedGame': 'You have a saved game',
     },
     'uk': {
       'overview': 'Головна',
@@ -664,7 +667,10 @@ class SlobodaLocalizations {
       'incomingEventLabel': 'Нова подія',
       'labelInputSlobodaName': 'Назва слободи',
       'addMaxWorkers': 'Додати максимум робітників',
-      'noFreeWorkers': 'Немає вільних робітників'
+      'noFreeWorkers': 'Немає вільних робітників',
+      'loadGame': 'Відновити гру',
+      'deleteGame': 'Видалити гру',
+      'youHaveSavedGame': 'У вас є збережена гра',
     }
   };
 
@@ -825,5 +831,20 @@ class SlobodaLocalizations {
   static String get noFreeWorkers {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['noFreeWorkers'];
+  }
+
+  static String get loadGame {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['loadGame'];
+  }
+
+  static String get deleteGame {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['deleteGame'];
+  }
+
+  static String get youHaveSavedGame {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['youHaveSavedGame'];
   }
 }

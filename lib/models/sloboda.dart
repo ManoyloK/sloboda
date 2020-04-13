@@ -518,7 +518,7 @@ class MissingResources implements Exception {
 
   MissingResources(this.causes);
 
-  String toLocalizedString() {
+  String localizedKey() {
     return causes.entries
         .map((c) {
           return '${SlobodaLocalizations.getForKey(c.key)}: ${c.value}';

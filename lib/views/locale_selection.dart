@@ -14,10 +14,6 @@ class LocaleSelection extends StatefulWidget {
 class _LocaleSelectionState extends State<LocaleSelection> {
   @override
   Widget build(BuildContext context) {
-    return _buildLocaleSelection();
-  }
-
-  Widget _buildLocaleSelection() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
