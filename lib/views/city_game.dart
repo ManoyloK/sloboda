@@ -156,21 +156,6 @@ class _CityGameState extends State<CityGame>
                                     ),
                                   ),
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SoftContainer(
-                                    child: FullWidth(
-                                      child: FlatButton(
-                                        child: Text("Save"),
-                                        onPressed: () {
-                                          AppPreferences.instance.saveSloboda(
-                                            city.toJson(),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -217,6 +202,7 @@ class _CityGameState extends State<CityGame>
     return PressedInContainer(
       onPress: () {
         city.makeTurn();
+        AppPreferences.instance.saveSloboda(city.toJson());
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

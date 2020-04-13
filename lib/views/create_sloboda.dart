@@ -94,31 +94,33 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            SoftContainer(
-                              child: FlatButton(
-                                child: Text("Load game"),
-                                onPressed: () {
-                                  Sloboda city =
-                                      Sloboda.fromJson(savedSlobodaJson);
-                                  Navigator.pushNamed(
-                                    context,
-                                    CityGame.routeName,
-                                    arguments: CityGameArguments(
-                                      city: city,
-                                    ),
-                                  );
-                                },
+                            PressedInContainer(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ButtonText("Load game"),
                               ),
+                              onPress: () {
+                                Sloboda city =
+                                    Sloboda.fromJson(savedSlobodaJson);
+                                Navigator.pushNamed(
+                                  context,
+                                  CityGame.routeName,
+                                  arguments: CityGameArguments(
+                                    city: city,
+                                  ),
+                                );
+                              },
                             ),
                             HDivider(),
-                            SoftContainer(
-                              child: FlatButton(
-                                child: Text("Remove game"),
-                                onPressed: () {
-                                  AppPreferences.instance.removeSavedSloboda();
-                                  setState(() {});
-                                },
+                            PressedInContainer(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ButtonText("Remove game"),
                               ),
+                              onPress: () {
+                                AppPreferences.instance.removeSavedSloboda();
+                                setState(() {});
+                              },
                             ),
                           ],
                         )),

@@ -100,7 +100,7 @@ class EventsView extends StatelessWidget {
                                     Theme.of(context).textTheme.headline6;
                               }
                               return Padding(
-                                  padding: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(16.0),
                                   child: SoftContainer(
                                     child: Column(
                                       children: <Widget>[
@@ -189,35 +189,39 @@ class _PendingEventsViewState extends State<PendingEventsView> {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                SoftContainer(
-                  child: PressedInContainer(
+                PressedInContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Icon(Icons.check),
                         TitleText(SlobodaLocalizations.yesToRandomEvent),
                       ],
                     ),
-                    onPress: () {
-                      Sloboda city = InheritedCity.of(context).city;
-
-                      city.addChoicableEventWithAnswer(true, event);
-                    },
                   ),
+                  onPress: () {
+                    Sloboda city = InheritedCity.of(context).city;
+
+                    city.addChoicableEventWithAnswer(true, event);
+                  },
                 ),
                 SVDivider(),
-                SoftContainer(
-                  child: PressedInContainer(
+                PressedInContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Icon(Icons.skip_next),
                         TitleText(SlobodaLocalizations.noToRandomEvent),
                       ],
                     ),
-                    onPress: () {
-                      Sloboda city = InheritedCity.of(context).city;
-                      city.addChoicableEventWithAnswer(false, event);
-                    },
                   ),
+                  onPress: () {
+                    Sloboda city = InheritedCity.of(context).city;
+                    city.addChoicableEventWithAnswer(false, event);
+                  },
                 ),
               ],
             ),
