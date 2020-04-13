@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/rotatable_image.dart';
@@ -189,14 +190,14 @@ class _PendingEventsViewState extends State<PendingEventsView> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 SoftContainer(
-                  child: FlatButton(
+                  child: PressedInContainer(
                     child: Row(
                       children: <Widget>[
                         Icon(Icons.check),
                         TitleText(SlobodaLocalizations.yesToRandomEvent),
                       ],
                     ),
-                    onPressed: () {
+                    onPress: () {
                       Sloboda city = InheritedCity.of(context).city;
 
                       city.addChoicableEventWithAnswer(true, event);
@@ -205,14 +206,14 @@ class _PendingEventsViewState extends State<PendingEventsView> {
                 ),
                 SVDivider(),
                 SoftContainer(
-                  child: FlatButton(
+                  child: PressedInContainer(
                     child: Row(
                       children: <Widget>[
                         Icon(Icons.skip_next),
                         TitleText(SlobodaLocalizations.noToRandomEvent),
                       ],
                     ),
-                    onPressed: () {
+                    onPress: () {
                       Sloboda city = InheritedCity.of(context).city;
                       city.addChoicableEventWithAnswer(false, event);
                     },

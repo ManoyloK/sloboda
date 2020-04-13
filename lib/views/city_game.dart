@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
@@ -133,23 +133,25 @@ class _CityGameState extends State<CityGame>
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: SoftContainer(
-                                    child: _makeTurn(context),
-                                  ),
+                                  child: _makeTurn(context),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: SoftContainer(
-                                    child: FullWidth(
-                                      child: FlatButton(
-                                        child: Text(SlobodaLocalizations.reset),
-                                        onPressed: () {
-                                          Navigator.pushNamedAndRemoveUntil(
-                                              context,
-                                              CreateSlobodaView.routeName,
-                                              (route) => false);
-                                        },
+                                  child: FullWidth(
+                                    child: PressedInContainer(
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ButtonText(
+                                              SlobodaLocalizations.reset),
+                                        ),
                                       ),
+                                      onPress: () {
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            CreateSlobodaView.routeName,
+                                            (route) => false);
+                                      },
                                     ),
                                   ),
                                 ),
@@ -182,10 +184,8 @@ class _CityGameState extends State<CityGame>
                     top: 16,
                     bottom: 24.0,
                   ),
-                  child: SoftContainer(
-                    child: FullWidth(
-                      child: _makeTurn(context),
-                    ),
+                  child: FullWidth(
+                    child: _makeTurn(context),
                   ),
                 ),
               ],
@@ -198,19 +198,16 @@ class _CityGameState extends State<CityGame>
 
   Widget _makeTurn(BuildContext context) {
     var city = widget.city;
-    return SoftContainer(
+    return PressedInContainer(
+      onPress: () {
+        city.makeTurn();
+      },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SlideableButton(
-          direction: Direction.Left,
-          child: Center(
-            child: ButtonText(
-              SlobodaLocalizations.makeTurn,
-            ),
+        child: Center(
+          child: ButtonText(
+            SlobodaLocalizations.makeTurn,
           ),
-          onPress: () {
-            city.makeTurn();
-          },
         ),
       ),
     );

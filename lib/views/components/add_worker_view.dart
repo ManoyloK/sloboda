@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/sloboda.dart';
@@ -19,7 +19,7 @@ class _AddWorkerState extends State<AddWorker> {
   @override
   Widget build(BuildContext context) {
     var bCanAdd = !widget.building.isFull() && widget.city.hasFreeCitizens();
-    return SlideableButton(
+    return PressedInContainer(
       onPress: () {
         if (bCanAdd) {
           widget.building.addWorker(widget.city.getFirstFreeCitizen());

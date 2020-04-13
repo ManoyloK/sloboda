@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
@@ -81,16 +81,13 @@ class _CityBuildingMetaViewState extends State<CityBuildingMetaView> {
                     VDivider(),
                   ],
                   if (widget.onBuildPressed != null)
-                    SoftContainer(
-                      child: SlideableButton(
-                        direction: Direction.Left,
-                        child: Container(
-                            height: 64,
-                            child: Center(
-                              child: ButtonText(SlobodaLocalizations.build),
-                            )),
-                        onPress: widget.onBuildPressed,
-                      ),
+                    PressedInContainer(
+                      child: Container(
+                          height: 64,
+                          child: Center(
+                            child: ButtonText(SlobodaLocalizations.build),
+                          )),
+                      onPress: widget.onBuildPressed,
                     ),
                 ],
               ),

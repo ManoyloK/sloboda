@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sloboda/animations/slideable_button.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
 import 'package:sloboda/models/sloboda.dart';
@@ -82,17 +82,15 @@ class _ResourceBuildingBuiltState extends State<CityBuildingBuilt> {
                   ),
                   SizedBox(
                     height: 64,
-                    child: SoftContainer(
-                      child: SlideableButton(
-                        child: Center(
-                            child: TitleText(
-                          SlobodaLocalizations.destroyBuilding,
-                        )),
-                        onPress: () {
-                          city.removeCityBuilding(building);
-                          Navigator.pop(context);
-                        },
-                      ),
+                    child: PressedInContainer(
+                      child: Center(
+                          child: TitleText(
+                        SlobodaLocalizations.destroyBuilding,
+                      )),
+                      onPress: () {
+                        city.removeCityBuilding(building);
+                        Navigator.pop(context);
+                      },
                     ),
                   )
                 ],

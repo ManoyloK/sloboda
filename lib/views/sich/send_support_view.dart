@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/models/sich_connector.dart';
 
-import '../../animations/slideable_button.dart';
 import '../../components/button_text.dart';
 import '../../components/divider.dart';
 import '../../components/full_width_container.dart';
@@ -34,39 +34,35 @@ class _SendSupportViewState extends State<SendSupportView> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SoftContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FullWidth(
-                  child: SlideableButton(
-                      child: Center(
-                        child:
-                            ButtonText(SlobodaLocalizations.sendCossacksToSich),
-                      ),
-                      onPress: () async {
-                        try {
-                          var hasEnough = widget.city.hasEnoughProp(
-                              CityCossacks(_amountOfCossackToSend));
-                          if (hasEnough) {
-                            final result = await sich.sendCossacks(
-                                _amountOfCossackToSend, widget.city.name);
-                            if (result) {
-                              widget.city
-                                  .removeCossacks(_amountOfCossackToSend);
-                            }
-                          } else {
-                            final snackBar = SnackBar(
-                                content:
-                                    Text('Not enough cossacks to be sent'));
-                            Scaffold.of(context).showSnackBar(snackBar);
-                          }
-                        } catch (e) {
-                          print('Error while sending cossacks: $e');
+            child: FullWidth(
+              child: PressedInContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child:
+                          ButtonText(SlobodaLocalizations.sendCossacksToSich),
+                    ),
+                  ),
+                  onPress: () async {
+                    try {
+                      var hasEnough = widget.city
+                          .hasEnoughProp(CityCossacks(_amountOfCossackToSend));
+                      if (hasEnough) {
+                        final result = await sich.sendCossacks(
+                            _amountOfCossackToSend, widget.city.name);
+                        if (result) {
+                          widget.city.removeCossacks(_amountOfCossackToSend);
                         }
-                        setState(() {});
-                      }),
-                ),
-              ),
+                      } else {
+                        final snackBar = SnackBar(
+                            content: Text('Not enough cossacks to be sent'));
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      }
+                    } catch (e) {
+                      print('Error while sending cossacks: $e');
+                    }
+                    setState(() {});
+                  }),
             ),
           ),
           Row(
@@ -111,33 +107,31 @@ class _SendSupportViewState extends State<SendSupportView> {
           VDivider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SoftContainer(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: FullWidth(
-                  child: SlideableButton(
-                      child: Center(
-                        child: ButtonText(SlobodaLocalizations.sendMoneyToSich),
-                      ),
-                      onPress: () async {
-                        var hasEnough = widget.city
-                            .hasEnoughStock(Money(_amountOfGoldToSend));
-                        if (hasEnough) {
-                          final result = await sich.sendMoney(
-                              _amountOfGoldToSend, widget.city.name);
-                          if (result) {
-                            widget.city.removeFromStock(
-                                {RESOURCE_TYPES.MONEY: _amountOfGoldToSend});
-                          }
-                        } else {
-                          final snackBar = SnackBar(
-                              content: Text('Not enough cossacks to be sent'));
-                          Scaffold.of(context).showSnackBar(snackBar);
-                        }
-                        setState(() {});
-                      }),
-                ),
-              ),
+            child: FullWidth(
+              child: PressedInContainer(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: ButtonText(SlobodaLocalizations.sendMoneyToSich),
+                    ),
+                  ),
+                  onPress: () async {
+                    var hasEnough =
+                        widget.city.hasEnoughStock(Money(_amountOfGoldToSend));
+                    if (hasEnough) {
+                      final result = await sich.sendMoney(
+                          _amountOfGoldToSend, widget.city.name);
+                      if (result) {
+                        widget.city.removeFromStock(
+                            {RESOURCE_TYPES.MONEY: _amountOfGoldToSend});
+                      }
+                    } else {
+                      final snackBar = SnackBar(
+                          content: Text('Not enough cossacks to be sent'));
+                      Scaffold.of(context).showSnackBar(snackBar);
+                    }
+                    setState(() {});
+                  }),
             ),
           ),
           Row(
