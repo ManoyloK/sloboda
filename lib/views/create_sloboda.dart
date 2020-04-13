@@ -12,7 +12,7 @@ import 'package:sloboda/views/components/soft_container.dart';
 import 'package:sloboda/views/locale_selection.dart';
 
 class CreateSlobodaView extends StatefulWidget {
-  static String routeName = '/createSloboda';
+  static String routeName = '/';
 
   @override
   _CreateSlobodaViewState createState() => _CreateSlobodaViewState();
