@@ -16,4 +16,20 @@ class CityEvent {
       sourceEvent: event.sourceEvent,
     );
   }
+
+  static CityEvent fromJson(Map<String, dynamic> json) {
+    return CityEvent(
+      yearHappened: json["yearHappened"],
+      season: CitySeason.fromJson(json["season"]),
+      sourceEvent: EventMessage.fromJson(json["sourceEvent"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "yearHappened": yearHappened,
+      "season": season.toJson(),
+      "sourceEvent": sourceEvent == null ? {} : sourceEvent.toJson(),
+    };
+  }
 }

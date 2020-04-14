@@ -33,7 +33,7 @@ class Sloboda {
     River(),
   ];
 
-  final List<CityEvent> events = [];
+  List<CityEvent> events = List<CityEvent>();
   final Queue<RandomTurnEvent> pendingNextEvents = Queue();
   bool disableRandomEvents;
 
@@ -439,6 +439,12 @@ class Sloboda {
     }
   }
 
+  _subscribeToBuildings() {
+    for (Producible rb in [...resourceBuildings, ...naturalResources]) {
+      rb.changes.stream.listen(_buildingChangesListener);
+    }
+  }
+
   factory Sloboda.fromJson(Map<String, dynamic> json) {
     Sloboda city = new Sloboda(name: json["name"])
       ..currentYear = json["currentYear"]
@@ -457,16 +463,13 @@ class Sloboda {
           .map((json) => ResourceBuilding.fromJson(json))
           .toList()
       ..props = CityProps.fromJson(json["props"])
-      ..stock = Stock.fromJson(json["stock"]);
+      ..stock = Stock.fromJson(json["stock"])
+      ..events = (json["events"] as List)
+          .map((event) => CityEvent.fromJson(event))
+          .toList() as List<CityEvent>;
     city._fixCitizenOccupations();
     city._subscribeToBuildings();
     return city;
-  }
-
-  _subscribeToBuildings() {
-    for (Producible rb in [...resourceBuildings, ...naturalResources]) {
-      rb.changes.stream.listen(_buildingChangesListener);
-    }
   }
 
   Map<String, dynamic> toJson() {
@@ -481,6 +484,7 @@ class Sloboda {
       "resourceBuildings": resourceBuildings.map((rb) => rb.toJson()).toList(),
       "props": props.toJson(),
       "stock": stock.toJson(),
+      "events": events.map((event) => event.toJson()).toList(),
     };
   }
 

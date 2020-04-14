@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/divider.dart';
-import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/city_properties.dart';
@@ -53,36 +52,32 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(
-                        child: LocaleSelection(
-                          locale: SlobodaLocalizations.locale,
-                          onLocaleChanged: (Locale locale) {
-                            setState(() {
-                              SlobodaLocalizations.locale = locale;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SoftContainer(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Row(
+                          child: Column(
                             children: <Widget>[
-                              Text(
-                                SlobodaLocalizations.labelInputSlobodaName,
+                              LocaleSelection(
+                                locale: SlobodaLocalizations.locale,
+                                onLocaleChanged: (Locale locale) {
+                                  setState(() {
+                                    SlobodaLocalizations.locale = locale;
+                                  });
+                                },
                               ),
-                              HDivider(),
-                              Expanded(
-                                flex: 1,
-                                child: TextField(
-                                  controller: _textInputController,
-                                ),
-                              )
+                              Row(
+                                children: [
+                                  Text(
+                                    SlobodaLocalizations.labelInputSlobodaName,
+                                  ),
+                                  HDivider(),
+                                  Expanded(
+                                    flex: 1,
+                                    child: TextField(
+                                      controller: _textInputController,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -155,14 +150,20 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                                       MainAxisAlignment.spaceEvenly,
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
-                                  children: _buildChildren(context),
+                                  children:
+                                      _buildChildren(context, constraints),
                                 ),
                               );
                             } else {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: _buildChildren(context),
+                              return Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children:
+                                      _buildChildren(context, constraints),
+                                ),
                               );
                             }
                           },
@@ -181,77 +182,71 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
     );
   }
 
-  _buildChildren(BuildContext context) {
+  _buildChildren(BuildContext context, BoxConstraints constraints) {
     var width = MediaQuery.of(context).size.width;
-    var imageWidth = width * 0.6;
+    var imageWidth = width * 0.5;
+    var isInLandScape = constraints.maxWidth > constraints.maxHeight;
     return [
       Expanded(
-        flex: 15,
+        flex: 3,
         child: SoftContainer(
-          child: FullWidth(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "images/city_props/citizen.png",
-                  width: imageWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                "images/city_props/citizen.png",
+                width: imageWidth,
+              ),
+              PressedInContainer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ButtonText(SlobodaLocalizations.normalSloboda),
                 ),
-                PressedInContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ButtonText(SlobodaLocalizations.normalSloboda),
-                  ),
-                  onPress: () {
-                    Navigator.pushNamed(
-                      context,
-                      CityGame.routeName,
-                      arguments: CityGameArguments(
-                        city: Sloboda(name: _textInputController.text),
-                      ),
-                    );
-                  },
-                ),
-              ],
-            ),
+                onPress: () {
+                  Navigator.pushNamed(
+                    context,
+                    CityGame.routeName,
+                    arguments: CityGameArguments(
+                      city: Sloboda(name: _textInputController.text),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),
+      isInLandScape ? HDivider() : VDivider(),
       Expanded(
-        flex: 1,
-        child: AllDivider(),
-      ),
-      Expanded(
-        flex: 15,
+        flex: 3,
         child: SoftContainer(
-          child: FullWidth(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "images/city_props/cossack.png",
-                  width: imageWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                "images/city_props/cossack.png",
+                width: imageWidth,
+              ),
+              PressedInContainer(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ButtonText(SlobodaLocalizations.bigSloboda),
                 ),
-                PressedInContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ButtonText(SlobodaLocalizations.bigSloboda),
-                  ),
-                  onPress: () {
-                    Navigator.pushNamed(
-                      context,
-                      CityGame.routeName,
-                      arguments: CityGameArguments(
-                        city: Sloboda(
-                          name: _textInputController.text,
-                          stock: Stock.bigStock(),
-                          props: CityProps.bigProps(),
-                        ),
+                onPress: () {
+                  Navigator.pushNamed(
+                    context,
+                    CityGame.routeName,
+                    arguments: CityGameArguments(
+                      city: Sloboda(
+                        name: _textInputController.text,
+                        stock: Stock.bigStock(),
+                        props: CityProps.bigProps(),
                       ),
-                    );
-                  },
-                ),
-              ],
-            ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

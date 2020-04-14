@@ -19,6 +19,7 @@ abstract class CitySeason {
         return AutumnSeason();
       case "SPRING":
         return SpringSeason();
+      default: throw "City Season ${json['type']} is not recognized.";
     }
   }
 

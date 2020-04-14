@@ -56,6 +56,8 @@ abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
         return WatchTower();
       case "WALL":
         return Wall();
+      default:
+        throw "City building type ${json['type']} was not recognized";
     }
   }
 

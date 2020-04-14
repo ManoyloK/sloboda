@@ -83,8 +83,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                 ),
                 VDivider(),
                 PressedInContainer(
-                  onPress: canProduceCossack(
-                          city.props, city.stock, city.hasFreeCitizens())
+                  onPress: canProduce
                       ? () {
                           tryToCreateCossack(city);
                         }

@@ -23,6 +23,32 @@ class EventMessage {
       @required this.event,
       this.imagePath,
       this.cityProps});
+
+  Map<String, dynamic> toJson() {
+    var result = {
+      "stock": stock == null ? {} : stock.toJson(),
+      "messageKey": messageKey,
+      "event": event == null ? {} : event.toJson(),
+      "cityProps": cityProps == null ? {} : cityProps.toJson(),
+      "imagePath": imagePath
+    };
+
+    return result;
+  }
+
+  static fromJson(Map<String, dynamic> json) {
+    return EventMessage(
+      stock: Stock.fromJson(json["stock"]),
+      messageKey: json["messageKey"],
+      event: RandomTurnEvent.fromJson(
+        json["event"],
+      ),
+      cityProps: CityProps.fromJson(
+        json["cityProps"],
+      ),
+      imagePath: json["imagePath"],
+    );
+  }
 }
 
 abstract class RandomTurnEvent {
@@ -43,6 +69,18 @@ abstract class RandomTurnEvent {
 
   int probability = 0;
   int successRate = 0;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "localizedKey": localizedKey,
+    };
+  }
+
+  static RandomTurnEvent fromJson(Map<String, dynamic> json) {
+    var key = json["localizedKey"];
+    return RandomTurnEvent.allEvents
+        .firstWhere((event) => event.localizedKey == key);
+  }
 
   bool satisfiesConditions(Sloboda city) {
     for (var func in conditions) {
@@ -375,21 +413,27 @@ class UniteWithNeighbours extends RandomTurnEvent {
   String localizedKey = 'randomTurnEvent.uniteWithNeighbours';
   int probability = 100;
 
-  Stock stockSuccess = Stock(values: {
-    RESOURCE_TYPES.FUR: 30,
-    RESOURCE_TYPES.FISH: 30,
-    RESOURCE_TYPES.MONEY: 50,
-    RESOURCE_TYPES.FOOD: 100,
-    RESOURCE_TYPES.WOOD: 100,
-    RESOURCE_TYPES.STONE: 100,
-  });
+  Stock stockSuccess = Stock(
+    values: {
+      RESOURCE_TYPES.FUR: 30,
+      RESOURCE_TYPES.FISH: 30,
+      RESOURCE_TYPES.MONEY: 50,
+      RESOURCE_TYPES.FOOD: 100,
+      RESOURCE_TYPES.WOOD: 100,
+      RESOURCE_TYPES.STONE: 100,
+    },
+  );
 
   Function execute(Sloboda city) {
     return () {
       return EventMessage(
         event: this,
         stock: stockSuccess,
-        cityProps: CityProps(values: {CITY_PROPERTIES.CITIZENS: 20}),
+        cityProps: CityProps(
+          values: {
+            CITY_PROPERTIES.CITIZENS: 20,
+          },
+        ),
         messageKey: this.localizedKey,
       );
     };
