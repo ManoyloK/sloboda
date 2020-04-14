@@ -466,7 +466,7 @@ class Sloboda {
       ..stock = Stock.fromJson(json["stock"])
       ..events = (json["events"] as List)
           .map((event) => CityEvent.fromJson(event))
-          .toList() as List<CityEvent>;
+          .toList();
     city._fixCitizenOccupations();
     city._subscribeToBuildings();
     return city;
