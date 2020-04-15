@@ -49,7 +49,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Expanded(
-                    flex: 2,
+                    flex: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(
@@ -143,7 +143,7 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                     ),
                   ),
                   Expanded(
-                    flex: 5,
+                    flex: 6,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SoftContainer(
