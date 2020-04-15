@@ -48,96 +48,85 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Expanded(
-                    flex: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SoftContainer(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: <Widget>[
-                              LocaleSelection(
-                                locale: SlobodaLocalizations.locale,
-                                onLocaleChanged: (Locale locale) {
-                                  setState(() {
-                                    SlobodaLocalizations.locale = locale;
-                                  });
-                                },
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    SlobodaLocalizations.labelInputSlobodaName,
-                                  ),
-                                  HDivider(),
-                                  Expanded(
-                                    flex: 1,
-                                    child: TextField(
-                                      controller: _textInputController,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (savedSlobodaJson != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SoftContainer(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            LocaleSelection(
+                              locale: SlobodaLocalizations.locale,
+                              onLocaleChanged: (Locale locale) {
+                                setState(() {
+                                  SlobodaLocalizations.locale = locale;
+                                });
+                              },
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  SlobodaLocalizations.labelInputSlobodaName,
+                                ),
+                                HDivider(),
                                 Expanded(
                                   flex: 1,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                  child: TextField(
+                                    controller: _textInputController,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (savedSlobodaJson != null)
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Center(
+                                      child: TitleText(SlobodaLocalizations
+                                          .youHaveSavedGame),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Center(
-                                          child: TitleText(SlobodaLocalizations
-                                              .youHaveSavedGame),
+                                      PressedInContainer(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ButtonText(
+                                              SlobodaLocalizations.loadGame),
                                         ),
+                                        onPress: () {
+                                          Sloboda city = Sloboda.fromJson(
+                                              savedSlobodaJson);
+                                          Navigator.pushNamed(
+                                            context,
+                                            CityGame.routeName,
+                                            arguments: CityGameArguments(
+                                              city: city,
+                                            ),
+                                          );
+                                        },
                                       ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          PressedInContainer(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ButtonText(
-                                                  SlobodaLocalizations
-                                                      .loadGame),
-                                            ),
-                                            onPress: () {
-                                              Sloboda city = Sloboda.fromJson(
-                                                  savedSlobodaJson);
-                                              Navigator.pushNamed(
-                                                context,
-                                                CityGame.routeName,
-                                                arguments: CityGameArguments(
-                                                  city: city,
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                          HDivider(),
-                                          PressedInContainer(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: ButtonText(
-                                                  SlobodaLocalizations
-                                                      .deleteGame),
-                                            ),
-                                            onPress: () {
-                                              AppPreferences.instance
-                                                  .removeSavedSloboda();
-                                              setState(() {});
-                                            },
-                                          ),
-                                        ],
+                                      HDivider(),
+                                      PressedInContainer(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ButtonText(
+                                              SlobodaLocalizations.deleteGame),
+                                        ),
+                                        onPress: () {
+                                          AppPreferences.instance
+                                              .removeSavedSloboda();
+                                          setState(() {});
+                                        },
                                       ),
                                     ],
                                   ),
-                                ),
-                            ],
-                          ),
+                                ],
+                              ),
+                          ],
                         ),
                       ),
                     ),
@@ -191,19 +180,26 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
 
   _buildChildren(BuildContext context, BoxConstraints constraints) {
     var width = MediaQuery.of(context).size.width;
-    var imageWidth = width * 0.5;
+    var height = MediaQuery.of(context).size.height;
     var isInLandScape = constraints.maxWidth > constraints.maxHeight;
+    var imageWidth = isInLandScape ? width * 0.5 : height * 0.5;
+//    if (height < 700) {
+//      imageWidth = width * 0.3;
+//    }
     return [
       Expanded(
-        flex: 3,
+        flex: 1,
         child: SoftContainer(
           child: FullWidth(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                  "images/city_props/citizen.png",
-                  width: imageWidth,
+                Expanded(
+                  flex: 1,
+                  child: Image.asset(
+                    "images/city_props/citizen.png",
+                    width: imageWidth,
+                  ),
                 ),
                 PressedInContainer(
                   child: Padding(
@@ -227,15 +223,18 @@ class _CreateSlobodaViewState extends State<CreateSlobodaView> {
       ),
       isInLandScape ? HDivider() : VDivider(),
       Expanded(
-        flex: 3,
+        flex: 1,
         child: SoftContainer(
           child: FullWidth(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Image.asset(
-                  "images/city_props/cossack.png",
-                  width: imageWidth,
+                Expanded(
+                  flex: 1,
+                  child: Image.asset(
+                    "images/city_props/cossack.png",
+                    width: imageWidth,
+                  ),
                 ),
                 PressedInContainer(
                   child: Padding(
