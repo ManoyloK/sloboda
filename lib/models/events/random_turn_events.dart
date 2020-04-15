@@ -26,26 +26,30 @@ class EventMessage {
 
   Map<String, dynamic> toJson() {
     var result = {
-      "stock": stock == null ? {} : stock.toJson(),
+      "stock": stock == null ? null : stock.toJson(),
       "messageKey": messageKey,
-      "event": event == null ? {} : event.toJson(),
-      "cityProps": cityProps == null ? {} : cityProps.toJson(),
+      "event": event == null ? null : event.toJson(),
+      "cityProps": cityProps == null ? null : cityProps.toJson(),
       "imagePath": imagePath
     };
 
     return result;
   }
 
-  static fromJson(Map<String, dynamic> json) {
+  static EventMessage fromJson(Map<String, dynamic> json) {
     return EventMessage(
-      stock: Stock.fromJson(json["stock"]),
+      stock: json["stock"] == null ? null : Stock.fromJson(json["stock"]),
       messageKey: json["messageKey"],
-      event: RandomTurnEvent.fromJson(
-        json["event"],
-      ),
-      cityProps: CityProps.fromJson(
-        json["cityProps"],
-      ),
+      event: json["event"] == null
+          ? null
+          : RandomTurnEvent.fromJson(
+              json["event"],
+            ),
+      cityProps: json["cityProps"] == null
+          ? null
+          : CityProps.fromJson(
+              json["cityProps"],
+            ),
       imagePath: json["imagePath"],
     );
   }
@@ -267,6 +271,8 @@ class RunnersFromSuppression extends RandomTurnEvent {
   int probability = 20;
   int successRate = 100;
 
+  String localizedKey = 'randomTurnEvent.runnersFromSuppresion';
+
   Stock stockSuccess = Stock(
     values: {
       RESOURCE_TYPES.FOOD: 15,
@@ -289,6 +295,7 @@ class RunnersFromSuppression extends RandomTurnEvent {
 }
 
 class SettlersArrived extends RandomTurnEvent {
+  String localizedKey = 'randomTurnEvent.settlersArrived';
   String successMessageKey = 'randomTurnEvent.settlersArrived';
   int probability = 20;
   int successRate = 100;
@@ -323,6 +330,7 @@ class SettlersArrived extends RandomTurnEvent {
 }
 
 class GuestsFromSich extends RandomTurnEvent {
+  String localizedKey = 'randomTurnEvent.guestsFromSich';
   String successMessageKey = 'randomTurnEvent.guestsFromSich';
   int probability = 30;
   int successRate = 100;
@@ -347,6 +355,7 @@ class GuestsFromSich extends RandomTurnEvent {
 }
 
 class ChambulCapture extends RandomTurnEvent {
+  String localizedKey = 'randomTurnEvent.successChambulCapture';
   String successMessageKey = 'randomTurnEvent.successChambulCapture';
   String failureMessageKey = 'randomTurnEvent.failureChambulCapture';
   int probability = 20;

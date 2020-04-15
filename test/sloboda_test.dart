@@ -296,5 +296,12 @@ void main() {
       expect(newCity.stock.getByType(RESOURCE_TYPES.MONEY),
           equals(city.stock.getByType(RESOURCE_TYPES.MONEY)));
     });
+
+    test("Can (de)serialize CityEvents", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+
+      expect(newCity.events.length, equals(city.events.length));
+    });
   });
 }

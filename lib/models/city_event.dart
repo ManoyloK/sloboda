@@ -21,7 +21,9 @@ class CityEvent {
     return CityEvent(
       yearHappened: json["yearHappened"],
       season: CitySeason.fromJson(json["season"]),
-      sourceEvent: EventMessage.fromJson(json["sourceEvent"]),
+      sourceEvent: json["sourceEvent"] == null
+          ? null
+          : EventMessage.fromJson(json["sourceEvent"]),
     );
   }
 
@@ -29,7 +31,7 @@ class CityEvent {
     return {
       "yearHappened": yearHappened,
       "season": season.toJson(),
-      "sourceEvent": sourceEvent == null ? {} : sourceEvent.toJson(),
+      "sourceEvent": sourceEvent == null ? null : sourceEvent.toJson(),
     };
   }
 }
