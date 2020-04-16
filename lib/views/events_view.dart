@@ -6,6 +6,7 @@ import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/rotatable_image.dart';
 import 'package:sloboda/components/title_text.dart';
+import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/city_event.dart';
 import 'package:sloboda/models/events/random_choicable_events.dart';
@@ -33,15 +34,17 @@ Map<String, List<CityEvent>> foldEvents(List<CityEvent> events) {
 }
 
 class EventsView extends StatelessWidget {
+  final int maxEventsNumber = 16;
   Map<String, List<CityEvent>> _events;
 
   EventsView({List events}) {
-    _events = foldEvents(events);
+    _events = foldEvents(events.takeLast(maxEventsNumber));
   }
 
   Widget build(BuildContext context) {
     final city = InheritedCity.of(context).city;
     final Queue<RandomTurnEvent> pendingEvents = city.pendingNextEvents;
+    final itemCount = _events.keys.length;
     return Column(
       children: <Widget>[
         if (pendingEvents.isNotEmpty)
@@ -60,7 +63,7 @@ class EventsView extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: SoftContainer(
                 child: ListView.separated(
-                  itemCount: _events.keys.length,
+                  itemCount: itemCount,
                   separatorBuilder: (context, index) {
                     return VDivider();
                   },
@@ -95,7 +98,8 @@ class EventsView extends StatelessWidget {
                             ),
                             ..._events[key].reversed.map((event) {
                               var textStyle;
-                              if (city.currentSeason.isNextTo(event.season)) {
+                              if (city.currentSeason.isNextTo(event.season) &&
+                                  city.currentYear == event.yearHappened) {
                                 textStyle =
                                     Theme.of(context).textTheme.headline6;
                               }
