@@ -186,6 +186,7 @@ void main() {
     test("Can (de)serialize currentSeason", () {
       var map = city.toJson();
       var newCity = Sloboda.fromJson(map);
+      newCity.version = "test";
       expect(newCity.currentSeason.type, equals(CITY_SEASONS.AUTUMN));
     });
 
@@ -302,6 +303,21 @@ void main() {
       var newCity = Sloboda.fromJson(map);
 
       expect(newCity.events.length, equals(city.events.length));
+    });
+
+    test("Can (de)serialize version", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+
+      expect(newCity.version, city.version);
+    });
+
+    test("Can (de)serialize pendingNextEvents", () {
+      var map = city.toJson();
+      var newCity = Sloboda.fromJson(map);
+
+      expect(newCity.pendingNextEvents.length, city.pendingNextEvents.length);
+      expect(newCity.pendingNextEvents.isNotEmpty, isTrue);
     });
   });
 }
