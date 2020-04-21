@@ -52,6 +52,7 @@ class _PressedInContainerState extends State<PressedInContainer>
         }
       },
       child: ClayContainer(
+        emboss: widget.onPress == null,
         color: Theme.of(context).backgroundColor,
         borderRadius: 15,
         depth: calculatedFirstDepth.toInt() == 0

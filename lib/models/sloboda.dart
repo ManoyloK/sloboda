@@ -6,6 +6,7 @@ import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
+import 'package:sloboda/models/buildings/city_buildings/house.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/citizen.dart';
@@ -14,17 +15,17 @@ import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/events/random_choicable_events.dart';
 import 'package:sloboda/models/events/random_turn_events.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/seasons.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/models/stock.dart';
 
 class Sloboda {
+  String version;
   String name;
   int foundedYear = 1550;
   int currentYear = 1550;
   CitySeason currentSeason = WinterSeason();
-  List<CityBuilding> cityBuildings = [
-    CityBuilding.fromType(CITY_BUILDING_TYPES.HOUSE),
-  ];
+  List<CityBuilding> cityBuildings = [House()];
   List<Citizen> citizens = [];
 
   List<ResourceBuilding> resourceBuildings = [];
@@ -33,8 +34,8 @@ class Sloboda {
     River(),
   ];
 
-  final List<CityEvent> events = [];
-  final Queue<RandomTurnEvent> pendingNextEvents = Queue();
+  List<CityEvent> events = List<CityEvent>();
+  Queue<RandomTurnEvent> pendingNextEvents = Queue();
   bool disableRandomEvents;
 
   Stock stock;
@@ -43,7 +44,7 @@ class Sloboda {
   BehaviorSubject _innerChanges = BehaviorSubject();
   ValueStream changes;
 
-  List<Function> _nextRandomEvents = [];
+  List<EventMessage> nextRandomEvents = [];
 
   Sloboda(
       {this.name, this.stock, this.props, this.disableRandomEvents = false}) {
@@ -66,6 +67,8 @@ class Sloboda {
     for (var rb in resourceBuildings) {
       rb.changes.stream.listen(_buildingChangesListener);
     }
+
+    version = SlobodaLocalizations.appVersionNumber;
   }
 
   _buildingChangesListener(event) {
@@ -108,8 +111,7 @@ class Sloboda {
       removeFromStock(buildable.requiredToBuild);
       if (buildable is ResourceBuilding) {
         resourceBuildings.add(buildable);
-        Producible producible = buildable;
-        producible.changes.stream.listen(_buildingChangesListener);
+        buildable.changes.stream.listen(_buildingChangesListener);
       } else if (buildable is CityBuilding) {
         cityBuildings.add(buildable);
       }
@@ -159,8 +161,7 @@ class Sloboda {
   }
 
   void _runAttachedEvents() {
-    for (var _event in _nextRandomEvents) {
-      EventMessage event = _event();
+    for (var event in nextRandomEvents) {
       this.stock + event.stock;
       this.addProps(event.cityProps);
       if (event.cityProps != null) {
@@ -184,7 +185,7 @@ class Sloboda {
       );
     }
 
-    _nextRandomEvents.clear();
+    nextRandomEvents.clear();
   }
 
   List<RandomTurnEvent> getChoicableRandomEvents() {
@@ -219,13 +220,13 @@ class Sloboda {
   }
 
   void runChoicableEventResult(ChoicableRandomTurnEvent event) {
-    Function f = event.makeChoice(true, this);
-    _nextRandomEvents.add(f);
+    EventMessage f = event.makeChoice(true, this);
+    nextRandomEvents.add(f);
   }
 
   void removeCitizens({amount}) {
     for (var i = 0; i < amount; i++) {
-      final c = citizens.takeRandom();
+      final c = citizens.where((c) => !c.occupied).toList().takeRandom();
       c.free();
       citizens.remove(c);
     }
@@ -440,6 +441,89 @@ class Sloboda {
     }
   }
 
+  _subscribeToBuildings() {
+    for (Producible rb in [...resourceBuildings, ...naturalResources]) {
+      rb.changes.stream.listen(_buildingChangesListener);
+    }
+  }
+
+  factory Sloboda.fromJson(Map<String, dynamic> json) {
+    List pendingNextEventsMap = json["pendingNextEvents"] as List;
+    String version = json["version"];
+    Sloboda city = new Sloboda(name: json["name"])
+      ..currentYear = json["currentYear"]
+      ..foundedYear = json["foundedYear"]
+      ..currentSeason = CitySeason.fromJson(json["currentSeason"])
+      ..cityBuildings = (json["cityBuildings"] as List)
+          .map((json) => CityBuilding.fromJson(json as Map<String, dynamic>))
+          .toList()
+      ..citizens = (json["citizens"] as List)
+          .map((json) => Citizen.fromJson(json as Map<String, dynamic>))
+          .toList()
+      ..naturalResources = (json["naturalResources"] as List)
+          .map((json) => NaturalResource.fromJson(json))
+          .toList()
+      ..resourceBuildings = (json["resourceBuildings"] as List)
+          .map((json) => ResourceBuilding.fromJson(json))
+          .toList()
+      ..props = CityProps.fromJson(json["props"])
+      ..stock = Stock.fromJson(json["stock"])
+      ..events = (json["events"] as List)
+          .map((event) => CityEvent.fromJson(event))
+          .toList()
+      ..pendingNextEvents = Queue.from(pendingNextEventsMap == null
+          ? []
+          : pendingNextEventsMap
+              .map((event) => RandomTurnEvent.fromJson(event)))
+      ..version = version == null ? SlobodaLocalizations.appVersionNumber : json["version"];
+    city._fixCitizenOccupations();
+    city._subscribeToBuildings();
+    return city;
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "currentYear": currentYear,
+      "foundedYear": foundedYear,
+      "currentSeason": currentSeason.toJson(),
+      "cityBuildings": cityBuildings.map((cb) => cb.toJson()).toList(),
+      "citizens": citizens.map((c) => c.toJson()).toList(),
+      "naturalResources": naturalResources.map((nr) => nr.toJson()).toList(),
+      "resourceBuildings": resourceBuildings.map((rb) => rb.toJson()).toList(),
+      "props": props.toJson(),
+      "stock": stock.toJson(),
+      "events": events.map((event) => event.toJson()).toList(),
+      "pendingNextEvents":
+          pendingNextEvents.map((event) => event.toJson()).toList(),
+      "version": version,
+    };
+  }
+
+  _fixCitizenOccupations() {
+    var amountOfCitizens = citizens.length;
+    citizens.clear();
+    var addedBackCounter = 0;
+    for (var nb in naturalResources) {
+      nb.assignedHumans.forEach((element) {
+        element.assignedTo = nb;
+        citizens.add(element);
+        addedBackCounter++;
+      });
+    }
+
+    for (var rb in resourceBuildings) {
+      rb.assignedHumans.forEach((element) {
+        element.assignedTo = rb;
+        citizens.add(element);
+        addedBackCounter++;
+      });
+    }
+
+    var leftToAdd = amountOfCitizens - addedBackCounter;
+    addCitizens(amount: leftToAdd);
+  }
+
   void dispose() {
     _innerChanges.close();
   }
@@ -450,7 +534,7 @@ class MissingResources implements Exception {
 
   MissingResources(this.causes);
 
-  String toLocalizedString() {
+  String localizedKey() {
     return causes.entries
         .map((c) {
           return '${SlobodaLocalizations.getForKey(c.key)}: ${c.value}';

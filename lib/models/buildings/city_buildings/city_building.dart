@@ -10,7 +10,8 @@ import 'package:sloboda/models/resources/resource.dart';
 
 abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
   StockItem<CITY_PROPERTIES> produces;
-
+  CITY_BUILDING_TYPES type;
+  CityBuilding();
   static CityBuilding fromType(CITY_BUILDING_TYPES type) {
     switch (type) {
       case CITY_BUILDING_TYPES.CHURCH:
@@ -42,6 +43,25 @@ abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
   Map<CITY_PROPERTIES, int> generate() {
     return Map.fromEntries([MapEntry(produces.type, produces.value)]);
   }
+
+  factory CityBuilding.fromJson(Map<String, dynamic> json) {
+    switch (json["type"]) {
+      case "HOUSE":
+        return House();
+      case "CHURCH":
+        return Church();
+      case "TOWER":
+        return Tower();
+      case "WATCH_TOWER":
+        return WatchTower();
+      case "WALL":
+        return Wall();
+      default:
+        throw "City building type ${json['type']} was not recognized";
+    }
+  }
+
+  Map<String, dynamic> toJson();
 }
 
 enum CITY_BUILDING_TYPES { HOUSE, CHURCH, TOWER, WATCH_TOWER, WALL }

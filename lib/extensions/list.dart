@@ -17,7 +17,18 @@ extension Divide<T> on List<T> {
   }
 }
 
-extension TakeRandom<T> on List<T> {
+extension Takers<T> on List<T> {
+  List<T> takeLast(int number) {
+    if (number < 0) {
+      return List<T>();
+    }
+    if (length <= number) {
+      return this;
+    }
+
+    return this.sublist(length - number);
+  }
+
   T takeRandom() {
     int max = this.length;
     Random random = Random();

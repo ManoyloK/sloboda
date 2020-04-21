@@ -7,6 +7,7 @@ import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/inherited_city.dart';
+import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/city_buildings/city_buildings_page.dart';
@@ -111,13 +112,23 @@ class _CityGameState extends State<CityGame>
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 VDivider(),
-                                LocaleSelection(
-                                  locale: SlobodaLocalizations.locale,
-                                  onLocaleChanged: (Locale locale) {
-                                    setState(() {
-                                      SlobodaLocalizations.locale = locale;
-                                    });
-                                  },
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    LocaleSelection(
+                                      locale: SlobodaLocalizations.locale,
+                                      onLocaleChanged: (Locale locale) {
+                                        setState(() {
+                                          SlobodaLocalizations.locale = locale;
+                                        });
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(SlobodaLocalizations
+                                          .appVersionNumber),
+                                    ),
+                                  ],
                                 ),
                                 TitleText(
                                   city.name,
@@ -201,6 +212,7 @@ class _CityGameState extends State<CityGame>
     return PressedInContainer(
       onPress: () {
         city.makeTurn();
+        AppPreferences.instance.saveSloboda(city.toJson());
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

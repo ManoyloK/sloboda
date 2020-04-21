@@ -1,26 +1,28 @@
 import 'dart:collection';
 
 abstract class Stockable<T> {
-  Map<T, int> _map = {};
+  Map<T, int> values = {};
+
+  Map<String, dynamic> toJson();
 
   Stockable(Map<T, int> props) {
     if (props != null) {
-      _map = Map.from(props);
+      values = Map.from(props);
     }
   }
   List<T> getTypeKeys() {
-    return _map.keys.toList();
+    return values.keys.toList();
   }
 
   operator <(Stockable<T> anotherMap) {
-    if (anotherMap._map.keys.length < this._map.keys.length) {
+    if (anotherMap.values.keys.length < this.values.keys.length) {
       return false;
     }
-    var queue = Queue.from(this._map.keys);
+    var queue = Queue.from(this.values.keys);
     while (queue.isNotEmpty) {
       var element = queue.removeFirst();
-      var localValue = this._map[element];
-      if (anotherMap._map[element] < (localValue == null ? 0 : localValue)) {
+      var localValue = this.values[element];
+      if (anotherMap.values[element] < (localValue == null ? 0 : localValue)) {
         return false;
       }
     }
@@ -28,14 +30,14 @@ abstract class Stockable<T> {
   }
 
   operator >(Stockable<T> anotherMap) {
-    if (anotherMap._map.keys.length > this._map.keys.length) {
+    if (anotherMap.values.keys.length > this.values.keys.length) {
       return false;
     }
-    var queue = Queue.from(this._map.keys);
+    var queue = Queue.from(this.values.keys);
     while (queue.isNotEmpty) {
       var element = queue.removeFirst();
-      var localValue = this._map[element];
-      if (anotherMap._map[element] > (localValue == null ? 0 : localValue)) {
+      var localValue = this.values[element];
+      if (anotherMap.values[element] > (localValue == null ? 0 : localValue)) {
         return false;
       }
     }
@@ -43,36 +45,40 @@ abstract class Stockable<T> {
   }
 
   int getByType(T type) {
-    return this._map[type];
+    return this.values[type];
   }
 
   addToType(T type, int amount) {
-    if (_map[type] == null) {
-      _map[type] = 0;
+    if (values[type] == null) {
+      values[type] = 0;
     }
-    _map[type] = _map[type] + amount;
-    if (_map[type] < 0) {
-      _map[type] = 0;
+    values[type] = values[type] + amount;
+    if (values[type] < 0) {
+      values[type] = 0;
     }
+  }
+
+  setType(T type, int amount) {
+    values[type] = amount;
   }
 
   Map<T, int> asMap() {
-    return Map.from(_map);
+    return Map.from(values);
   }
 
   removeFromType(T type, int amount) {
-    if (_map[type] == null) {
+    if (values[type] == null) {
       return;
     }
-    _map[type] = _map[type] - amount;
-    if (_map[type] < 0) {
-      _map[type] = 0;
+    values[type] = values[type] - amount;
+    if (values[type] < 0) {
+      values[type] = 0;
     }
   }
 
   operator +(Stockable another) {
     if (another != null) {
-      this._map.forEach((key, _) {
+      this.values.forEach((key, _) {
         if (another.getByType(key) != null) {
           this.addToType(key, another.getByType(key));
         }
@@ -82,7 +88,7 @@ abstract class Stockable<T> {
 
   operator -(Stockable another) {
     if (another != null) {
-      this._map.forEach((key, _) {
+      this.values.forEach((key, _) {
         if (another.getByType(key) != null) {
           this.removeFromType(key, another.getByType(key));
         }

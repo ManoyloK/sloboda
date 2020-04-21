@@ -4,6 +4,7 @@ import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
 
 class Church extends CityBuilding {
+  CITY_BUILDING_TYPES type = CITY_BUILDING_TYPES.CHURCH;
   StockItem<CITY_PROPERTIES> produces = CityFaith(1);
   Map<RESOURCE_TYPES, int> requiredToBuild = {
     RESOURCE_TYPES.FOOD: 100,
@@ -11,6 +12,8 @@ class Church extends CityBuilding {
     RESOURCE_TYPES.WOOD: 50,
     RESOURCE_TYPES.MONEY: 20
   };
+
+  Church();
 
   String localizedKey = 'cityBuildings.church';
   String localizedDescriptionKey = 'cityBuildings.churchDescription';
@@ -21,5 +24,9 @@ class Church extends CityBuilding {
 
   String toImagePath() {
     return 'images/city_buildings/church.png';
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"type": "CHURCH"};
   }
 }

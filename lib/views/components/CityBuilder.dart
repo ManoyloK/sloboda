@@ -18,7 +18,6 @@ class _CityBuilderState extends State<CityBuilder> {
     return StreamBuilder(
       stream: widget.city.changes,
       builder: (context, snapshot) {
-        print('Rebuilding city');
         return widget.builder(context);
       },
     );

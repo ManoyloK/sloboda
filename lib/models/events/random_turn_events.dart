@@ -6,6 +6,7 @@ import 'package:sloboda/models/city_event.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/events/random_choicable_events.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/seasons.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/stock.dart';
 
@@ -22,6 +23,36 @@ class EventMessage {
       @required this.event,
       this.imagePath,
       this.cityProps});
+
+  Map<String, dynamic> toJson() {
+    var result = {
+      "stock": stock == null ? null : stock.toJson(),
+      "messageKey": messageKey,
+      "event": event == null ? null : event.toJson(),
+      "cityProps": cityProps == null ? null : cityProps.toJson(),
+      "imagePath": imagePath
+    };
+
+    return result;
+  }
+
+  static EventMessage fromJson(Map<String, dynamic> json) {
+    return EventMessage(
+      stock: json["stock"] == null ? null : Stock.fromJson(json["stock"]),
+      messageKey: json["messageKey"],
+      event: json["event"] == null
+          ? null
+          : RandomTurnEvent.fromJson(
+              json["event"],
+            ),
+      cityProps: json["cityProps"] == null
+          ? null
+          : CityProps.fromJson(
+              json["cityProps"],
+            ),
+      imagePath: json["imagePath"],
+    );
+  }
 }
 
 abstract class RandomTurnEvent {
@@ -42,6 +73,18 @@ abstract class RandomTurnEvent {
 
   int probability = 0;
   int successRate = 0;
+
+  Map<String, dynamic> toJson() {
+    return {
+      "localizedKey": localizedKey,
+    };
+  }
+
+  static RandomTurnEvent fromJson(Map<String, dynamic> json) {
+    var key = json["localizedKey"];
+    return RandomTurnEvent.allEvents
+        .firstWhere((event) => event.localizedKey == key);
+  }
 
   bool satisfiesConditions(Sloboda city) {
     for (var func in conditions) {
@@ -228,6 +271,8 @@ class RunnersFromSuppression extends RandomTurnEvent {
   int probability = 20;
   int successRate = 100;
 
+  String localizedKey = 'randomTurnEvent.runnersFromSuppresion';
+
   Stock stockSuccess = Stock(
     values: {
       RESOURCE_TYPES.FOOD: 15,
@@ -250,6 +295,7 @@ class RunnersFromSuppression extends RandomTurnEvent {
 }
 
 class SettlersArrived extends RandomTurnEvent {
+  String localizedKey = 'randomTurnEvent.settlersArrived';
   String successMessageKey = 'randomTurnEvent.settlersArrived';
   int probability = 20;
   int successRate = 100;
@@ -284,6 +330,7 @@ class SettlersArrived extends RandomTurnEvent {
 }
 
 class GuestsFromSich extends RandomTurnEvent {
+  String localizedKey = 'randomTurnEvent.guestsFromSich';
   String successMessageKey = 'randomTurnEvent.guestsFromSich';
   int probability = 30;
   int successRate = 100;
@@ -308,6 +355,7 @@ class GuestsFromSich extends RandomTurnEvent {
 }
 
 class ChambulCapture extends RandomTurnEvent {
+  String localizedKey = 'randomTurnEvent.successChambulCapture';
   String successMessageKey = 'randomTurnEvent.successChambulCapture';
   String failureMessageKey = 'randomTurnEvent.failureChambulCapture';
   int probability = 20;
@@ -374,21 +422,27 @@ class UniteWithNeighbours extends RandomTurnEvent {
   String localizedKey = 'randomTurnEvent.uniteWithNeighbours';
   int probability = 100;
 
-  Stock stockSuccess = Stock(values: {
-    RESOURCE_TYPES.FUR: 30,
-    RESOURCE_TYPES.FISH: 30,
-    RESOURCE_TYPES.MONEY: 50,
-    RESOURCE_TYPES.FOOD: 100,
-    RESOURCE_TYPES.WOOD: 100,
-    RESOURCE_TYPES.STONE: 100,
-  });
+  Stock stockSuccess = Stock(
+    values: {
+      RESOURCE_TYPES.FUR: 30,
+      RESOURCE_TYPES.FISH: 30,
+      RESOURCE_TYPES.MONEY: 50,
+      RESOURCE_TYPES.FOOD: 100,
+      RESOURCE_TYPES.WOOD: 100,
+      RESOURCE_TYPES.STONE: 100,
+    },
+  );
 
   Function execute(Sloboda city) {
     return () {
       return EventMessage(
         event: this,
         stock: stockSuccess,
-        cityProps: CityProps(values: {CITY_PROPERTIES.CITIZENS: 20}),
+        cityProps: CityProps(
+          values: {
+            CITY_PROPERTIES.CITIZENS: 20,
+          },
+        ),
         messageKey: this.localizedKey,
       );
     };

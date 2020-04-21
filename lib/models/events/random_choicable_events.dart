@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:sloboda/models/city_event.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/events/random_turn_events.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/seasons.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/stock.dart';
 
@@ -12,17 +12,14 @@ abstract class ChoicableRandomTurnEvent extends RandomTurnEvent {
   String localizedKeyYes;
   String localizedKeyNo;
 
-  Function postExecute(Sloboda city) {
+  EventMessage postExecute(Sloboda city) {
     var r = Random().nextInt(100);
-    return () {
-      bool success = r <= successRate;
-      return EventMessage(
-          event: this,
-          stock: success ? stockSuccess : stockFailure,
-          cityProps: success ? cityPropsSuccess : cityPropsFailure,
-          messageKey:
-              success ? this.successMessageKey : this.failureMessageKey);
-    };
+    bool success = r <= successRate;
+    return EventMessage(
+        event: this,
+        stock: success ? stockSuccess : stockFailure,
+        cityProps: success ? cityPropsSuccess : cityPropsFailure,
+        messageKey: success ? this.successMessageKey : this.failureMessageKey);
   }
 
   static bool onceInYears<T>(Sloboda city, int year) {
@@ -33,11 +30,11 @@ abstract class ChoicableRandomTurnEvent extends RandomTurnEvent {
     return canHappen;
   }
 
-  Function makeChoice(bool yes, Sloboda city) {
+  EventMessage makeChoice(bool yes, Sloboda city) {
     if (yes) {
       return this.postExecute(city);
     } else {
-      return () {};
+      return null;
     }
   }
 
@@ -443,27 +440,24 @@ class SendMerchantToKanev extends ChoicableRandomTurnEvent {
     }
   ];
 
-  Function postExecute(Sloboda city) {
+  EventMessage postExecute(Sloboda city) {
     var r = Random().nextInt(100);
-    return () {
-      bool success = r <= successRate;
-      var furTotal = city.stock.getByType(RESOURCE_TYPES.FUR);
-      var fishTotal = city.stock.getByType(RESOURCE_TYPES.FISH);
-      var stock = Stock(values: {
-        RESOURCE_TYPES.FUR: -furTotal,
-        RESOURCE_TYPES.FISH: -fishTotal,
-      });
+    bool success = r <= successRate;
+    var furTotal = city.stock.getByType(RESOURCE_TYPES.FUR);
+    var fishTotal = city.stock.getByType(RESOURCE_TYPES.FISH);
+    var stock = Stock(values: {
+      RESOURCE_TYPES.FUR: -furTotal,
+      RESOURCE_TYPES.FISH: -fishTotal,
+    });
 
-      if (success) {
-        stock.addToType(RESOURCE_TYPES.MONEY, (furTotal + fishTotal) * 2);
-      }
-      return EventMessage(
-          event: this,
-          stock: stock,
-          cityProps: null,
-          messageKey:
-              success ? this.successMessageKey : this.failureMessageKey);
-    };
+    if (success) {
+      stock.addToType(RESOURCE_TYPES.MONEY, (furTotal + fishTotal) * 2);
+    }
+    return EventMessage(
+        event: this,
+        stock: stock,
+        cityProps: null,
+        messageKey: success ? this.successMessageKey : this.failureMessageKey);
   }
 }
 

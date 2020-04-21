@@ -3,6 +3,40 @@ import 'package:sloboda/models/abstract/stockable.dart';
 
 enum CITY_PROPERTIES { FAITH, DEFENSE, GLORY, CITIZENS, COSSACKS }
 
+String cityPropertiesToString(CITY_PROPERTIES prop) {
+  switch (prop) {
+    case CITY_PROPERTIES.FAITH:
+      return "FAITH";
+    case CITY_PROPERTIES.DEFENSE:
+      return "DEFENSE";
+    case CITY_PROPERTIES.GLORY:
+      return "GLORY";
+    case CITY_PROPERTIES.CITIZENS:
+      return "CITIZENS";
+    case CITY_PROPERTIES.COSSACKS:
+      return "COSSACKS";
+    default:
+      throw "City property $prop is not recognized.";
+  }
+}
+
+CITY_PROPERTIES stringToCityProperties(String prop) {
+  switch (prop) {
+    case "FAITH":
+      return CITY_PROPERTIES.FAITH;
+    case "DEFENSE":
+      return CITY_PROPERTIES.DEFENSE;
+    case "GLORY":
+      return CITY_PROPERTIES.GLORY;
+    case "CITIZENS":
+      return CITY_PROPERTIES.CITIZENS;
+    case "COSSACKS":
+      return CITY_PROPERTIES.COSSACKS;
+    default:
+      throw "City property $prop is not recognized.";
+  }
+}
+
 abstract class CityProp extends StockItem<CITY_PROPERTIES> {
   static StockItem<CITY_PROPERTIES> fromType(CITY_PROPERTIES type,
       [int value]) {
@@ -128,5 +162,24 @@ class CityProps extends Stockable<CITY_PROPERTIES> {
       CITY_PROPERTIES.DEFENSE: 150,
       CITY_PROPERTIES.COSSACKS: 150,
     });
+  }
+
+  Map<String, dynamic> toJson() {
+    var keys = values.keys;
+    Map<String, dynamic> result = {};
+    for (var key in keys) {
+      result[cityPropertiesToString(key)] = values[key];
+    }
+
+    return result;
+  }
+
+  static fromJson(Map<String, dynamic> json) {
+    var keys = json.keys;
+    Map<CITY_PROPERTIES, int> values = {};
+    for (var key in keys) {
+      values[stringToCityProperties(key)] = json[key];
+    }
+    return CityProps(values: values);
   }
 }

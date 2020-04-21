@@ -13,6 +13,60 @@ enum RESOURCE_TYPES {
   IRON_ORE,
 }
 
+String resourceTypesToString(RESOURCE_TYPES type) {
+  switch (type) {
+    case RESOURCE_TYPES.MONEY:
+      return "MONEY";
+    case RESOURCE_TYPES.WOOD:
+      return "WOOD";
+    case RESOURCE_TYPES.FOOD:
+      return "FOOD";
+    case RESOURCE_TYPES.STONE:
+      return "STONE";
+    case RESOURCE_TYPES.POWDER:
+      return "POWDER";
+    case RESOURCE_TYPES.FUR:
+      return "FUR";
+    case RESOURCE_TYPES.FISH:
+      return "FISH";
+    case RESOURCE_TYPES.FIREARM:
+      return "FIREARM";
+    case RESOURCE_TYPES.HORSE:
+      return "HORSE";
+    case RESOURCE_TYPES.IRON_ORE:
+      return "IRON_ORE";
+    default:
+      throw 'Resource type $type is not recognized';
+  }
+}
+
+RESOURCE_TYPES stringToResourceType(String type) {
+  switch (type) {
+    case "MONEY":
+      return RESOURCE_TYPES.MONEY;
+    case "WOOD":
+      return RESOURCE_TYPES.WOOD;
+    case "FOOD":
+      return RESOURCE_TYPES.FOOD;
+    case "STONE":
+      return RESOURCE_TYPES.STONE;
+    case "POWDER":
+      return RESOURCE_TYPES.POWDER;
+    case "FUR":
+      return RESOURCE_TYPES.FUR;
+    case "FISH":
+      return RESOURCE_TYPES.FISH;
+    case "FIREARM":
+      return RESOURCE_TYPES.FIREARM;
+    case "HORSE":
+      return RESOURCE_TYPES.HORSE;
+    case "IRON_ORE":
+      return RESOURCE_TYPES.IRON_ORE;
+    default:
+      throw 'Resource type $type is not recognized';
+  }
+}
+
 abstract class ResourceType extends StockItem<RESOURCE_TYPES> {
   static StockItem<RESOURCE_TYPES> fromType(RESOURCE_TYPES type, [int value]) {
     switch (type) {

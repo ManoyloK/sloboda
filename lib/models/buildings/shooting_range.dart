@@ -30,12 +30,16 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
     RESOURCE_TYPES.HORSE: 1,
   });
 
-  bool canProduceCossack(CityProps cityProps, Stock stock) {
-    return requiresForCossack < stock &&
+  bool canProduceCossack(
+      CityProps cityProps, Stock stock, bool hasFreeCitizens) {
+    return hasFreeCitizens &&
+        requiresForCossack < stock &&
         cityProps.getByType(CITY_PROPERTIES.CITIZENS) >= 1;
   }
 
   Widget build(BuildContext context, Sloboda city) {
+    var canProduce =
+        canProduceCossack(city.props, city.stock, city.hasFreeCitizens());
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -79,7 +83,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                 ),
                 VDivider(),
                 PressedInContainer(
-                  onPress: canProduceCossack(city.props, city.stock)
+                  onPress: canProduce
                       ? () {
                           tryToCreateCossack(city);
                         }
@@ -139,7 +143,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
   }
 
   void tryToCreateCossack(Sloboda city) {
-    if (canProduceCossack(city.props, city.stock)) {
+    if (canProduceCossack(city.props, city.stock, city.hasFreeCitizens())) {
       city.stock - requiresForCossack;
       city.removeCitizens(amount: 1);
       city.addProps(
