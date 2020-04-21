@@ -112,13 +112,23 @@ class _CityGameState extends State<CityGame>
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 VDivider(),
-                                LocaleSelection(
-                                  locale: SlobodaLocalizations.locale,
-                                  onLocaleChanged: (Locale locale) {
-                                    setState(() {
-                                      SlobodaLocalizations.locale = locale;
-                                    });
-                                  },
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    LocaleSelection(
+                                      locale: SlobodaLocalizations.locale,
+                                      onLocaleChanged: (Locale locale) {
+                                        setState(() {
+                                          SlobodaLocalizations.locale = locale;
+                                        });
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(SlobodaLocalizations
+                                          .appVersionNumber),
+                                    ),
+                                  ],
                                 ),
                                 TitleText(
                                   city.name,

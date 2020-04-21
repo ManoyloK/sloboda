@@ -34,7 +34,7 @@ class Sloboda {
   ];
 
   List<CityEvent> events = List<CityEvent>();
-  final Queue<RandomTurnEvent> pendingNextEvents = Queue();
+  Queue<RandomTurnEvent> pendingNextEvents = Queue();
   bool disableRandomEvents;
 
   Stock stock;
@@ -43,7 +43,7 @@ class Sloboda {
   BehaviorSubject _innerChanges = BehaviorSubject();
   ValueStream changes;
 
-  List<Function> _nextRandomEvents = [];
+  List<EventMessage> nextRandomEvents = [];
 
   Sloboda(
       {this.name, this.stock, this.props, this.disableRandomEvents = false}) {
@@ -158,8 +158,7 @@ class Sloboda {
   }
 
   void _runAttachedEvents() {
-    for (var _event in _nextRandomEvents) {
-      EventMessage event = _event();
+    for (var event in nextRandomEvents) {
       this.stock + event.stock;
       this.addProps(event.cityProps);
       if (event.cityProps != null) {
@@ -183,7 +182,7 @@ class Sloboda {
       );
     }
 
-    _nextRandomEvents.clear();
+    nextRandomEvents.clear();
   }
 
   List<RandomTurnEvent> getChoicableRandomEvents() {
@@ -218,8 +217,8 @@ class Sloboda {
   }
 
   void runChoicableEventResult(ChoicableRandomTurnEvent event) {
-    Function f = event.makeChoice(true, this);
-    _nextRandomEvents.add(f);
+    EventMessage f = event.makeChoice(true, this);
+    nextRandomEvents.add(f);
   }
 
   void removeCitizens({amount}) {
@@ -446,6 +445,7 @@ class Sloboda {
   }
 
   factory Sloboda.fromJson(Map<String, dynamic> json) {
+    List pendingNextEventsMap = json["pendingNextEvents"] as List;
     Sloboda city = new Sloboda(name: json["name"])
       ..currentYear = json["currentYear"]
       ..foundedYear = json["foundedYear"]
@@ -466,7 +466,11 @@ class Sloboda {
       ..stock = Stock.fromJson(json["stock"])
       ..events = (json["events"] as List)
           .map((event) => CityEvent.fromJson(event))
-          .toList();
+          .toList()
+      ..pendingNextEvents = Queue.from(pendingNextEventsMap == null
+          ? []
+          : pendingNextEventsMap
+              .map((event) => RandomTurnEvent.fromJson(event)));
     city._fixCitizenOccupations();
     city._subscribeToBuildings();
     return city;
@@ -485,6 +489,8 @@ class Sloboda {
       "props": props.toJson(),
       "stock": stock.toJson(),
       "events": events.map((event) => event.toJson()).toList(),
+      "pendingNextEvents":
+          pendingNextEvents.map((event) => event.toJson()).toList(),
     };
   }
 

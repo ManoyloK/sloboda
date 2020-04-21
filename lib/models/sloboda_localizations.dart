@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/loaders/url_parser.dart';
 import 'package:sloboda/models/app_preferences.dart';
 
-var version = "0.010";
+var version = "0.70";
 
 String getDefaultOrUrlLanguage() {
   var urlLang = UrlParser.getLanguage();
@@ -846,5 +846,9 @@ class SlobodaLocalizations {
   static String get youHaveSavedGame {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['youHaveSavedGame'];
+  }
+
+  static String get appVersionNumber {
+    return version;
   }
 }
