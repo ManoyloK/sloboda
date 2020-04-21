@@ -20,6 +20,7 @@ import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/models/stock.dart';
 
 class Sloboda {
+  String version;
   String name;
   int foundedYear = 1550;
   int currentYear = 1550;
@@ -66,6 +67,8 @@ class Sloboda {
     for (var rb in resourceBuildings) {
       rb.changes.stream.listen(_buildingChangesListener);
     }
+
+    version = SlobodaLocalizations.appVersionNumber;
   }
 
   _buildingChangesListener(event) {
@@ -446,6 +449,7 @@ class Sloboda {
 
   factory Sloboda.fromJson(Map<String, dynamic> json) {
     List pendingNextEventsMap = json["pendingNextEvents"] as List;
+    String version = json["version"];
     Sloboda city = new Sloboda(name: json["name"])
       ..currentYear = json["currentYear"]
       ..foundedYear = json["foundedYear"]
@@ -470,7 +474,8 @@ class Sloboda {
       ..pendingNextEvents = Queue.from(pendingNextEventsMap == null
           ? []
           : pendingNextEventsMap
-              .map((event) => RandomTurnEvent.fromJson(event)));
+              .map((event) => RandomTurnEvent.fromJson(event)))
+      ..version = version == null ? SlobodaLocalizations.appVersionNumber : json["version"];
     city._fixCitizenOccupations();
     city._subscribeToBuildings();
     return city;
@@ -491,6 +496,7 @@ class Sloboda {
       "events": events.map((event) => event.toJson()).toList(),
       "pendingNextEvents":
           pendingNextEvents.map((event) => event.toJson()).toList(),
+      "version": version,
     };
   }
 
