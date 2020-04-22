@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
@@ -61,6 +62,30 @@ class _SichStatsViewState extends State<SichStatsView> {
                             stock: Stock(
                               values: {
                                 RESOURCE_TYPES.MONEY: gold,
+                              },
+                            ),
+                            stockSimulation: null,
+                          ),
+                        ],
+                      ),
+                      VDivider(),
+                      TitleText(SlobodaLocalizations.slobodaHas),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CityPropsMiniView(
+                            props: CityProps(
+                              values: {
+                                CITY_PROPERTIES.COSSACKS: widget.city.props
+                                    .getByType(CITY_PROPERTIES.COSSACKS),
+                              },
+                            ),
+                          ),
+                          StockMiniView(
+                            stock: Stock(
+                              values: {
+                                RESOURCE_TYPES.MONEY: widget.city.stock
+                                    .getByType(RESOURCE_TYPES.MONEY),
                               },
                             ),
                             stockSimulation: null,

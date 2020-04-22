@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/loaders/url_parser.dart';
 import 'package:sloboda/models/app_preferences.dart';
 
-var version = "0.70";
+var version = "0.71";
 
 String getDefaultOrUrlLanguage() {
   var urlLang = UrlParser.getLanguage();
@@ -624,6 +624,7 @@ class SlobodaLocalizations {
       'loadGame': 'Load game',
       'deleteGame': 'Delete game',
       'youHaveSavedGame': 'You have a saved game',
+      'slobodaHas': 'Sloboda has',
     },
     'uk': {
       'overview': 'Головна',
@@ -671,6 +672,7 @@ class SlobodaLocalizations {
       'loadGame': 'Відновити гру',
       'deleteGame': 'Видалити гру',
       'youHaveSavedGame': 'У вас є збережена гра',
+      'slobodaHas': 'Слобода має',
     }
   };
 
@@ -850,5 +852,10 @@ class SlobodaLocalizations {
 
   static String get appVersionNumber {
     return version;
+  }
+
+  static String get slobodaHas {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['slobodaHas'];
   }
 }

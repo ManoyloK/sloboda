@@ -29,6 +29,9 @@ class _SendSupportViewState extends State<SendSupportView> {
 
   @override
   Widget build(BuildContext context) {
+    var hasCossacks =
+        widget.city.props.getByType(CITY_PROPERTIES.COSSACKS) >= 1;
+    var hasMonehy = widget.city.stock.getByType(RESOURCE_TYPES.MONEY) >= 1;
     return SoftContainer(
       child: Column(
         children: <Widget>[
@@ -36,33 +39,37 @@ class _SendSupportViewState extends State<SendSupportView> {
             padding: const EdgeInsets.all(8.0),
             child: FullWidth(
               child: PressedInContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child:
-                          ButtonText(SlobodaLocalizations.sendCossacksToSich),
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: ButtonText(SlobodaLocalizations.sendCossacksToSich),
                   ),
-                  onPress: () async {
-                    try {
-                      var hasEnough = widget.city
-                          .hasEnoughProp(CityCossacks(_amountOfCossackToSend));
-                      if (hasEnough) {
-                        final result = await sich.sendCossacks(
-                            _amountOfCossackToSend, widget.city.name);
-                        if (result) {
-                          widget.city.removeCossacks(_amountOfCossackToSend);
+                ),
+                onPress: hasCossacks
+                    ? () async {
+                        try {
+                          var hasEnough = widget.city.hasEnoughProp(
+                              CityCossacks(_amountOfCossackToSend));
+                          if (hasEnough) {
+                            final result = await sich.sendCossacks(
+                                _amountOfCossackToSend, widget.city.name);
+                            if (result) {
+                              widget.city
+                                  .removeCossacks(_amountOfCossackToSend);
+                            }
+                          } else {
+                            final snackBar = SnackBar(
+                                content:
+                                    Text('Not enough cossacks to be sent'));
+                            Scaffold.of(context).showSnackBar(snackBar);
+                          }
+                        } catch (e) {
+                          print('Error while sending cossacks: $e');
                         }
-                      } else {
-                        final snackBar = SnackBar(
-                            content: Text('Not enough cossacks to be sent'));
-                        Scaffold.of(context).showSnackBar(snackBar);
+                        setState(() {});
                       }
-                    } catch (e) {
-                      print('Error while sending cossacks: $e');
-                    }
-                    setState(() {});
-                  }),
+                    : null,
+              ),
             ),
           ),
           Row(
@@ -109,29 +116,32 @@ class _SendSupportViewState extends State<SendSupportView> {
             padding: const EdgeInsets.all(8.0),
             child: FullWidth(
               child: PressedInContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: ButtonText(SlobodaLocalizations.sendMoneyToSich),
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: ButtonText(SlobodaLocalizations.sendMoneyToSich),
                   ),
-                  onPress: () async {
-                    var hasEnough =
-                        widget.city.hasEnoughStock(Money(_amountOfGoldToSend));
-                    if (hasEnough) {
-                      final result = await sich.sendMoney(
-                          _amountOfGoldToSend, widget.city.name);
-                      if (result) {
-                        widget.city.removeFromStock(
-                            {RESOURCE_TYPES.MONEY: _amountOfGoldToSend});
+                ),
+                onPress: hasMonehy
+                    ? () async {
+                        var hasEnough = widget.city
+                            .hasEnoughStock(Money(_amountOfGoldToSend));
+                        if (hasEnough) {
+                          final result = await sich.sendMoney(
+                              _amountOfGoldToSend, widget.city.name);
+                          if (result) {
+                            widget.city.removeFromStock(
+                                {RESOURCE_TYPES.MONEY: _amountOfGoldToSend});
+                          }
+                        } else {
+                          final snackBar = SnackBar(
+                              content: Text('Not enough cossacks to be sent'));
+                          Scaffold.of(context).showSnackBar(snackBar);
+                        }
+                        setState(() {});
                       }
-                    } else {
-                      final snackBar = SnackBar(
-                          content: Text('Not enough cossacks to be sent'));
-                      Scaffold.of(context).showSnackBar(snackBar);
-                    }
-                    setState(() {});
-                  }),
+                    : null,
+              ),
             ),
           ),
           Row(
