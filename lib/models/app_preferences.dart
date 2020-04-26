@@ -37,18 +37,26 @@ class AppPreferences {
   }
 
   Map<String, dynamic> readSloboda() {
-    var s = _preferences.getString("saved_sloboda");
-    if (s != null) {
-      var map = jsonDecode(s);
-      return map;
-    } else {
+    try {
+      var s = _preferences.getString("saved_sloboda");
+      if (s != null) {
+        var map = jsonDecode(s);
+        return map;
+      } else {
+        return null;
+      }
+    } catch (e) {
       return null;
     }
   }
 
   Future saveSloboda(Map<String, dynamic> json) async {
     var string = jsonEncode(json);
-    return await _preferences.setString("saved_sloboda", string);
+    try {
+      return await _preferences.setString("saved_sloboda", string);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<bool> removeSavedSloboda() async {

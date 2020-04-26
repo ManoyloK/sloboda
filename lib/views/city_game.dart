@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
-import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/inherited_city.dart';
@@ -111,9 +110,15 @@ class _CityGameState extends State<CityGame>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
-                                VDivider(),
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: TitleText(city.name),
+                                  ),
+                                ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     LocaleSelection(
                                       locale: SlobodaLocalizations.locale,
