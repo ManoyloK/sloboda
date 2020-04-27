@@ -9,6 +9,7 @@ var devRoot = productionRoot; // 'http://192.168.1.199:9090';
 
 class SichConnector {
   final String statsUrl = '/sichStats';
+  final String tasksUrl = '/tasks';
   String get root {
     if (kDebugMode) {
       return devRoot;
@@ -20,6 +21,11 @@ class SichConnector {
   final String send = '/sendSupport';
   final String money = '/money';
   final String cossacks = '/cossacks';
+
+  Future<List> readTasks() async {
+    var response = await http.get(root + tasksUrl);
+    return jsonDecode(response.body)["tasks"];
+  }
 
   Future<Map> readStats() async {
     print('reading stats');

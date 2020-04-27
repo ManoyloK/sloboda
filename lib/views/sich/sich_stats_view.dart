@@ -10,7 +10,7 @@ import 'package:sloboda/views/city_props_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 import 'package:sloboda/views/stock_view.dart';
 
-import '../models/sich_connector.dart';
+import '../../models/sich_connector.dart';
 
 class SichStatsView extends StatefulWidget {
   final Sloboda city;

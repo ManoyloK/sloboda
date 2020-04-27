@@ -625,6 +625,7 @@ class SlobodaLocalizations {
       'deleteGame': 'Delete game',
       'youHaveSavedGame': 'You have a saved game',
       'slobodaHas': 'Sloboda has',
+      'sichTasks': 'Sich Tasks',
     },
     'uk': {
       'overview': 'Головна',
@@ -673,6 +674,7 @@ class SlobodaLocalizations {
       'deleteGame': 'Видалити гру',
       'youHaveSavedGame': 'У вас є збережена гра',
       'slobodaHas': 'Слобода має',
+      'sichTasks': 'Задачі з Січі',
     }
   };
 
@@ -857,5 +859,10 @@ class SlobodaLocalizations {
   static String get slobodaHas {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['slobodaHas'];
+  }
+
+  static String get sichTasks {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['sichTasks'];
   }
 }

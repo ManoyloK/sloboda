@@ -9,6 +9,7 @@ import 'package:sloboda/views/resource_buildings/resource_building_built.dart';
 import 'package:sloboda/views/resource_buildings/resource_building_view.dart';
 import 'package:sloboda/views/resource_view.dart';
 import 'package:sloboda/views/shooting_range_view.dart';
+import 'package:sloboda/views/sich/sich_tasks_view.dart';
 import 'package:sloboda/views/sich/sich_view.dart';
 
 class SlobodaApp extends StatefulWidget {
@@ -118,6 +119,8 @@ class _SlobodaAppState extends State<SlobodaApp> {
             ExtractShootingRangeBuiltArguments(),
         CityPropScreen.routeName: (context) => ExtractCityPropScreenArguments(),
         SichScreen.routeName: (context) => ExtractSichScreenArguments(),
+        SichTasksScreen.routeName: (context) =>
+            ExtractSichTasksScreenArguments(),
       },
     );
   }

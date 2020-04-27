@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:sloboda/animations/pressed_in_container.dart';
+import 'package:sloboda/components/button_text.dart';
+import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/rotatable_image.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/sich/send_support_view.dart';
-import 'package:sloboda/views/sich_stats_view.dart';
+import 'package:sloboda/views/sich/sich_stats_view.dart';
+import 'package:sloboda/views/sich/sich_tasks_view.dart';
 
 import '../../components/divider.dart';
 
@@ -30,6 +34,22 @@ class _SichScreenState extends State<SichScreen> {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: <Widget>[
+                PressedInContainer(
+                  child: FullWidth(
+                      child: Center(
+                          child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ButtonText(SlobodaLocalizations.sichTasks),
+                  ))),
+                  onPress: () {
+                    Navigator.pushNamed(
+                      context,
+                      SichTasksScreen.routeName,
+                      arguments: SichTasksScreenArguments(city: widget.city),
+                    );
+                  },
+                ),
+                VDivider(),
                 SichStatsView(
                   city: widget.city,
                 ),
