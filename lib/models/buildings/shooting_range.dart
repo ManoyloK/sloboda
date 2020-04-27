@@ -28,6 +28,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
     RESOURCE_TYPES.FOOD: 10,
     RESOURCE_TYPES.FIREARM: 1,
     RESOURCE_TYPES.HORSE: 1,
+    RESOURCE_TYPES.MONEY: 10,
   });
 
   bool canProduceCossack(
@@ -106,6 +107,7 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                     child: StockFullView(
                       stock: requiresForCossack,
                       stockSimulation: null,
+                      showEmpty: false,
                     ),
                   ),
                 ),

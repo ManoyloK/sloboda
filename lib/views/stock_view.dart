@@ -51,11 +51,23 @@ class StockMiniView extends StatelessWidget {
 class StockFullView extends StatelessWidget {
   final Stock stock;
   final Stock stockSimulation;
+  final bool showEmpty;
 
   StockFullView({
     @required this.stock,
     this.stockSimulation = null,
+    this.showEmpty = true,
   });
+
+  List<RESOURCE_TYPES> _getValues(showEmpty) {
+    if (showEmpty) {
+      return RESOURCE_TYPES.values;
+    } else {
+      return RESOURCE_TYPES.values.where((value) {
+        return stock.values.keys.contains(value);
+      }).toList();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +81,7 @@ class StockFullView extends StatelessWidget {
             TitleText(
               SlobodaLocalizations.stock,
             ),
-            ...RESOURCE_TYPES.values.divideBy(2).map<Widget>(
+            ..._getValues(showEmpty).divideBy(2).map<Widget>(
               (List keys) {
                 return LineContainer(
                   child: Row(
