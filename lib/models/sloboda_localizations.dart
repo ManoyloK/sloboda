@@ -38,6 +38,27 @@ class InternalLocalizations {
   }
 }
 
+class SichTasksLocalizations extends InternalLocalizations {
+  Map<String, Map<String, String>> _localizedMap = {
+    'en': {
+      'sendCossacks': 'Send Cossacks',
+      'sendCossacksDescription':
+          'Sich is constantly looking for new cossacks to join the defenders of Orthodox Lands. You can train cossacks and send them to the heart of Ukraine - Sich.',
+      'sendMoney': 'Send Money',
+      'sendMoneyDescription':
+          'Sich requires constant flow of money into the budget. Someone should support families of the killed cossacks. Money is required to prepare for raids into Polish and Crimean lands.',
+    },
+    'uk': {
+      'sendCossacks': 'Поповнення козаків',
+      'sendCossacksDescription':
+          'Січ завжди потребує підготовлених козаків. Не всі морські і кінні походи вдалі, багато козаків гине. Для оборони православних земель необхідно мати як умога більше війська. Ви можете тренувати козаків і відсилати їх на Січ.',
+      'sendMoney': 'Відіслати кошти',
+      'sendMoneyDescription':
+          'Січі постійно треба кошти для існування. Хтось має підтримувати сім\'ї загиблих героїв, купляти зброю, спорядження. Військові рейди, як кінні так і морські, також потребують багато ресурсів.',
+    }
+  };
+}
+
 class CityPropsLocalizations extends InternalLocalizations {
   Map<String, Map<String, String>> _localizedMap = {
     'en': {
@@ -550,6 +571,9 @@ class SlobodaLocalizations {
   static CityPropsLocalizations cityPropsLocalizations =
       CityPropsLocalizations();
 
+  static SichTasksLocalizations sichTasksLocalizations =
+      SichTasksLocalizations();
+
   static Locale locale = Locale(getDefaultOrUrlLanguage());
 
   static getForKey(String key) {
@@ -568,6 +592,8 @@ class SlobodaLocalizations {
           return cityPropsLocalizations[split[1]];
         case 'randomTurnEvent':
           return randomEventLocalizations[split[1]];
+        case 'sichTasks':
+          return sichTasksLocalizations[split[1]];
         default:
           return key;
       }

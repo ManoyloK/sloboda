@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/models/sich_connector.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/components/CityBuilder.dart';
+import 'package:sloboda/views/components/soft_container.dart';
 
 class SichTasksScreen extends StatefulWidget {
   static String routeName = '/sich_tasks';
@@ -37,8 +39,28 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                         child: Column(
                           children: tasksList
                               .map(
-                                (taskMap) => Text(
-                                  taskMap["name"],
+                                (taskMap) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          TitleText(
+                                            SlobodaLocalizations.getForKey(
+                                                taskMap["name"]),
+                                          ),
+                                          Text(
+                                            SlobodaLocalizations.getForKey(
+                                                taskMap["description"]),
+                                          ),
+                                          VDivider(),
+                                          TitleText(
+                                              "Target: ${taskMap['target']['name']}: ${taskMap['target']['amount']}"),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               )
                               .toList(),
