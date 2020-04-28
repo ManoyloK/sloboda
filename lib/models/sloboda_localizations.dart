@@ -76,7 +76,7 @@ class CityPropsLocalizations extends InternalLocalizations {
       'citizens': 'Citizens',
       'citizensDescription':
           'Citizens. The moving part of the settlement. They do the work. Can be trained to be the Cossack. They can be killed or taken as prisoners. The Resource Buildings require citizens to be assigned to them in order to produce.',
-      'cossacks': 'Cossack',
+      'cossacks': 'Cossacks',
       'cossacksDescription':
           'Cossacks. The defenders of Ukrainian lands. Use Shooting range to train a citizen to become a Cossack. Only cossacks can take part in military events, raids and defending the Settlement. Cannot be converted back to citizen.',
     },

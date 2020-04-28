@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
+import 'package:sloboda/models/sich/task.dart';
 import 'package:sloboda/models/sich_connector.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
@@ -34,12 +35,12 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.done:
                     if (snapshot.hasData) {
-                      List tasksList = snapshot.data;
+                      List<SLTask> tasksList = snapshot.data;
                       return Center(
                         child: Column(
                           children: tasksList
                               .map(
-                                (taskMap) => Padding(
+                                (task) => Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: SoftContainer(
                                     child: Padding(
@@ -48,15 +49,15 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                         children: [
                                           TitleText(
                                             SlobodaLocalizations.getForKey(
-                                                taskMap["name"]),
+                                                task.name),
                                           ),
                                           Text(
                                             SlobodaLocalizations.getForKey(
-                                                taskMap["description"]),
+                                                task.description),
                                           ),
                                           VDivider(),
                                           TitleText(
-                                              "Target: ${taskMap['target']['name']}: ${taskMap['target']['amount']}"),
+                                              "${SlobodaLocalizations.getForKey(task.target.localizedNameKey)}: ${task.target.amount}"),
                                         ],
                                       ),
                                     ),
@@ -88,7 +89,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
     );
   }
 
-  Future _fetchSichTasks() async {
+  Future<List<SLTask>> _fetchSichTasks() async {
     final List tasks = await sichConnector.readTasks();
     return tasks;
   }

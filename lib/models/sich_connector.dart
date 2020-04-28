@@ -3,6 +3,7 @@ import 'dart:core';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:sloboda/models/sich/task.dart';
 
 var productionRoot = 'https://sloboda.locadeserta.com';
 var devRoot = productionRoot; // 'http://192.168.1.199:9090';
@@ -24,7 +25,9 @@ class SichConnector {
 
   Future<List> readTasks() async {
     var response = await http.get(root + tasksUrl);
-    return jsonDecode(response.body)["tasks"];
+    List tasks = jsonDecode(response.body)["tasks"];
+
+    return tasks.map((taskMap) => SLTask.fromJson(taskMap)).toList();
   }
 
   Future<Map> readStats() async {
