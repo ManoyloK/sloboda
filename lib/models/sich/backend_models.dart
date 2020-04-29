@@ -39,3 +39,24 @@ class SLTarget {
 class SLTargetCossacks extends SLTarget {}
 
 class SLTargetMoney extends SLTarget {}
+
+class SLSloboda {
+  String name;
+  int money;
+  int cossacks;
+  List activeTasks;
+}
+
+class SLActiveTask extends SLTask {
+  int progress;
+
+  static SLActiveTask fromJson(Map<String, dynamic> jsonMap) {
+    SLActiveTask task = SLActiveTask()
+      ..name = jsonMap["name"]
+      ..description = jsonMap["description"]
+      ..target = SLTarget.fromJson(jsonMap["target"])
+      ..progress = jsonMap['progress'];
+
+    return task;
+  }
+}
