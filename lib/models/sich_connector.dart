@@ -46,7 +46,7 @@ class SichConnector {
     var result;
     try {
       result =
-          await http.put(root + registerTask + '/${slobodaName}/${taskName}');
+          await http.get(root + registerTask + '/${slobodaName}/${taskName}');
     } catch (e) {
       print(e);
     }

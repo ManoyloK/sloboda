@@ -6,6 +6,7 @@ import 'package:sloboda/models/sich/backend_models.dart';
 import 'package:sloboda/models/sich_connector.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 
 class SichTasksScreen extends StatefulWidget {
@@ -34,41 +35,47 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                 case ConnectionState.done:
                   if (snapshot.hasData) {
                     List<SLTask> tasksList = snapshot.data[0];
-                    return Center(
-                      child: Column(
-                        children: tasksList
-                            .map(
-                              (task) => Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SoftContainer(
-                                  child: Padding(
+                    return CityBuilder(
+                      city: widget.city,
+                      builder: (context) => SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+                            children: tasksList
+                                .map(
+                                  (task) => Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        TitleText(
-                                          SlobodaLocalizations.getForKey(
-                                              task.name),
+                                    child: SoftContainer(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            TitleText(
+                                              SlobodaLocalizations.getForKey(
+                                                  task.name),
+                                            ),
+                                            Text(
+                                              SlobodaLocalizations.getForKey(
+                                                  task.description),
+                                            ),
+                                            VDivider(),
+                                            TitleText(
+                                                "${SlobodaLocalizations.getForKey(task.target.localizedNameKey)}: ${task.target.amount}"),
+                                            PressedInContainer(
+                                              child: TitleText('Register'),
+                                              onPress: () {
+                                                _registerSlobodaForTask(
+                                                    task.name);
+                                              },
+                                            )
+                                          ],
                                         ),
-                                        Text(
-                                          SlobodaLocalizations.getForKey(
-                                              task.description),
-                                        ),
-                                        VDivider(),
-                                        TitleText(
-                                            "${SlobodaLocalizations.getForKey(task.target.localizedNameKey)}: ${task.target.amount}"),
-                                        PressedInContainer(
-                                          child: TitleText('Register'),
-                                          onPress: () {
-                                            _registerSlobodaForTask(task.name);
-                                          },
-                                        )
-                                      ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                            )
-                            .toList(),
+                                )
+                                .toList(),
+                          ),
+                        ),
                       ),
                     );
                   }
