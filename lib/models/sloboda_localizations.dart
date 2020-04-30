@@ -653,7 +653,8 @@ class SlobodaLocalizations {
       'slobodaHas': 'Sloboda has',
       'sichTasks': 'Sich Tasks',
       'registerTask': 'Task Task',
-      'readingTasks': 'Readin tasks',
+      'activeTasks': 'Active Tasks',
+      'availableTasks': 'Available Tasks',
     },
     'uk': {
       'overview': 'Головна',
@@ -704,7 +705,8 @@ class SlobodaLocalizations {
       'slobodaHas': 'Слобода має',
       'sichTasks': 'Задачі з Січі',
       'registerTask': 'Взяти задачу',
-      'readingTasks': 'Зчитування задач',
+      'activeTasks': 'Активні задачі',
+      'availableTasks': 'Доступні задачі',
     }
   };
 
@@ -901,8 +903,13 @@ class SlobodaLocalizations {
         ['registerTask'];
   }
 
-  static String get readingTasks {
+  static String get availableTasks {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
-        ['readingTasks'];
+        ['availableTasks'];
+  }
+
+  static String get activeTasks {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['activeTasks'];
   }
 }

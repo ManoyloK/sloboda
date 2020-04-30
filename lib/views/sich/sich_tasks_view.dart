@@ -22,6 +22,8 @@ class SichTasksScreen extends StatefulWidget {
 
 class _SichTasksScreenState extends State<SichTasksScreen> {
   final SichConnector sichConnector = SichConnector();
+  List<SLActiveTask> activeTasks = [];
+  List<SLTask> availableTasks = [];
 
   @override
   Widget build(BuildContext context) {
@@ -32,80 +34,66 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
           child: FutureBuilder(
             future: _updateDataFromBackend(),
             builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.done:
-                  if (snapshot.hasData) {
-                    List<SLTask> availableTasks = snapshot.data[0];
-                    List<SLActiveTask> activeTasks = snapshot.data[1];
-
-                    return CityBuilder(
-                      city: widget.city,
-                      builder: (context) => SingleChildScrollView(
-                        child: Center(
-                          child: Column(
-                            children: [
-                              TitleText("Active tasks"),
-                              Column(
-                                children: activeTasks
-                                    .map(
-                                      (task) => Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SoftContainer(
-                                          child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: SichTaskView(
-                                                task: task,
-                                                onRegisterPress: () {
-                                                  _registerSlobodaForTask(
-                                                      task.name);
-                                                },
-                                              )),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                              VDivider(),
-                              Column(children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: TitleText("Available tasks"),
-                                ),
-                                ...availableTasks
-                                    .map(
-                                      (task) => Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SoftContainer(
-                                          child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: SichTaskView(
-                                                task: task,
-                                                onRegisterPress: () {
-                                                  _registerSlobodaForTask(
-                                                      task.name);
-                                                },
-                                              )),
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              ])
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  return Center(
-                    child: Text("No tasks available"),
-                  );
-                default:
-                  return Center(
-                    child: Text(SlobodaLocalizations.readingTasks),
-                  );
+              if (snapshot.hasError) {
+                return Container(
+                  child: Center(
+                    child: TitleText('Failed to read data from Sich'),
+                  ),
+                );
               }
+
+              return CityBuilder(
+                city: widget.city,
+                builder: (context) => SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        TitleText(SlobodaLocalizations.activeTasks),
+                        Column(
+                          children: activeTasks
+                              .map(
+                                (task) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SichTaskView(
+                                          task: task,
+                                          onRegisterPress: () {
+                                            _registerSlobodaForTask(task.name);
+                                          },
+                                        )),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                        VDivider(),
+                        TitleText(SlobodaLocalizations.availableTasks),
+                        Column(
+                          children: availableTasks
+                              .map(
+                                (task) => Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SoftContainer(
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SichTaskView(
+                                          task: task,
+                                          onRegisterPress: () {
+                                            _registerSlobodaForTask(task.name);
+                                          },
+                                        )),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
             },
           ),
         ),
@@ -127,12 +115,8 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
     List<Future> futures = [_fetchAvailableTasks(), _fetchActiveTasks()];
 
     List result = await Future.wait(futures);
-    List<SLTask> availableTasks = result[0];
-    List<SLActiveTask> activeTasks = result[1];
-    return [
-      _getNotTakenTasks(availableTasks, activeTasks),
-      _getActiveTasks(availableTasks, activeTasks),
-    ];
+    this.availableTasks = _getNotTakenTasks(result[0], result[1]);
+    this.activeTasks = _getActiveTasks(result[0], result[1]);
   }
 
   List<SLActiveTask> _getActiveTasks(
