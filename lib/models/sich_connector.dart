@@ -33,23 +33,22 @@ class SichConnector {
     return tasks.map((taskMap) => SLTask.fromJson(taskMap)).toList();
   }
 
-  Future<List> readSlobodaActiveTasks(String slobodaName) async {
+  Future<List<SLActiveTask>> readSlobodaActiveTasks(String slobodaName) async {
     var response = await http.get(root + slobodaStatsUrl + '/${slobodaName}');
-    Map responseMap = jsonDecode(response.body);
-
-    return responseMap['activeTasks']
-        .map((taskMap) => SLActiveTask.fromJson(taskMap))
-        .toList();
+    if (response.statusCode == 200) {
+      Map responseMap = jsonDecode(response.body);
+      List<SLActiveTask> result = (responseMap['activeTasks'] as List)
+          .map((taskMap) => SLActiveTask.fromJson(taskMap))
+          .toList();
+      return result;
+    } else {
+      return [];
+    }
   }
 
   Future registerTaskForSloboda(String slobodaName, String taskName) async {
-    var result;
-    try {
-      result =
-          await http.get(root + registerTask + '/${slobodaName}/${taskName}');
-    } catch (e) {
-      print(e);
-    }
+    var result =
+        await http.put(root + registerTask + '/${slobodaName}/${taskName}');
 
     return result;
   }

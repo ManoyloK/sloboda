@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
+import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/models/sich/backend_models.dart';
 import 'package:sloboda/models/sich_connector.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/components/soft_container.dart';
+import 'package:sloboda/views/sich/sich_task_view.dart';
 
 class SichTasksScreen extends StatefulWidget {
   static String routeName = '/sich_tasks';
@@ -34,46 +35,64 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
               switch (snapshot.connectionState) {
                 case ConnectionState.done:
                   if (snapshot.hasData) {
-                    List<SLTask> tasksList = snapshot.data[0];
+                    List<SLTask> availableTasks = snapshot.data[0];
+                    List<SLActiveTask> activeTasks = snapshot.data[1];
+
                     return CityBuilder(
                       city: widget.city,
                       builder: (context) => SingleChildScrollView(
                         child: Center(
                           child: Column(
-                            children: tasksList
-                                .map(
-                                  (task) => Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SoftContainer(
-                                      child: Padding(
+                            children: [
+                              TitleText("Active tasks"),
+                              Column(
+                                children: activeTasks
+                                    .map(
+                                      (task) => Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          children: [
-                                            TitleText(
-                                              SlobodaLocalizations.getForKey(
-                                                  task.name),
-                                            ),
-                                            Text(
-                                              SlobodaLocalizations.getForKey(
-                                                  task.description),
-                                            ),
-                                            VDivider(),
-                                            TitleText(
-                                                "${SlobodaLocalizations.getForKey(task.target.localizedNameKey)}: ${task.target.amount}"),
-                                            PressedInContainer(
-                                              child: TitleText('Register'),
-                                              onPress: () {
-                                                _registerSlobodaForTask(
-                                                    task.name);
-                                              },
-                                            )
-                                          ],
+                                        child: SoftContainer(
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: SichTaskView(
+                                                task: task,
+                                                onRegisterPress: () {
+                                                  _registerSlobodaForTask(
+                                                      task.name);
+                                                },
+                                              )),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                                    )
+                                    .toList(),
+                              ),
+                              VDivider(),
+                              Column(children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TitleText("Available tasks"),
+                                ),
+                                ...availableTasks
+                                    .map(
+                                      (task) => Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SoftContainer(
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: SichTaskView(
+                                                task: task,
+                                                onRegisterPress: () {
+                                                  _registerSlobodaForTask(
+                                                      task.name);
+                                                },
+                                              )),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ])
+                            ],
                           ),
                         ),
                       ),
@@ -84,7 +103,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                   );
                 default:
                   return Center(
-                    child: Text('Reading tasks'),
+                    child: Text(SlobodaLocalizations.readingTasks),
                   );
               }
             },
@@ -108,15 +127,35 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
     List<Future> futures = [_fetchAvailableTasks(), _fetchActiveTasks()];
 
     List result = await Future.wait(futures);
+    List<SLTask> availableTasks = result[0];
+    List<SLActiveTask> activeTasks = result[1];
+    return [
+      _getNotTakenTasks(availableTasks, activeTasks),
+      _getActiveTasks(availableTasks, activeTasks),
+    ];
+  }
 
+  List<SLActiveTask> _getActiveTasks(
+      List<SLTask> availableTasks, List<SLActiveTask> activeTasks) {
+    List<SLActiveTask> result = activeTasks.intersection<SLActiveTask, SLTask>(
+        availableTasks, (a, b) => (a.name == b.name));
     return result;
   }
 
-  Future _fetchAvailableTasks() async {
+  List<SLTask> _getNotTakenTasks(
+      List<SLTask> availableTasks, List<SLActiveTask> activeTasks) {
+    List notTakenTasks =
+        availableTasks.rest<SLTask, SLActiveTask>(activeTasks, (a, b) {
+      return (a.name == b.name);
+    });
+    return notTakenTasks;
+  }
+
+  Future<List<SLTask>> _fetchAvailableTasks() async {
     return await sichConnector.readAvailableTasks();
   }
 
-  Future _fetchActiveTasks() async {
+  Future<List<SLActiveTask>> _fetchActiveTasks() async {
     return await sichConnector.readSlobodaActiveTasks(widget.city.name);
   }
 }

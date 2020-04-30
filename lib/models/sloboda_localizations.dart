@@ -652,6 +652,8 @@ class SlobodaLocalizations {
       'youHaveSavedGame': 'You have a saved game',
       'slobodaHas': 'Sloboda has',
       'sichTasks': 'Sich Tasks',
+      'registerTask': 'Task Task',
+      'readingTasks': 'Readin tasks',
     },
     'uk': {
       'overview': 'Головна',
@@ -701,6 +703,8 @@ class SlobodaLocalizations {
       'youHaveSavedGame': 'У вас є збережена гра',
       'slobodaHas': 'Слобода має',
       'sichTasks': 'Задачі з Січі',
+      'registerTask': 'Взяти задачу',
+      'readingTasks': 'Зчитування задач',
     }
   };
 
@@ -890,5 +894,15 @@ class SlobodaLocalizations {
   static String get sichTasks {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['sichTasks'];
+  }
+
+  static String get registerTask {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['registerTask'];
+  }
+
+  static String get readingTasks {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['readingTasks'];
   }
 }

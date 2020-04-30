@@ -36,11 +36,13 @@ class _SichScreenState extends State<SichScreen> {
               children: <Widget>[
                 PressedInContainer(
                   child: FullWidth(
-                      child: Center(
-                          child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ButtonText(SlobodaLocalizations.sichTasks),
-                  ))),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ButtonText(SlobodaLocalizations.sichTasks),
+                      ),
+                    ),
+                  ),
                   onPress: () {
                     Navigator.pushNamed(
                       context,
