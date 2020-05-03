@@ -95,4 +95,11 @@ abstract class Stockable<T> {
       });
     }
   }
+
+  operator *(int multiplier) {
+    this.values.forEach((key, value) {
+      var newValue = value * multiplier;
+      setType(key, newValue);
+    });
+  }
 }

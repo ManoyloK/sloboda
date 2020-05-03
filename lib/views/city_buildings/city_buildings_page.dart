@@ -69,21 +69,24 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                           SlobodaLocalizations.getForKey(building.localizedKey),
                         ),
                       ),
-                      body: CityBuildingMetaView(
-                          building: building,
-                          selected: true,
-                          onBuildPressed: () {
-                            try {
-                              city.buildBuilding(building);
-                            } catch (e) {
-                              final snackBar = SnackBar(
-                                content: Text(
-                                  'Cannot build. Missing: ${e.localizedKey()}',
-                                ),
-                              );
-                              Scaffold.of(context).showSnackBar(snackBar);
-                            }
-                          }),
+                      body: InheritedCity(
+                        city: city,
+                        child: CityBuildingMetaView(
+                            building: building,
+                            selected: true,
+                            onBuildPressed: () {
+                              try {
+                                city.buildBuilding(building);
+                              } catch (e) {
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'Cannot build. Missing: ${e.localizedKey()}',
+                                  ),
+                                );
+                                Scaffold.of(context).showSnackBar(snackBar);
+                              }
+                            }),
+                      ),
                     ),
                     transitionType: ContainerTransitionType.fade,
                     closedBuilder:

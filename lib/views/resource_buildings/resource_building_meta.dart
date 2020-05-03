@@ -69,11 +69,10 @@ class _ResourceBuildingMetaViewState extends State<ResourceBuildingMetaView> {
                       child: Text(building.toLocalizedDescriptionString()),
                     ),
                   ),
-                if (widget.selected)
+                if (widget.selected) ...[
                   SizedBox(
                     height: 35,
                   ),
-                if (widget.selected) ...[
                   SoftContainer(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),

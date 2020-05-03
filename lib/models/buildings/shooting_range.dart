@@ -13,8 +13,8 @@ import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/models/stock.dart';
 import 'package:sloboda/views/city_props_view.dart';
+import 'package:sloboda/views/compared_stock_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
-import 'package:sloboda/views/stock_view.dart';
 
 class ShootingRange implements Buildable<RESOURCE_TYPES> {
   String localizedKey = 'cityBuildings.shootingRange';
@@ -104,10 +104,9 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                 SoftContainer(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: StockFullView(
+                    child: StockComparedView(
                       stock: requiresForCossack,
-                      stockSimulation: null,
-                      showEmpty: false,
+                      stock2: city.stock,
                     ),
                   ),
                 ),
@@ -128,12 +127,6 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                         )
                       ],
                     ),
-                  ),
-                ),
-                VDivider(),
-                SoftContainer(
-                  child: StockFullView(
-                    stock: city.stock,
                   ),
                 ),
               ],
