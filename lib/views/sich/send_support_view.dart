@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/animations/pressed_in_container.dart';
+import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/sich_connector.dart';
 
 import '../../components/button_text.dart';
@@ -56,6 +57,8 @@ class _SendSupportViewState extends State<SendSupportView> {
                             if (result) {
                               widget.city
                                   .removeCossacks(_amountOfCossackToSend);
+                              await AppPreferences.instance
+                                  .saveSloboda(widget.city.toJson());
                             }
                           } else {
                             final snackBar = SnackBar(
@@ -132,6 +135,8 @@ class _SendSupportViewState extends State<SendSupportView> {
                           if (result) {
                             widget.city.removeFromStock(
                                 {RESOURCE_TYPES.MONEY: _amountOfGoldToSend});
+                            await AppPreferences.instance
+                                .saveSloboda(widget.city.toJson());
                           }
                         } else {
                           final snackBar = SnackBar(
