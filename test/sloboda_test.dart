@@ -146,6 +146,16 @@ void main() {
           );
         },
       );
+
+      test('Can remove citizens from list and from city props registry', () {
+        var saved = city.getAllFreeCitizens().length;
+        var savedProp = city.props.getByType(CITY_PROPERTIES.CITIZENS);
+
+        city.removeCitizens(amount: 3);
+        expect(city.getAllFreeCitizens().length, equals(saved - 3));
+        expect(city.props.getByType(CITY_PROPERTIES.CITIZENS),
+            equals(savedProp - 3));
+      });
     },
   );
 

@@ -229,6 +229,7 @@ class Sloboda {
       final c = citizens.where((c) => !c.occupied).toList().takeRandom();
       c.free();
       citizens.remove(c);
+      props.removeFromType(CITY_PROPERTIES.CITIZENS, 1);
     }
 
     _innerChanges.add(this);
@@ -475,7 +476,9 @@ class Sloboda {
           ? []
           : pendingNextEventsMap
               .map((event) => RandomTurnEvent.fromJson(event)))
-      ..version = version == null ? SlobodaLocalizations.appVersionNumber : json["version"];
+      ..version = version == null
+          ? SlobodaLocalizations.appVersionNumber
+          : json["version"];
     city._fixCitizenOccupations();
     city._subscribeToBuildings();
     return city;
