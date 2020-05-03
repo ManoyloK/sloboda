@@ -46,7 +46,8 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                       return InkWellOverlay(
                         openContainer: openContainer,
                         child: BuiltBuildingListItem(
-                          title: SlobodaLocalizations.getForKey(el.localizedKey),
+                          title:
+                              SlobodaLocalizations.getForKey(el.localizedKey),
                           buildingIconPath: el.iconPath,
                           producesIconPath: el.produces.toIconPath(),
                           amount: el.outputAmount,
@@ -99,21 +100,24 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                           building.toLocalizedString(),
                         ),
                       ),
-                      body: ResourceBuildingMetaView(
-                          building: building,
-                          selected: true,
-                          onBuildPressed: () {
-                            try {
-                              city.buildBuilding(building);
-                            } catch (e) {
-                              final snackBar = SnackBar(
-                                content: Text(
-                                  'Cannot build. Missing: ${e.localizedKey()}',
-                                ),
-                              );
-                              Scaffold.of(context).showSnackBar(snackBar);
-                            }
-                          }),
+                      body: InheritedCity(
+                        city: city,
+                        child: ResourceBuildingMetaView(
+                            building: building,
+                            selected: true,
+                            onBuildPressed: () {
+                              try {
+                                city.buildBuilding(building);
+                              } catch (e) {
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    'Cannot build. Missing: ${e.localizedKey()}',
+                                  ),
+                                );
+                                Scaffold.of(context).showSnackBar(snackBar);
+                              }
+                            }),
+                      ),
                     ),
                     transitionType: ContainerTransitionType.fade,
                     closedBuilder:
