@@ -124,19 +124,22 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                         (BuildContext _, VoidCallback openContainer) {
                       return InkWellOverlay(
                         openContainer: openContainer,
-                        child: ResourceBuildingMetaView(
-                            building: building,
-                            selected: false,
-                            onBuildPressed: () {
-                              try {
-                                city.buildBuilding(building);
-                              } catch (e) {
-                                final snackBar = SnackBar(
-                                    content: Text(
-                                        'Cannot build. Missing: ${e.localizedKey()}'));
-                                Scaffold.of(context).showSnackBar(snackBar);
-                              }
-                            }),
+                        child: InheritedCity(
+                          city: city,
+                          child: ResourceBuildingMetaView(
+                              building: building,
+                              selected: false,
+                              onBuildPressed: () {
+                                try {
+                                  city.buildBuilding(building);
+                                } catch (e) {
+                                  final snackBar = SnackBar(
+                                      content: Text(
+                                          'Cannot build. Missing: ${e.localizedKey()}'));
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                }
+                              }),
+                        ),
                       );
                     },
                   ),

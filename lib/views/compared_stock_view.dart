@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/extensions/list.dart';
+import 'package:sloboda/models/abstract/stockable.dart';
+import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
-import 'package:sloboda/models/stock.dart';
 import 'package:sloboda/views/components/lined_container.dart';
-import 'package:sloboda/views/resource_view.dart';
 
-class StockComparedView extends StatelessWidget {
-  final Stock stock;
-  final Stock stock2;
+typedef Widget ImageWidgetResolverByStockableType<T>(T key);
+
+class StockComparedView<T> extends StatelessWidget {
+  final Stockable first;
+  final Stockable second;
+  final ImageWidgetResolverByStockableType<T> imageResolver;
 
   StockComparedView({
-    @required this.stock,
-    @required this.stock2,
+    @required this.first,
+    @required this.second,
+    @required this.imageResolver,
   });
 
-  List<RESOURCE_TYPES> _getValues() {
-    return RESOURCE_TYPES.values.where((value) {
-      return stock.values.keys.contains(value);
-    }).toList();
+  List _getValues() {
+    if (T == RESOURCE_TYPES) {
+      return RESOURCE_TYPES.values.where((value) {
+        return first.values.keys.contains(value);
+      }).toList();
+    } else {
+      return CITY_PROPERTIES.values.where((value) {
+        return first.values.keys.contains(value);
+      }).toList();
+    }
   }
 
   @override
@@ -39,12 +49,10 @@ class StockComparedView extends StatelessWidget {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            ResourceImageView(
-                              type: ResourceType.fromType(key),
-                            ),
-                            Text(stock.getByType(key).toString()),
+                            imageResolver(key),
+                            Text(first.getByType(key).toString()),
                             Text("/"),
-                            Text(stock2.getByType(key).toString()),
+                            Text(second.getByType(key).toString()),
                           ],
                         );
                       },

@@ -234,3 +234,9 @@ class ResourceImageView extends StatelessWidget {
     );
   }
 }
+
+Widget resourceImageResolver(RESOURCE_TYPES type) {
+  return ResourceImageView(
+    type: ResourceType.fromType(type),
+  );
+}
