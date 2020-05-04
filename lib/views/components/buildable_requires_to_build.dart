@@ -3,9 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
+import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/models/stock.dart';
 import 'package:sloboda/views/compared_stock_view.dart';
+import 'package:sloboda/views/resource_view.dart';
 
 class BuildableRequiredToBuildView extends StatelessWidget {
   const BuildableRequiredToBuildView({
@@ -22,9 +24,10 @@ class BuildableRequiredToBuildView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         TitleText(SlobodaLocalizations.requiredToBuildBy),
-        StockComparedView(
-          stock: Stock(values: building.requiredToBuild),
-          stock2: city.stock,
+        StockComparedView<RESOURCE_TYPES>(
+          first: Stock(values: building.requiredToBuild),
+          second: city.stock,
+          imageResolver: resourceImageResolver,
         ),
       ],
     );

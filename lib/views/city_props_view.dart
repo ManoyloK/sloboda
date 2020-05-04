@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/models/city_properties.dart';
+import 'package:sloboda/views/city_buildings/city_property_image_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
 
 class CityPropsMiniView extends StatelessWidget {
@@ -126,4 +127,10 @@ class ExtractCityPropScreenArguments extends StatelessWidget {
       prop: args.prop,
     );
   }
+}
+
+Widget cityPropImageResolver(CITY_PROPERTIES type) {
+  return CityPropertyImageView(
+    prop: CityProp.fromType(type),
+  );
 }

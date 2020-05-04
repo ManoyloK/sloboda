@@ -1,6 +1,9 @@
 import 'package:flutter/widgets.dart';
+import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/models/stock.dart';
+import 'package:sloboda/views/compared_stock_view.dart';
 import 'package:sloboda/views/resource_view.dart';
 
 class ResourceBuildingOutputView extends StatelessWidget {
@@ -13,21 +16,18 @@ class ResourceBuildingOutputView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var multiplier =
-        building.amountOfWorkers() == 0 ? 1 : building.amountOfWorkers();
+    Stock stock = Stock(
+      values: {building.produces.type: building.outputAmount},
+    );
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(SlobodaLocalizations.output),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ResourceImageView(
-              type: building.produces,
-            ),
-            Text(' ${building.workMultiplier * multiplier}'),
-          ],
-        ),
+        StockComparedView(
+          first: stock,
+          second: InheritedCity.of(context).city.stock,
+          imageResolver: resourceImageResolver,
+        )
       ],
     );
   }

@@ -15,6 +15,7 @@ import 'package:sloboda/models/stock.dart';
 import 'package:sloboda/views/city_props_view.dart';
 import 'package:sloboda/views/compared_stock_view.dart';
 import 'package:sloboda/views/components/soft_container.dart';
+import 'package:sloboda/views/resource_view.dart';
 
 class ShootingRange implements Buildable<RESOURCE_TYPES> {
   String localizedKey = 'cityBuildings.shootingRange';
@@ -104,9 +105,10 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
                 SoftContainer(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: StockComparedView(
-                      stock: requiresForCossack,
-                      stock2: city.stock,
+                    child: StockComparedView<RESOURCE_TYPES>(
+                      first: requiresForCossack,
+                      second: city.stock,
+                      imageResolver: resourceImageResolver,
                     ),
                   ),
                 ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/sich_connector.dart';
+import 'package:sloboda/models/stock.dart';
+import 'package:sloboda/views/compared_stock_view.dart';
 
 import '../../components/button_text.dart';
 import '../../components/divider.dart';
@@ -87,13 +89,10 @@ class _SendSupportViewState extends State<SendSupportView> {
                   });
                 },
               ),
-              CityPropsMiniView(
-                showLabels: false,
-                props: CityProps(
-                  values: {
-                    CITY_PROPERTIES.COSSACKS: 1,
-                  },
-                ),
+              StockComparedView<CITY_PROPERTIES>(
+                first: CityProps(values: {CITY_PROPERTIES.COSSACKS: 1}),
+                second: widget.city.props,
+                imageResolver: cityPropImageResolver,
               ),
               Radio<int>(
                 value: 10,
@@ -104,13 +103,10 @@ class _SendSupportViewState extends State<SendSupportView> {
                   });
                 },
               ),
-              CityPropsMiniView(
-                showLabels: false,
-                props: CityProps(
-                  values: {
-                    CITY_PROPERTIES.COSSACKS: 10,
-                  },
-                ),
+              StockComparedView<CITY_PROPERTIES>(
+                first: CityProps(values: {CITY_PROPERTIES.COSSACKS: 10}),
+                second: widget.city.props,
+                imageResolver: cityPropImageResolver,
               ),
             ],
           ),
@@ -161,9 +157,10 @@ class _SendSupportViewState extends State<SendSupportView> {
                   });
                 },
               ),
-              ResourceImageView(
-                type: Money(),
-                amount: 1,
+              StockComparedView(
+                first: Stock(values: {RESOURCE_TYPES.MONEY: 1}),
+                second: widget.city.stock,
+                imageResolver: resourceImageResolver,
               ),
               Radio<int>(
                 value: 10,
@@ -174,10 +171,11 @@ class _SendSupportViewState extends State<SendSupportView> {
                   });
                 },
               ),
-              ResourceImageView(
-                type: Money(),
-                amount: 10,
-              ),
+              StockComparedView(
+                first: Stock(values: {RESOURCE_TYPES.MONEY: 10}),
+                second: widget.city.stock,
+                imageResolver: resourceImageResolver,
+              )
             ],
           ),
         ],
