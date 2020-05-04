@@ -655,6 +655,7 @@ class SlobodaLocalizations {
       'registerTask': 'Task Task',
       'activeTasks': 'Active Tasks',
       'availableTasks': 'Available Tasks',
+      'completeTask': 'Complete task',
     },
     'uk': {
       'overview': 'Головна',
@@ -707,6 +708,7 @@ class SlobodaLocalizations {
       'registerTask': 'Взяти задачу',
       'activeTasks': 'Активні задачі',
       'availableTasks': 'Доступні задачі',
+      'completeTask': 'Виконати задачу'
     }
   };
 
@@ -911,5 +913,10 @@ class SlobodaLocalizations {
   static String get activeTasks {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['activeTasks'];
+  }
+
+  static String get completeTask {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['completeTask'];
   }
 }

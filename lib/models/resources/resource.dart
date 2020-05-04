@@ -93,6 +93,31 @@ abstract class ResourceType extends StockItem<RESOURCE_TYPES> {
     }
   }
 
+  static StockItem<RESOURCE_TYPES> fromKey(String key, [int value]) {
+    switch (key) {
+      case 'resources.firearm':
+        return FireArm(value);
+      case 'resources.fish':
+        return Fish(value);
+      case 'resources.food':
+        return Food(value);
+      case 'resources.fur':
+        return Fur(value);
+      case 'resources.ore':
+        return IronOre(value);
+      case 'resources.stone':
+        return Stone(value);
+      case 'resources.wood':
+        return Wood(value);
+      case 'resources.money':
+        return Money(value);
+      case 'resources.horse':
+        return Horse(value);
+      case 'resources.powder':
+        return Powder(value);
+    }
+  }
+
   ResourceType([value]) : super(value);
 }
 

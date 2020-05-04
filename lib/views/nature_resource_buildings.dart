@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/divider.dart';
 import 'package:sloboda/components/title_text.dart';
+import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
@@ -39,98 +40,101 @@ class _NatureResourceBuildingScreenState
       ),
       body: CityBuilder(
         city: city,
-        builder: (context) => SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SoftContainer(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: SoftContainer(
+        builder: (context) => InheritedCity(
+          city: city,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SoftContainer(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: SoftContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            building.iconPath,
+                            height: 320,
+                          ),
+                        ),
+                      ),
+                    ),
+                    VDivider(),
+                    SoftContainer(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Image.asset(
-                          building.iconPath,
-                          height: 320,
+                        child: Text(
+                          SlobodaLocalizations.getForKey(
+                            building.localizedDescriptionKey,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  VDivider(),
-                  SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        SlobodaLocalizations.getForKey(
-                          building.localizedDescriptionKey,
+                    if (!building.isFull()) ...[
+                      VDivider(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SoftContainer(
+                          child: AddWorker(
+                            city: city,
+                            building: building,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  if (!building.isFull()) ...[
+                    ],
                     VDivider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SoftContainer(
-                        child: AddWorker(
-                          city: city,
+                    if (building.assignedHumans.isNotEmpty) ...[
+                      SoftContainer(
+                        child: ResourceBuildingOutputView(
                           building: building,
                         ),
                       ),
-                    ),
-                  ],
-                  VDivider(),
-                  if (building.assignedHumans.isNotEmpty) ...[
-                    SoftContainer(
-                      child: ResourceBuildingOutputView(
-                        building: building,
+                      VDivider(),
+                    ],
+                    if (building.assignedHumans.isNotEmpty)
+                      SoftContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(children: [
+                            Center(
+                                child:
+                                    Text(SlobodaLocalizations.assignedWorkers)),
+                            ...building.assignedHumans.map(
+                              (h) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        h.name,
+                                      ),
+                                      SoftContainer(
+                                        child: PressedInContainer(
+                                          child: Icon(Icons.remove),
+                                          onPress: !building.isEmpty()
+                                              ? () {
+                                                  building.removeWorker(h);
+                                                }
+                                              : null,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ).toList(),
+                          ]),
+                        ),
                       ),
-                    ),
                     VDivider(),
                   ],
-                  if (building.assignedHumans.isNotEmpty)
-                    SoftContainer(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(children: [
-                          Center(
-                              child:
-                                  Text(SlobodaLocalizations.assignedWorkers)),
-                          ...building.assignedHumans.map(
-                            (h) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      h.name,
-                                    ),
-                                    SoftContainer(
-                                      child: PressedInContainer(
-                                        child: Icon(Icons.remove),
-                                        onPress: !building.isEmpty()
-                                            ? () {
-                                                building.removeWorker(h);
-                                              }
-                                            : null,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ).toList(),
-                        ]),
-                      ),
-                    ),
-                  VDivider(),
-                ],
+                ),
               ),
             ),
           ),

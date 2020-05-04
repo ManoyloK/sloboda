@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sloboda/components/divider.dart';
+import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
 import 'package:sloboda/extensions/list.dart';
+import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/sich/backend_models.dart';
 import 'package:sloboda/models/sich_connector.dart';
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/components/CityBuilder.dart';
 import 'package:sloboda/views/components/soft_container.dart';
+import 'package:sloboda/views/sich/sich_active_tasks_view.dart';
 import 'package:sloboda/views/sich/sich_task_view.dart';
 
 class SichTasksScreen extends StatefulWidget {
@@ -44,51 +47,61 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
 
               return CityBuilder(
                 city: widget.city,
-                builder: (context) => SingleChildScrollView(
-                  child: Center(
+                builder: (context) => InheritedCity(
+                  city: widget.city,
+                  child: SingleChildScrollView(
                     child: Column(
                       children: [
                         TitleText(SlobodaLocalizations.activeTasks),
+                        VDivider(),
                         Column(
-                          children: activeTasks
-                              .map(
-                                (task) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SoftContainer(
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SichTaskView(
-                                          task: task,
-                                          onRegisterPress: () {
-                                            _registerSlobodaForTask(task.name);
-                                          },
-                                        )),
-                                  ),
-                                ),
-                              )
-                              .toList(),
+                          children: activeTasks.isNotEmpty
+                              ? activeTasks
+                                  .map(
+                                    (task) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SoftContainer(
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: SichActiveTaskView(
+                                              task: task,
+                                              onDoPress: () {
+                                                _registerSlobodaForTask(
+                                                    task.name);
+                                              },
+                                            )),
+                                      ),
+                                    ),
+                                  )
+                                  .toList()
+                              : [noAvailableTasks()],
                         ),
                         VDivider(),
                         TitleText(SlobodaLocalizations.availableTasks),
                         Column(
-                          children: availableTasks
-                              .map(
-                                (task) => Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SoftContainer(
-                                    child: Padding(
+                            children: availableTasks.isNotEmpty
+                                ? availableTasks
+                                    .map(
+                                      (task) => Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: SichTaskView(
-                                          task: task,
-                                          onRegisterPress: () {
-                                            _registerSlobodaForTask(task.name);
-                                          },
-                                        )),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
+                                        child: SoftContainer(
+                                          child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: SichTaskView(
+                                                task: task,
+                                                onRegisterPress: () {
+                                                  _registerSlobodaForTask(
+                                                      task.name);
+                                                },
+                                              )),
+                                        ),
+                                      ),
+                                    )
+                                    .toList()
+                                : [
+                                    noAvailableTasks(),
+                                  ]),
                       ],
                     ),
                   ),
@@ -101,6 +114,20 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
       appBar: AppBar(
         title: TitleText(
           SlobodaLocalizations.sichName,
+        ),
+      ),
+    );
+  }
+
+  Widget noAvailableTasks() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SoftContainer(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FullWidth(
+            child: Center(child: Text("No available tasks")),
+          ),
         ),
       ),
     );

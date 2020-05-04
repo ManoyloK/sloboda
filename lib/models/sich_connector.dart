@@ -13,6 +13,7 @@ class SichConnector {
   final String tasksUrl = '/tasks';
   final String slobodaStatsUrl = '/slobodaStats';
   final String registerTask = '/registerTask';
+  final String doTaskUrl = '/doTask';
 
   String get root {
     if (kDebugMode) {
@@ -31,6 +32,18 @@ class SichConnector {
     List tasks = jsonDecode(response.body)["tasks"];
 
     return tasks.map((taskMap) => SLTask.fromJson(taskMap)).toList();
+  }
+
+  Future doTask(String slobodaName, String taskName, int amount) async {
+    var response = await http.put(root +
+        doTaskUrl +
+        '/' +
+        slobodaName +
+        '/' +
+        taskName +
+        '/' +
+        amount.toString());
+   return response;
   }
 
   Future<List<SLActiveTask>> readSlobodaActiveTasks(String slobodaName) async {

@@ -56,6 +56,23 @@ abstract class CityProp extends StockItem<CITY_PROPERTIES> {
     }
   }
 
+  static StockItem<CITY_PROPERTIES> fromKey(String type, [int value]) {
+    switch (type) {
+      case "cityProps.faith":
+        return CityFaith(value);
+      case "cityProps.glory":
+        return CityGlory(value);
+      case "cityProps.defense":
+        return CityDefense(value);
+      case "cityProps.citizens":
+        return CityCitizens(value);
+      case "cityProps.cossacks":
+        return CityCossacks(value);
+      default:
+        throw 'Type $type is not recognized';
+    }
+  }
+
   CityProp([value]) : super(value);
 }
 

@@ -1,3 +1,7 @@
+import 'package:sloboda/models/city_properties.dart';
+import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/stock.dart';
+
 class SLTask {
   String name;
   String description;
@@ -17,6 +21,28 @@ class SLTarget {
   String type;
   int amount;
   String localizedNameKey;
+
+  toInstanceType() {
+    if (localizedNameKey.contains('cityProps')) {
+      return CityProp.fromKey(localizedNameKey, amount);
+    } else if (localizedNameKey.contains('resources')) {
+      return ResourceType.fromKey(localizedNameKey, amount);
+    }
+  }
+
+  toStockItem() {
+    var item = toInstanceType();
+    if (item is CityProp) {
+      CityProps props = CityProps(
+        values: {item.type: amount},
+      );
+      return props;
+    } else if (item is ResourceType) {
+      return Stock(
+        values: {item.type: amount},
+      );
+    }
+  }
 
   static SLTarget fromJson(Map<String, dynamic> jsonMap) {
     switch (jsonMap['type']) {
