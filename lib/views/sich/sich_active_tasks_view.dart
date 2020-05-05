@@ -40,13 +40,13 @@ class _SichActiveTaskViewState extends State<SichActiveTaskView> {
         VDivider(),
         if (isCityPropTarget)
           StockComparedView<CITY_PROPERTIES>(
-            first: task.target.toStockItem(),
+            first: task.target.toStock(),
             second: InheritedCity.of(context).city.props,
             imageResolver: cityPropImageResolver,
           ),
         if (!isCityPropTarget)
           StockComparedView<RESOURCE_TYPES>(
-            first: task.target.toStockItem(),
+            first: task.target.toStock(),
             second: InheritedCity.of(context).city.stock,
             imageResolver: resourceImageResolver,
           ),
@@ -58,19 +58,19 @@ class _SichActiveTaskViewState extends State<SichActiveTaskView> {
               child: TitleText(SlobodaLocalizations.completeTask),
             ),
           ),
-          onPress: () {
+          onPress: () async {
             Sloboda city = InheritedCity.of(context).city;
             var existing = city.getStockItem(task.target.toInstanceType());
             if (existing >= task.target.amount) {
-              SichConnector().doTask(city.name, task.name, task.target.amount);
+              SLSloboda sloboda = await SichConnector()
+                  .doTask(city.name, task.name, task.target.amount);
+              if (sloboda != null) {
+                city.removeStockItem(task.target.toInstanceType());
+              }
             }
           },
         )
       ],
     );
-  }
-
-  _targetToStock(SLTarget target) {
-    target.toStockItem();
   }
 }

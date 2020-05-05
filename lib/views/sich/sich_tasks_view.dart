@@ -25,62 +25,48 @@ class SichTasksScreen extends StatefulWidget {
 
 class _SichTasksScreenState extends State<SichTasksScreen> {
   final SichConnector sichConnector = SichConnector();
-  List<SLActiveTask> activeTasks = [];
+  SLSloboda sloboda = SLSloboda();
   List<SLTask> availableTasks = [];
+  List<SLActiveTask> activeTasks = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder(
-            future: _updateDataFromBackend(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Container(
-                  child: Center(
-                    child: TitleText('Failed to read data from Sich'),
-                  ),
-                );
-              }
+      body: InheritedCity(
+        city: widget.city,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CityBuilder(
+              city: widget.city,
+              builder: (context) => FutureBuilder(
+                future: _updateDataFromBackend(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Container(
+                      child: Center(
+                        child: TitleText('Failed to read data from Sich'),
+                      ),
+                    );
+                  }
 
-              return CityBuilder(
-                city: widget.city,
-                builder: (context) => InheritedCity(
-                  city: widget.city,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        TitleText(SlobodaLocalizations.activeTasks),
-                        VDivider(),
-                        Column(
-                          children: activeTasks.isNotEmpty
-                              ? activeTasks
-                                  .map(
-                                    (task) => Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SoftContainer(
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: SichActiveTaskView(
-                                              task: task,
-                                              onDoPress: () {
-                                                _registerSlobodaForTask(
-                                                    task.name);
-                                              },
-                                            )),
-                                      ),
-                                    ),
-                                  )
-                                  .toList()
-                              : [noAvailableTasks()],
-                        ),
-                        VDivider(),
-                        TitleText(SlobodaLocalizations.availableTasks),
-                        Column(
-                            children: availableTasks.isNotEmpty
-                                ? availableTasks
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TitleText(
+                              '${SlobodaLocalizations.doneTasksAmount}: ${sloboda.completedTaskCount}'),
+                        ],
+                      ),
+                      VDivider(),
+                      SoftContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(children: [
+                            TitleText(SlobodaLocalizations.activeTasks),
+                            ...sloboda.activeTasks.isNotEmpty
+                                ? sloboda.activeTasks
                                     .map(
                                       (task) => Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -88,9 +74,9 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                           child: Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: SichTaskView(
+                                              child: SichActiveTaskView(
                                                 task: task,
-                                                onRegisterPress: () {
+                                                onDoPress: () {
                                                   _registerSlobodaForTask(
                                                       task.name);
                                                 },
@@ -99,21 +85,55 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                       ),
                                     )
                                     .toList()
-                                : [
-                                    noAvailableTasks(),
-                                  ]),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
+                                : [noAvailableTasks()],
+                          ]),
+                        ),
+                      ),
+                      VDivider(),
+                      SoftContainer(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              TitleText(SlobodaLocalizations.availableTasks),
+                              ...availableTasks.isNotEmpty
+                                  ? availableTasks
+                                      .map(
+                                        (task) => Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SoftContainer(
+                                            child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: SichTaskView(
+                                                  task: task,
+                                                  onRegisterPress: () {
+                                                    _registerSlobodaForTask(
+                                                        task.name);
+                                                  },
+                                                )),
+                                          ),
+                                        ),
+                                      )
+                                      .toList()
+                                  : [
+                                      noAvailableTasks(),
+                                    ]
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
           ),
         ),
       ),
       appBar: AppBar(
         title: TitleText(
-          SlobodaLocalizations.sichName,
+          SlobodaLocalizations.sichTasks,
         ),
       ),
     );
@@ -139,11 +159,12 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
   }
 
   Future _updateDataFromBackend() async {
-    List<Future> futures = [_fetchAvailableTasks(), _fetchActiveTasks()];
+    List<Future> futures = [_fetchAvailableTasks(), _fetchSlobodaStats()];
 
     List result = await Future.wait(futures);
-    this.availableTasks = _getNotTakenTasks(result[0], result[1]);
-    this.activeTasks = _getActiveTasks(result[0], result[1]);
+    sloboda = result[1];
+    availableTasks = _getNotTakenTasks(result[0], sloboda.activeTasks);
+    activeTasks = _getActiveTasks(result[0], sloboda.activeTasks);
   }
 
   List<SLActiveTask> _getActiveTasks(
@@ -166,8 +187,8 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
     return await sichConnector.readAvailableTasks();
   }
 
-  Future<List<SLActiveTask>> _fetchActiveTasks() async {
-    return await sichConnector.readSlobodaActiveTasks(widget.city.name);
+  Future<SLSloboda> _fetchSlobodaStats() async {
+    return await sichConnector.readSlobodaStats(widget.city.name);
   }
 }
 

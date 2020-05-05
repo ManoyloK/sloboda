@@ -246,6 +246,16 @@ class Sloboda {
     throw 'Type ${item} is not recognized';
   }
 
+  void removeStockItem(StockItem item) {
+    if (item is CityProp) {
+      props.removeFromType(item.type, item.value);
+    } else if (item is ResourceType) {
+      stock.removeFromType(item.type, item.value);
+    }
+
+    _innerChanges.add(this);
+  }
+
   void addCitizens({amount = 1}) {
     for (var i = 0; i < amount; i++) {
       citizens.add(Citizen());

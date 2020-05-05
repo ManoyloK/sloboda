@@ -34,7 +34,8 @@ class SichConnector {
     return tasks.map((taskMap) => SLTask.fromJson(taskMap)).toList();
   }
 
-  Future doTask(String slobodaName, String taskName, int amount) async {
+  Future<SLSloboda> doTask(
+      String slobodaName, String taskName, int amount) async {
     var response = await http.put(root +
         doTaskUrl +
         '/' +
@@ -43,19 +44,22 @@ class SichConnector {
         taskName +
         '/' +
         amount.toString());
-   return response;
+    if (response.statusCode == 200) {
+      Map responseMap = jsonDecode(response.body);
+      return SLSloboda.fromJson(responseMap);
+    } else {
+      return null;
+    }
   }
 
-  Future<List<SLActiveTask>> readSlobodaActiveTasks(String slobodaName) async {
+  Future<SLSloboda> readSlobodaStats(String slobodaName) async {
     var response = await http.get(root + slobodaStatsUrl + '/${slobodaName}');
     if (response.statusCode == 200) {
       Map responseMap = jsonDecode(response.body);
-      List<SLActiveTask> result = (responseMap['activeTasks'] as List)
-          .map((taskMap) => SLActiveTask.fromJson(taskMap))
-          .toList();
-      return result;
+      SLSloboda sloboda = SLSloboda.fromJson(responseMap);
+      return sloboda;
     } else {
-      return [];
+      return null;
     }
   }
 

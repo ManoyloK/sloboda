@@ -32,38 +32,32 @@ class StockComparedView<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            ..._getValues().divideBy(2).map<Widget>(
-              (List keys) {
-                return LineContainer(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: keys.map(
-                      (key) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            imageResolver(key),
-                            Text(first.getByType(key).toString()),
-                            Text("/"),
-                            Text(second.getByType(key).toString()),
-                          ],
-                        );
-                      },
-                    ).toList(),
-                  ),
-                );
-              },
-            ).toList(),
-          ],
-        ),
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        ..._getValues().divideBy(2).map<Widget>(
+          (List keys) {
+            return LineContainer(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: keys.map(
+                  (key) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        imageResolver(key),
+                        Text(first.getByType(key).toString()),
+                        Text("/"),
+                        Text(second.getByType(key).toString()),
+                      ],
+                    );
+                  },
+                ).toList(),
+              ),
+            );
+          },
+        ).toList(),
+      ],
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:sloboda/models/abstract/stock_item.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/stock.dart';
@@ -22,7 +23,7 @@ class SLTarget {
   int amount;
   String localizedNameKey;
 
-  toInstanceType() {
+  StockItem toInstanceType() {
     if (localizedNameKey.contains('cityProps')) {
       return CityProp.fromKey(localizedNameKey, amount);
     } else if (localizedNameKey.contains('resources')) {
@@ -30,7 +31,7 @@ class SLTarget {
     }
   }
 
-  toStockItem() {
+  toStock() {
     var item = toInstanceType();
     if (item is CityProp) {
       CityProps props = CityProps(
@@ -70,7 +71,20 @@ class SLSloboda {
   String name;
   int money;
   int cossacks;
-  List activeTasks;
+  List<SLActiveTask> activeTasks = [];
+  int completedTaskCount;
+
+  static SLSloboda fromJson(Map<String, dynamic> jsonMap) {
+    SLSloboda sloboda = SLSloboda()
+      ..name = jsonMap['name']
+      ..money = jsonMap['money']
+      ..cossacks = jsonMap['cossacks']
+      ..activeTasks = (jsonMap['activeTasks'] as List)
+          .map((jsonActiveTask) => SLActiveTask.fromJson(jsonActiveTask))
+          .toList()
+      ..completedTaskCount = jsonMap['completedTaskCount'];
+    return sloboda;
+  }
 }
 
 class SLActiveTask extends SLTask {
