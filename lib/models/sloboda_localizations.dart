@@ -38,6 +38,27 @@ class InternalLocalizations {
   }
 }
 
+class SichTasksLocalizations extends InternalLocalizations {
+  Map<String, Map<String, String>> _localizedMap = {
+    'en': {
+      'sendCossacks': 'Send Cossacks',
+      'sendCossacksDescription':
+          'Sich is constantly looking for new cossacks to join the defenders of Orthodox Lands. You can train cossacks and send them to the heart of Ukraine - Sich.',
+      'sendMoney': 'Send Money',
+      'sendMoneyDescription':
+          'Sich requires constant flow of money into the budget. Someone should support families of the killed cossacks. Money is required to prepare for raids into Polish and Crimean lands.',
+    },
+    'uk': {
+      'sendCossacks': 'Поповнення козаків',
+      'sendCossacksDescription':
+          'Січ завжди потребує підготовлених козаків. Не всі морські і кінні походи вдалі, багато козаків гине. Для оборони православних земель необхідно мати як умога більше війська. Ви можете тренувати козаків і відсилати їх на Січ.',
+      'sendMoney': 'Відіслати кошти',
+      'sendMoneyDescription':
+          'Січі постійно треба кошти для існування. Хтось має підтримувати сім\'ї загиблих героїв, купляти зброю, спорядження. Військові рейди, як кінні так і морські, також потребують багато ресурсів.',
+    }
+  };
+}
+
 class CityPropsLocalizations extends InternalLocalizations {
   Map<String, Map<String, String>> _localizedMap = {
     'en': {
@@ -55,7 +76,7 @@ class CityPropsLocalizations extends InternalLocalizations {
       'citizens': 'Citizens',
       'citizensDescription':
           'Citizens. The moving part of the settlement. They do the work. Can be trained to be the Cossack. They can be killed or taken as prisoners. The Resource Buildings require citizens to be assigned to them in order to produce.',
-      'cossacks': 'Cossack',
+      'cossacks': 'Cossacks',
       'cossacksDescription':
           'Cossacks. The defenders of Ukrainian lands. Use Shooting range to train a citizen to become a Cossack. Only cossacks can take part in military events, raids and defending the Settlement. Cannot be converted back to citizen.',
     },
@@ -550,6 +571,9 @@ class SlobodaLocalizations {
   static CityPropsLocalizations cityPropsLocalizations =
       CityPropsLocalizations();
 
+  static SichTasksLocalizations sichTasksLocalizations =
+      SichTasksLocalizations();
+
   static Locale locale = Locale(getDefaultOrUrlLanguage());
 
   static getForKey(String key) {
@@ -568,6 +592,8 @@ class SlobodaLocalizations {
           return cityPropsLocalizations[split[1]];
         case 'randomTurnEvent':
           return randomEventLocalizations[split[1]];
+        case 'sichTasks':
+          return sichTasksLocalizations[split[1]];
         default:
           return key;
       }
@@ -625,6 +651,12 @@ class SlobodaLocalizations {
       'deleteGame': 'Delete game',
       'youHaveSavedGame': 'You have a saved game',
       'slobodaHas': 'Sloboda has',
+      'sichTasks': 'Sich Tasks',
+      'registerTask': 'Task Task',
+      'activeTasks': 'Active Tasks',
+      'availableTasks': 'Available Tasks',
+      'completeTask': 'Complete task',
+      'doneTasksAmount': 'Tasks completed',
     },
     'uk': {
       'overview': 'Головна',
@@ -673,6 +705,12 @@ class SlobodaLocalizations {
       'deleteGame': 'Видалити гру',
       'youHaveSavedGame': 'У вас є збережена гра',
       'slobodaHas': 'Слобода має',
+      'sichTasks': 'Задачі з Січі',
+      'registerTask': 'Взяти задачу',
+      'activeTasks': 'Активні задачі',
+      'availableTasks': 'Доступні задачі',
+      'completeTask': 'Виконати задачу',
+      'doneTasksAmount': 'Виконано задач',
     }
   };
 
@@ -857,5 +895,35 @@ class SlobodaLocalizations {
   static String get slobodaHas {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['slobodaHas'];
+  }
+
+  static String get sichTasks {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['sichTasks'];
+  }
+
+  static String get registerTask {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['registerTask'];
+  }
+
+  static String get availableTasks {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['availableTasks'];
+  }
+
+  static String get activeTasks {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['activeTasks'];
+  }
+
+  static String get completeTask {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['completeTask'];
+  }
+
+  static String get doneTasksAmount {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['doneTasksAmount'];
   }
 }

@@ -5,6 +5,7 @@ import 'package:sloboda/extensions/int.dart';
 import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
+import 'package:sloboda/models/abstract/stock_item.dart';
 import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
 import 'package:sloboda/models/buildings/city_buildings/house.dart';
 import 'package:sloboda/models/buildings/resource_buildings/nature_resource.dart';
@@ -230,6 +231,26 @@ class Sloboda {
       c.free();
       citizens.remove(c);
       props.removeFromType(CITY_PROPERTIES.CITIZENS, 1);
+    }
+
+    _innerChanges.add(this);
+  }
+
+  int getStockItem(StockItem item) {
+    if (item is CityProp) {
+      return props.getByType(item.type);
+    } else if (item is ResourceType) {
+      return stock.getByType(item.type);
+    }
+
+    throw 'Type ${item} is not recognized';
+  }
+
+  void removeStockItem(StockItem item) {
+    if (item is CityProp) {
+      props.removeFromType(item.type, item.value);
+    } else if (item is ResourceType) {
+      stock.removeFromType(item.type, item.value);
     }
 
     _innerChanges.add(this);
