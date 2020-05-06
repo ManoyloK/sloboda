@@ -42,97 +42,107 @@ class ShootingRange implements Buildable<RESOURCE_TYPES> {
   Widget build(BuildContext context, Sloboda city) {
     var canProduce =
         canProduceCossack(city.props, city.stock, city.hasFreeCitizens());
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SoftContainer(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: SoftContainer(
-                    child: Hero(
-                      tag: localizedKey,
-                      child: Image.asset(
-                        image,
-                        height: 320,
-                      ),
-                    ),
-                  ),
-                ),
-                VDivider(),
-                FullWidth(
-                  child: SoftContainer(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: CityPropsMiniView(
-                          props: CityProps(
-                            values: {
-                              CITY_PROPERTIES.COSSACKS:
-                                  city.props.getByType(CITY_PROPERTIES.COSSACKS)
-                            },
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: SoftContainer(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Expanded(
+                flex: 9,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: SoftContainer(
+                            child: Hero(
+                              tag: localizedKey,
+                              child: Image.asset(
+                                image,
+                                height: 320,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
-                VDivider(),
-                PressedInContainer(
-                  onPress: canProduce
-                      ? () {
-                          tryToCreateCossack(city);
-                        }
-                      : null,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FullWidth(
-                      child: Center(
-                          child:
-                              ButtonText(SlobodaLocalizations.trainCossacks)),
-                    ),
-                  ),
-                ),
-                VDivider(),
-                TitleText(SlobodaLocalizations.requiredForProductionBy),
-                VDivider(),
-                SoftContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: StockComparedView<RESOURCE_TYPES>(
-                      first: requiresForCossack,
-                      second: city.stock,
-                      imageResolver: resourceImageResolver,
-                    ),
-                  ),
-                ),
-                VDivider(),
-                SoftContainer(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TitleText(SlobodaLocalizations.notOccupiedCitizens),
-                        Text(
-                          city.citizens
-                              .where((citizen) => !citizen.occupied)
-                              .toList()
-                              .length
-                              .toString(),
-                        )
+                        VDivider(),
+                        FullWidth(
+                          child: SoftContainer(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: CityPropsMiniView(
+                                  props: CityProps(
+                                    values: {
+                                      CITY_PROPERTIES.COSSACKS: city.props
+                                          .getByType(CITY_PROPERTIES.COSSACKS)
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        VDivider(),
+                        TitleText(SlobodaLocalizations.requiredForProductionBy),
+                        VDivider(),
+                        SoftContainer(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: StockComparedView<RESOURCE_TYPES>(
+                              first: requiresForCossack,
+                              second: city.stock,
+                              imageResolver: resourceImageResolver,
+                            ),
+                          ),
+                        ),
+                        VDivider(),
+                        SoftContainer(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TitleText(
+                                    SlobodaLocalizations.notOccupiedCitizens),
+                                Text(
+                                  city.citizens
+                                      .where((citizen) => !citizen.occupied)
+                                      .toList()
+                                      .length
+                                      .toString(),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              VDivider(),
+              PressedInContainer(
+                onPress: canProduce
+                    ? () {
+                        tryToCreateCossack(city);
+                      }
+                    : null,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FullWidth(
+                    child: Center(
+                        child: ButtonText(SlobodaLocalizations.trainCossacks)),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

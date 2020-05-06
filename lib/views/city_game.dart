@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sloboda/animations/pressed_in_container.dart';
@@ -177,9 +176,9 @@ class _CityGameState extends State<CityGame>
                         ),
                       ),
                       body: TabBarView(
-                        physics: kIsWeb
-                            ? NeverScrollableScrollPhysics()
-                            : BouncingScrollPhysics(),
+//                        physics: kIsWeb
+//                            ? NeverScrollableScrollPhysics()
+//                            : BouncingScrollPhysics(),
                         controller: _tabController,
                         children: <Widget>[
                           CityDashboard(city: city),

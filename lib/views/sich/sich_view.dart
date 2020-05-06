@@ -29,46 +29,56 @@ class _SichScreenState extends State<SichScreen> {
     return Scaffold(
       body: CityBuilder(
         city: widget.city,
-        builder: (context) => SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                PressedInContainer(
-                  child: FullWidth(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ButtonText(SlobodaLocalizations.sichTasks),
-                      ),
+        builder: (context) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 9,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        SichStatsView(
+                          city: widget.city,
+                        ),
+                        VDivider(),
+                        SendSupportView(
+                          city: widget.city,
+                        ),
+                        VDivider(),
+                        Hero(
+                          tag: 'sich',
+                          child: RotatableImage(
+                            imagePath: 'images/city_buildings/sich.png',
+                            width: MediaQuery.of(context).size.width,
+                          ),
+                        ),
+                        VDivider(),
+                      ],
                     ),
                   ),
-                  onPress: () {
-                    Navigator.pushNamed(
-                      context,
-                      SichTasksScreen.routeName,
-                      arguments: SichTasksScreenArguments(city: widget.city),
-                    );
-                  },
                 ),
-                VDivider(),
-                SichStatsView(
-                  city: widget.city,
-                ),
-                VDivider(),
-                SendSupportView(
-                  city: widget.city,
-                ),
-                VDivider(),
-                Hero(
-                  tag: 'sich',
-                  child: RotatableImage(
-                    imagePath: 'images/city_buildings/sich.png',
-                    width: MediaQuery.of(context).size.width,
+              ),
+              PressedInContainer(
+                child: FullWidth(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ButtonText(SlobodaLocalizations.sichTasks),
+                    ),
                   ),
                 ),
-              ],
-            ),
+                onPress: () {
+                  Navigator.pushNamed(
+                    context,
+                    SichTasksScreen.routeName,
+                    arguments: SichTasksScreenArguments(city: widget.city),
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

@@ -77,6 +77,7 @@ class _CityBuildingsPageState extends State<CityBuildingsPage> {
                             onBuildPressed: () {
                               try {
                                 city.buildBuilding(building);
+                                Navigator.pop(context);
                               } catch (e) {
                                 final snackBar = SnackBar(
                                   content: Text(
