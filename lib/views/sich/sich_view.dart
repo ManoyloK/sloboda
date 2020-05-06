@@ -61,22 +61,27 @@ class _SichScreenState extends State<SichScreen> {
                   ),
                 ),
               ),
-              PressedInContainer(
-                child: FullWidth(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ButtonText(SlobodaLocalizations.sichTasks),
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 8.0,
+                ),
+                child: PressedInContainer(
+                  child: FullWidth(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ButtonText(SlobodaLocalizations.sichTasks),
+                      ),
                     ),
                   ),
+                  onPress: () {
+                    Navigator.pushNamed(
+                      context,
+                      SichTasksScreen.routeName,
+                      arguments: SichTasksScreenArguments(city: widget.city),
+                    );
+                  },
                 ),
-                onPress: () {
-                  Navigator.pushNamed(
-                    context,
-                    SichTasksScreen.routeName,
-                    arguments: SichTasksScreenArguments(city: widget.city),
-                  );
-                },
               ),
             ],
           ),
