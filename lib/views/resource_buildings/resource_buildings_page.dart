@@ -132,6 +132,7 @@ class _ResourceBuildingsPageState extends State<ResourceBuildingsPage> {
                               onBuildPressed: () {
                                 try {
                                   city.buildBuilding(building);
+                                  Navigator.pop(context);
                                 } catch (e) {
                                   final snackBar = SnackBar(
                                       content: Text(

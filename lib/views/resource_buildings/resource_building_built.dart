@@ -7,7 +7,7 @@ import 'package:sloboda/models/buildings/resource_buildings/resource_building.da
 import 'package:sloboda/models/sloboda.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/components/CityBuilder.dart';
-import 'package:sloboda/views/components/add_worker_view.dart';
+import 'package:sloboda/views/components/add_workers_view.dart';
 import 'package:sloboda/views/components/built_building_listview.dart';
 import 'package:sloboda/views/components/resource_building_input_view.dart';
 import 'package:sloboda/views/components/resource_building_output_view.dart';
@@ -90,8 +90,8 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                     SoftContainer(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: WorkersAssignedView(
-                          building: building,
+                        child: Text(
+                          building.toLocalizedDescriptionString(),
                         ),
                       ),
                     ),
@@ -99,46 +99,44 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                     SoftContainer(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          building.toLocalizedDescriptionString(),
+                        child: WorkersAssignedView(
+                          building: building,
                         ),
                       ),
                     ),
-                    if (!building.isFull()) ...[
-                      VDivider(),
-                      SoftContainer(
-                        child: AddWorker(
-                          building: building,
-                          city: city,
-                        ),
-                      ),
-                      VDivider(),
-                    ],
-                    if (!building.isFull()) ...[
-                      PressedInContainer(
-                        onPress: !building.isFull()
-                            ? () {
-                                var freeCitizens = city
-                                    .getAllFreeCitizens()
-                                    .take(
-                                      building.maxWorkers -
-                                          building.assignedHumans.length,
-                                    )
-                                    .toList();
-                                building.addWorkers(freeCitizens);
-                              }
-                            : null,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: TitleText(
-                              SlobodaLocalizations.addMaxWorkers,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
                     VDivider(),
+                    SoftContainer(
+                      child: AddWorkersButton(
+                        building: building,
+                        city: city,
+                      ),
+                    ),
+                    VDivider(),
+                    SoftContainer(
+                      child: AddWorkersButton(
+                        building: building,
+                        city: city,
+                        addMax: true,
+                      ),
+                    ),
+                    VDivider(),
+                    if (building.requires.isNotEmpty &&
+                        building.hasWorkers()) ...[
+                      SoftContainer(
+                        child: ResourceBuildingInputView(
+                          building: building,
+                        ),
+                      ),
+                      VDivider(),
+                    ],
+                    if (building.assignedHumans.isNotEmpty) ...[
+                      SoftContainer(
+                        child: ResourceBuildingOutputView(
+                          building: building,
+                        ),
+                      ),
+                      VDivider(),
+                    ],
                     if (building.assignedHumans.isNotEmpty) ...[
                       SoftContainer(
                         child: Padding(
@@ -172,23 +170,6 @@ class _ResourceBuildingBuiltState extends State<ResourceBuildingBuilt> {
                               },
                             ).toList(),
                           ]),
-                        ),
-                      ),
-                      VDivider(),
-                    ],
-                    if (building.requires.isNotEmpty &&
-                        building.hasWorkers()) ...[
-                      SoftContainer(
-                        child: ResourceBuildingInputView(
-                          building: building,
-                        ),
-                      ),
-                      VDivider(),
-                    ],
-                    if (building.assignedHumans.isNotEmpty) ...[
-                      SoftContainer(
-                        child: ResourceBuildingOutputView(
-                          building: building,
                         ),
                       ),
                       VDivider(),
