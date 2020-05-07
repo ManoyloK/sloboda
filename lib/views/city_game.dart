@@ -4,6 +4,7 @@ import 'package:sloboda/animations/pressed_in_container.dart';
 import 'package:sloboda/components/button_text.dart';
 import 'package:sloboda/components/full_width_container.dart';
 import 'package:sloboda/components/title_text.dart';
+import 'package:sloboda/doc_generator/doc_generator_app.dart';
 import 'package:sloboda/inherited_city.dart';
 import 'package:sloboda/models/app_preferences.dart';
 import 'package:sloboda/models/sloboda.dart';
@@ -165,6 +166,26 @@ class _CityGameState extends State<CityGame>
                                         Navigator.pushNamedAndRemoveUntil(
                                             context,
                                             CreateSlobodaView.routeName,
+                                            (route) => false);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: FullWidth(
+                                    child: PressedInContainer(
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: ButtonText(SlobodaLocalizations
+                                              .documentationLabel),
+                                        ),
+                                      ),
+                                      onPress: () {
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            DocGeneratorApp.routeName,
                                             (route) => false);
                                       },
                                     ),
