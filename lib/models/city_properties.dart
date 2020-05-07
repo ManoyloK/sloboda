@@ -199,4 +199,8 @@ class CityProps extends Stockable<CITY_PROPERTIES> {
     }
     return CityProps(values: values);
   }
+
+  String toMarkDownDocs() {
+    throw UnimplementedError();
+  }
 }

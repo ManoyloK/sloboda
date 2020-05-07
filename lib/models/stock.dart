@@ -53,4 +53,14 @@ class Stock extends Stockable<RESOURCE_TYPES> {
     }
     return Stock(values: values);
   }
+
+  String toMarkDownDocs() {
+    var result = '';
+    values.forEach((key, value) {
+      ResourceType resource = ResourceType.fromType(key, value);
+      result = result + resource.toMarkDownDoc('- ') + '\n';
+    });
+
+    return result;
+  }
 }

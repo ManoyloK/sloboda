@@ -10,6 +10,7 @@ import 'package:sloboda/models/buildings/resource_buildings/smith.dart';
 import 'package:sloboda/models/buildings/resource_buildings/stables.dart';
 import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/models/stock.dart';
 
 abstract class ResourceBuilding
     with Producible
@@ -21,7 +22,30 @@ abstract class ResourceBuilding
   Map<RESOURCE_TYPES, int> requires = Map();
   String localizedKey;
   String localizedDescriptionKey;
+
   ResourceBuilding();
+
+  static String toMarkDownDocs() {
+    String doc = '';
+    RESOURCE_BUILDING_TYPES.values.forEach((type) {
+      var instance = ResourceBuilding.fromType(type);
+      Stock stockRequiresToBuild = Stock(values: instance.requiredToBuild);
+      Stock requires = Stock(values: instance.requires);
+      doc = doc +
+          '# ![${SlobodaLocalizations.getForKey(instance.localizedKey)}](${instance.toIconPath()}) ${SlobodaLocalizations.getForKey(instance.localizedKey)}\n' +
+          '${instance.toLocalizedDescriptionString()}\n' +
+          '### ${SlobodaLocalizations.requiredToBuildBy}\n' +
+          '${stockRequiresToBuild.toMarkDownDocs()}' +
+          '### ${SlobodaLocalizations.output}\n' +
+          '${instance.produces.toMarkDownDoc(null)}\n\n' +
+          '### ${SlobodaLocalizations.requiredForProductionBy}\n' +
+          '${SlobodaLocalizations.getForKey(requires.toMarkDownDocs())}\n' +
+          '- ### ${SlobodaLocalizations.maxNumberOfWorkers}: ${instance.maxWorkers}\n' +
+          '---\n';
+    });
+    print(doc);
+    return doc;
+  }
 
   static ResourceBuilding fromType(RESOURCE_BUILDING_TYPES type) {
     switch (type) {
@@ -64,24 +88,6 @@ abstract class ResourceBuilding
     var instance = ResourceBuilding.fromType(type)
       ..assignedHumans = assignedHumans;
     return instance;
-//    switch (type) {
-//      case "SMITH":
-//        return Smith.fromJson(json);
-//      case "FIELD":
-//        return Field.fromJson(json);
-//      case "MILL":
-//        return Mill.fromJson(json);
-//      case "QUARRY":
-//        return Quarry.fromJson(json);
-//      case "STABLES":
-//        return Stables.fromJson(json);
-//      case "IRON_MINE":
-//        return IronMine.fromJson(json);
-//      case "TRAPPER_HOUSE":
-//        return TrapperHouse.fromJson(json);
-//      case "POWDER_CELLAR": return PowderCellar.fromJson(json);
-//      default: throw 'Resource building type $type is not recognized';
-//    }
   }
 
   Map<String, dynamic> toJson() {

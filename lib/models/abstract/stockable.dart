@@ -5,6 +5,8 @@ abstract class Stockable<T> {
 
   Map<String, dynamic> toJson();
 
+  String toMarkDownDocs();
+
   Stockable(Map<T, int> props) {
     if (props != null) {
       values = Map.from(props);
