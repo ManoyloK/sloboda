@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sloboda/doc_generator/doc_generator_app.dart';
 import 'package:sloboda/views/city_buildings/city_building_built.dart';
 import 'package:sloboda/views/city_game.dart';
 import 'package:sloboda/views/city_props_view.dart';
@@ -121,6 +122,7 @@ class _SlobodaAppState extends State<SlobodaApp> {
         SichScreen.routeName: (context) => ExtractSichScreenArguments(),
         SichTasksScreen.routeName: (context) =>
             ExtractSichTasksScreenArguments(),
+        DocGeneratorApp.routeName: (context) => DocGeneratorApp()
       },
     );
   }

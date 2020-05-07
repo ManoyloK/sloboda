@@ -7,6 +7,7 @@ import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/locale_selection.dart';
 
 class DocGeneratorApp extends StatefulWidget {
+  static final String routeName = '/docs';
   @override
   _DocGeneratorAppState createState() => _DocGeneratorAppState();
 }
@@ -24,8 +25,10 @@ class _DocGeneratorAppState extends State<DocGeneratorApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(SlobodaLocalizations.documentationLabel),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -82,8 +85,7 @@ class _DocGeneratorAppState extends State<DocGeneratorApp> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   _updateMarkDown() {
