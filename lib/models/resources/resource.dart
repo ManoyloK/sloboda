@@ -1,5 +1,4 @@
 import 'package:sloboda/models/abstract/stock_item.dart';
-import 'package:sloboda/models/sloboda_localizations.dart';
 
 enum RESOURCE_TYPES {
   MONEY,
@@ -120,18 +119,6 @@ abstract class ResourceType extends StockItem<RESOURCE_TYPES> {
   }
 
   ResourceType([value]) : super(value);
-
-  String toMarkDownDoc(String acc) {
-    if (acc == null) {
-      acc = '';
-    }
-
-    var localizedName = SlobodaLocalizations.getForKey(localizedKey);
-    acc = acc +
-        '![${localizedName}](${toIconPath()}) ${localizedName}: ${value.toString()}\n';
-
-    return acc;
-  }
 }
 
 class Powder extends ResourceType {

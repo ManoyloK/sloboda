@@ -1,3 +1,4 @@
+import 'package:sloboda/doc_generator/markdown_generator.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/stock_item.dart';
 import 'package:sloboda/models/buildings/city_buildings/church.dart';
@@ -7,6 +8,8 @@ import 'package:sloboda/models/buildings/city_buildings/wall.dart';
 import 'package:sloboda/models/buildings/city_buildings/watch_tower.dart';
 import 'package:sloboda/models/city_properties.dart';
 import 'package:sloboda/models/resources/resource.dart';
+import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/models/stock.dart';
 
 abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
   StockItem<CITY_PROPERTIES> produces;
@@ -62,6 +65,33 @@ abstract class CityBuilding implements Buildable<RESOURCE_TYPES> {
   }
 
   Map<String, dynamic> toJson();
+
+  static MarkdownDocument toMarkDownFullDocs() {
+    MarkdownDocument doc =
+        MarkdownDocument().h1(SlobodaLocalizations.cityBuildings).separator();
+    CITY_BUILDING_TYPES.values.forEach((type) {
+      var instance = CityBuilding.fromType(type);
+      doc.text(instance.toMarkDownDocument().toString())
+        ..separator()
+        ..separator();
+    });
+    return doc;
+  }
+
+  MarkdownDocument toMarkDownDocument() {
+    Stock stockRequiresToBuild = Stock(values: requiredToBuild);
+    MarkdownDocument doc = MarkdownDocument();
+    MarkdownDocument image = MarkdownDocument().image(
+        toIconPath(), SlobodaLocalizations.getForKey(localizedKey), true);
+    doc.h1(image.toString())
+      ..text(SlobodaLocalizations.getForKey(localizedKey))
+      ..h3(SlobodaLocalizations.requiredToBuildBy)
+      ..text(stockRequiresToBuild.toMarkDownDocument().toString())
+      ..h3(SlobodaLocalizations.output)
+      ..text(produces.toMarkDownDocument().toString());
+
+    return doc;
+  }
 }
 
 enum CITY_BUILDING_TYPES { HOUSE, CHURCH, TOWER, WATCH_TOWER, WALL }

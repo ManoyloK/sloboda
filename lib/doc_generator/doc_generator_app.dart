@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:sloboda/models/buildings/city_buildings/city_building.dart';
 import 'package:sloboda/models/buildings/resource_buildings/resource_building.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
 import 'package:sloboda/views/locale_selection.dart';
@@ -18,7 +19,7 @@ class _DocGeneratorAppState extends State<DocGeneratorApp> {
   @override
   initState() {
     super.initState();
-    textController.text = ResourceBuilding.toMarkDownDocs();
+    textController.text = ResourceBuilding.toMarkDownFullDocs().toString();
   }
 
   @override
@@ -57,7 +58,7 @@ class _DocGeneratorAppState extends State<DocGeneratorApp> {
                   child: Markdown(
                     controller: scrollController,
                     data: textController.text,
-                    imageDirectory: "https://locadeserta.com/sloboda/assets",
+                    imageDirectory: "https://locadeserta.com/sloboda/assets/",
                   ),
                 ),
               RaisedButton(
@@ -86,6 +87,7 @@ class _DocGeneratorAppState extends State<DocGeneratorApp> {
   }
 
   _updateMarkDown() {
-    textController.text = ResourceBuilding.toMarkDownDocs();
+    textController.text = ResourceBuilding.toMarkDownFullDocs().toString() +
+        CityBuilding.toMarkDownFullDocs().toString();
   }
 }

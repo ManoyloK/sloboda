@@ -1,3 +1,4 @@
+import 'package:sloboda/doc_generator/markdown_generator.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/resource_buildings/field.dart';
@@ -14,7 +15,7 @@ import 'package:sloboda/models/stock.dart';
 
 abstract class ResourceBuilding
     with Producible
-    implements Buildable<RESOURCE_TYPES> {
+    implements Buildable<RESOURCE_TYPES>, MarkdownConvertible {
   Map<RESOURCE_TYPES, int> requiredToBuild;
 
   RESOURCE_BUILDING_TYPES type;
@@ -25,25 +26,36 @@ abstract class ResourceBuilding
 
   ResourceBuilding();
 
-  static String toMarkDownDocs() {
-    String doc = '';
+  MarkdownDocument toMarkDownDocument() {
+    Stock stockRequiresToBuild = Stock(values: requiredToBuild);
+    Stock stockRequires = Stock(values: requires);
+    MarkdownDocument doc = MarkdownDocument();
+    MarkdownDocument image = MarkdownDocument().image(
+        toIconPath(), SlobodaLocalizations.getForKey(localizedKey), true);
+    doc.h1(image.toString())
+      ..text(toLocalizedDescriptionString())
+      ..h3(SlobodaLocalizations.requiredToBuildBy)
+      ..text(stockRequiresToBuild.toMarkDownDocument().toString())
+      ..h3(SlobodaLocalizations.output)
+      ..text(produces.toMarkDownDocument().toString())
+      ..h3(SlobodaLocalizations.requiredForProductionBy)
+      ..text(stockRequires.toMarkDownDocument().toString())
+      ..point(MarkdownDocument()
+          .h3('${SlobodaLocalizations.maxNumberOfWorkers}: ${maxWorkers}')
+          .toString());
+
+    return doc;
+  }
+
+  static MarkdownDocument toMarkDownFullDocs() {
+    MarkdownDocument doc =
+        MarkdownDocument().h1(SlobodaLocalizations.resources).separator();
     RESOURCE_BUILDING_TYPES.values.forEach((type) {
       var instance = ResourceBuilding.fromType(type);
-      Stock stockRequiresToBuild = Stock(values: instance.requiredToBuild);
-      Stock requires = Stock(values: instance.requires);
-      doc = doc +
-          '# ![${SlobodaLocalizations.getForKey(instance.localizedKey)}](${instance.toIconPath()}) ${SlobodaLocalizations.getForKey(instance.localizedKey)}\n' +
-          '${instance.toLocalizedDescriptionString()}\n' +
-          '### ${SlobodaLocalizations.requiredToBuildBy}\n' +
-          '${stockRequiresToBuild.toMarkDownDocs()}' +
-          '### ${SlobodaLocalizations.output}\n' +
-          '${instance.produces.toMarkDownDoc(null)}\n\n' +
-          '### ${SlobodaLocalizations.requiredForProductionBy}\n' +
-          '${SlobodaLocalizations.getForKey(requires.toMarkDownDocs())}\n' +
-          '- ### ${SlobodaLocalizations.maxNumberOfWorkers}: ${instance.maxWorkers}\n' +
-          '---\n';
+      doc.text(instance.toMarkDownDocument().toString())
+        ..separator()
+        ..separator();
     });
-    print(doc);
     return doc;
   }
 
