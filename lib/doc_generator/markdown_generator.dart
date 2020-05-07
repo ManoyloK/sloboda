@@ -33,7 +33,7 @@ class MarkdownDocument {
 
   MarkdownDocument image(String imagePath, [String imageText, bool showText]) {
     imageText = imageText ?? '';
-    _document = _document + '![${imageText}](${imagePath})';
+    _document = _document + '![${imageText}](resource:${imagePath})';
     if (showText) {
       _document = _document + ' ${imageText}';
     }

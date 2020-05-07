@@ -20,72 +20,72 @@ class _DocGeneratorAppState extends State<DocGeneratorApp> {
   @override
   initState() {
     super.initState();
-    textController.text = ResourceBuilding.toMarkDownFullDocs().toString();
+    _updateMarkDown();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(SlobodaLocalizations.documentationLabel),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 1,
-                child: LocaleSelection(
-                  locale: SlobodaLocalizations.locale,
-                  onLocaleChanged: (Locale locale) {
-                    setState(() {
-                      SlobodaLocalizations.locale = locale;
-                      _updateMarkDown();
-                    });
-                  },
-                ),
-              ),
-              if (showSource)
-                Expanded(
-                  flex: 9,
-                  child: Container(
-                    child: TextField(
-                      maxLines: 1000,
-                      controller: textController,
-                    ),
-                  ),
-                ),
-              if (!showSource)
-                Expanded(
-                  flex: 9,
-                  child: Markdown(
-                    controller: scrollController,
-                    data: textController.text,
-                    imageDirectory: "https://locadeserta.com/sloboda/assets/",
-                  ),
-                ),
-              RaisedButton(
-                child: Text("Copy"),
-                onPressed: () {
-                  Clipboard.setData(
-                    ClipboardData(
-                      text: textController.text,
-                    ),
-                  );
-                },
-              ),
-              RaisedButton(
-                child: Text(showSource ? 'Show Markdown' : 'Show Source'),
-                onPressed: () {
+      appBar: AppBar(
+        title: Text(SlobodaLocalizations.documentationLabel),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: LocaleSelection(
+                locale: SlobodaLocalizations.locale,
+                onLocaleChanged: (Locale locale) {
                   setState(() {
-                    showSource = !showSource;
+                    SlobodaLocalizations.locale = locale;
+                    _updateMarkDown();
                   });
                 },
-              )
-            ],
-          ),
+              ),
+            ),
+            if (showSource)
+              Expanded(
+                flex: 9,
+                child: Container(
+                  child: TextField(
+                    maxLines: 1000,
+                    controller: textController,
+                  ),
+                ),
+              ),
+            if (!showSource)
+              Expanded(
+                flex: 9,
+                child: Markdown(
+                  controller: scrollController,
+                  data: textController.text,
+//                    imageDirectory: "https://locadeserta.com/sloboda/assets/",
+                ),
+              ),
+            RaisedButton(
+              child: Text("Copy"),
+              onPressed: () {
+                Clipboard.setData(
+                  ClipboardData(
+                    text: textController.text,
+                  ),
+                );
+              },
+            ),
+            RaisedButton(
+              child: Text(showSource ? 'Show Markdown' : 'Show Source'),
+              onPressed: () {
+                setState(() {
+                  showSource = !showSource;
+                });
+              },
+            )
+          ],
         ),
-      );
+      ),
+    );
   }
 
   _updateMarkDown() {

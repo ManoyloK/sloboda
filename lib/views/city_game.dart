@@ -183,10 +183,8 @@ class _CityGameState extends State<CityGame>
                                         ),
                                       ),
                                       onPress: () {
-                                        Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            DocGeneratorApp.routeName,
-                                            (route) => false);
+                                        Navigator.pushNamed(
+                                            context, DocGeneratorApp.routeName);
                                       },
                                     ),
                                   ),
