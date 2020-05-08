@@ -60,7 +60,7 @@ abstract class RandomTurnEvent {
   List<Function> conditions;
   Stock stockSuccess;
   Stock stockFailure;
-  String successIconPath = "images/events/failed_event.png";
+  String successIconPath = "images/events/successful_event.png";
   String failureIconPath = "images/events/failed_event.png";
   String iconPath = "images/events/merchant_visit_64.png";
   String imagePath = "images/events/merchant_visit.png";

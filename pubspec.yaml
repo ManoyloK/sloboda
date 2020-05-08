@@ -104,6 +104,7 @@ flutter:
     - images/ui/arrow_right.png
     # Events
     - images/events/failed_event.png
+    - images/events/successful_event.png
     - images/events/failed_event_128.png
     - images/events/failed_event_64.png
     - images/events/merchant_visit.png
