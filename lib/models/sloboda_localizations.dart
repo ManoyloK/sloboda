@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/loaders/url_parser.dart';
 import 'package:sloboda/models/app_preferences.dart';
 
-var version = "1.0.2";
+var version = "1.0.3";
 
 String getDefaultOrUrlLanguage() {
   var urlLang = UrlParser.getLanguage();
@@ -658,6 +658,7 @@ class SlobodaLocalizations {
       'completeTask': 'Complete task',
       'doneTasksAmount': 'Tasks completed',
       'buildingIsFullOfWorkers': 'Max limit reached',
+      'documentationLabel': 'Documentation',
     },
     'uk': {
       'overview': 'Головна',
@@ -712,7 +713,8 @@ class SlobodaLocalizations {
       'availableTasks': 'Доступні задачі',
       'completeTask': 'Виконати задачу',
       'doneTasksAmount': 'Виконано задач',
-      'buildingIsFullOfWorkers': 'Немає вільних місць'
+      'buildingIsFullOfWorkers': 'Немає вільних місць',
+      'documentationLabel': 'Документація',
     }
   };
 
@@ -932,5 +934,10 @@ class SlobodaLocalizations {
   static String get buildingIsFullOfWorkers {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['buildingIsFullOfWorkers'];
+  }
+
+  static String get documentationLabel {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['documentationLabel'];
   }
 }

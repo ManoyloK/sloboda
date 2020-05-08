@@ -1,3 +1,4 @@
+import 'package:sloboda/doc_generator/markdown_generator.dart';
 import 'package:sloboda/models/abstract/stock_item.dart';
 import 'package:sloboda/models/abstract/stockable.dart';
 
@@ -198,5 +199,9 @@ class CityProps extends Stockable<CITY_PROPERTIES> {
       values[stringToCityProperties(key)] = json[key];
     }
     return CityProps(values: values);
+  }
+
+  MarkdownDocument toMarkDownDocument() {
+    return MarkdownDocument();
   }
 }

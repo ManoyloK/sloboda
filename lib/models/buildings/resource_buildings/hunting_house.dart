@@ -24,5 +24,5 @@ class TrapperHouse extends ResourceBuilding {
   int maxWorkers = 10;
   int workMultiplier = 2;
 
-  ResourceType produces = Fur();
+  ResourceType produces = Fur(1);
 }

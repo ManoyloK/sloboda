@@ -1,3 +1,4 @@
+import 'package:sloboda/doc_generator/markdown_generator.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
 import 'package:sloboda/models/abstract/producable.dart';
 import 'package:sloboda/models/buildings/resource_buildings/field.dart';
@@ -10,10 +11,11 @@ import 'package:sloboda/models/buildings/resource_buildings/smith.dart';
 import 'package:sloboda/models/buildings/resource_buildings/stables.dart';
 import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/sloboda_localizations.dart';
+import 'package:sloboda/models/stock.dart';
 
 abstract class ResourceBuilding
     with Producible
-    implements Buildable<RESOURCE_TYPES> {
+    implements Buildable<RESOURCE_TYPES>, MarkdownConvertible {
   Map<RESOURCE_TYPES, int> requiredToBuild;
 
   RESOURCE_BUILDING_TYPES type;
@@ -21,7 +23,41 @@ abstract class ResourceBuilding
   Map<RESOURCE_TYPES, int> requires = Map();
   String localizedKey;
   String localizedDescriptionKey;
+
   ResourceBuilding();
+
+  MarkdownDocument toMarkDownDocument() {
+    Stock stockRequiresToBuild = Stock(values: requiredToBuild);
+    Stock stockRequires = Stock(values: requires);
+    MarkdownDocument doc = MarkdownDocument();
+    MarkdownDocument image = MarkdownDocument().image(
+        toIconPath(), SlobodaLocalizations.getForKey(localizedKey), true);
+    doc.h1(image.toString())
+      ..text(toLocalizedDescriptionString())
+      ..h3(SlobodaLocalizations.requiredToBuildBy)
+      ..text(stockRequiresToBuild.toMarkDownDocument().toString())
+      ..h3(SlobodaLocalizations.output)
+      ..text(produces.toMarkDownDocument().toString())
+      ..h3(SlobodaLocalizations.requiredForProductionBy)
+      ..text(stockRequires.toMarkDownDocument().toString())
+      ..point(MarkdownDocument()
+          .h3('${SlobodaLocalizations.maxNumberOfWorkers}: ${maxWorkers}')
+          .toString());
+
+    return doc;
+  }
+
+  static MarkdownDocument toMarkDownFullDocs() {
+    MarkdownDocument doc =
+        MarkdownDocument().h1(SlobodaLocalizations.resources).separator();
+    RESOURCE_BUILDING_TYPES.values.forEach((type) {
+      var instance = ResourceBuilding.fromType(type);
+      doc.text(instance.toMarkDownDocument().toString())
+        ..separator()
+        ..separator();
+    });
+    return doc;
+  }
 
   static ResourceBuilding fromType(RESOURCE_BUILDING_TYPES type) {
     switch (type) {
@@ -64,24 +100,6 @@ abstract class ResourceBuilding
     var instance = ResourceBuilding.fromType(type)
       ..assignedHumans = assignedHumans;
     return instance;
-//    switch (type) {
-//      case "SMITH":
-//        return Smith.fromJson(json);
-//      case "FIELD":
-//        return Field.fromJson(json);
-//      case "MILL":
-//        return Mill.fromJson(json);
-//      case "QUARRY":
-//        return Quarry.fromJson(json);
-//      case "STABLES":
-//        return Stables.fromJson(json);
-//      case "IRON_MINE":
-//        return IronMine.fromJson(json);
-//      case "TRAPPER_HOUSE":
-//        return TrapperHouse.fromJson(json);
-//      case "POWDER_CELLAR": return PowderCellar.fromJson(json);
-//      default: throw 'Resource building type $type is not recognized';
-//    }
   }
 
   Map<String, dynamic> toJson() {

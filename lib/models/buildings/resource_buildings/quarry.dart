@@ -20,7 +20,7 @@ class Quarry extends ResourceBuilding {
 
   int workMultiplier = 3;
 
-  ResourceType produces = Stone();
+  ResourceType produces = Stone(1);
 
   Map<RESOURCE_TYPES, int> requires = {
     RESOURCE_TYPES.FOOD: 2,

@@ -1,7 +1,8 @@
+import 'package:sloboda/doc_generator/markdown_generator.dart';
 import 'package:sloboda/models/abstract/stockable.dart';
 import 'package:sloboda/models/resources/resource.dart';
 
-class Stock extends Stockable<RESOURCE_TYPES> {
+class Stock extends Stockable<RESOURCE_TYPES> implements MarkdownConvertible {
   static const Map<RESOURCE_TYPES, int> defaultValues = {
     RESOURCE_TYPES.FOOD: 20,
     RESOURCE_TYPES.FIREARM: 1,
@@ -52,5 +53,14 @@ class Stock extends Stockable<RESOURCE_TYPES> {
       values[stringToResourceType(key)] = json[key];
     }
     return Stock(values: values);
+  }
+
+  MarkdownDocument toMarkDownDocument() {
+    MarkdownDocument doc = MarkdownDocument();
+    values.forEach((key, value) {
+      ResourceType resource = ResourceType.fromType(key, value);
+      doc.point(resource.toMarkDownDocument().toString());
+    });
+    return doc;
   }
 }

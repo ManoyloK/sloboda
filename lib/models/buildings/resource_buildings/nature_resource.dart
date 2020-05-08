@@ -86,7 +86,7 @@ class River extends NaturalResource {
   NATURAL_RESOURCES type = NATURAL_RESOURCES.RIVER;
   int maxWorkers = 50;
   int workMultiplier = 2;
-  ResourceType produces = Fish();
+  ResourceType produces = Fish(1);
   Map<RESOURCE_TYPES, int> requires = {
     RESOURCE_TYPES.FOOD: 1,
   };

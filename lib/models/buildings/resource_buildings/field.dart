@@ -22,5 +22,5 @@ class Field extends ResourceBuilding {
 
   int workMultiplier = 5;
 
-  ResourceType produces = Food();
+  ResourceType produces = Food(1);
 }

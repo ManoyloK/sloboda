@@ -1,6 +1,8 @@
 import 'dart:collection';
 
-abstract class Stockable<T> {
+import 'package:sloboda/doc_generator/markdown_generator.dart';
+
+abstract class Stockable<T> implements MarkdownConvertible {
   Map<T, int> values = {};
 
   Map<String, dynamic> toJson();
