@@ -111,6 +111,7 @@ flutter:
     - images/events/merchant_visit_1.png
     - images/events/merchant_visit_2.png
     - images/events/merchant_visit_3.png
+    - images/events/merchant_visit_64.png
     - images/events/merchant_visit_128.png
 
   fonts:

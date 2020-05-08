@@ -659,6 +659,7 @@ class SlobodaLocalizations {
       'doneTasksAmount': 'Tasks completed',
       'buildingIsFullOfWorkers': 'Max limit reached',
       'documentationLabel': 'Documentation',
+      'settingsLabel': 'Settings',
     },
     'uk': {
       'overview': 'Головна',
@@ -715,6 +716,7 @@ class SlobodaLocalizations {
       'doneTasksAmount': 'Виконано задач',
       'buildingIsFullOfWorkers': 'Немає вільних місць',
       'documentationLabel': 'Документація',
+      'settingsLabel': 'Налаштування',
     }
   };
 
@@ -939,5 +941,10 @@ class SlobodaLocalizations {
   static String get documentationLabel {
     return _localizedValues[SlobodaLocalizations.locale.languageCode]
         ['documentationLabel'];
+  }
+
+  static String get settingsLabel {
+    return _localizedValues[SlobodaLocalizations.locale.languageCode]
+        ['settingsLabel'];
   }
 }
