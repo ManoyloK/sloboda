@@ -111,7 +111,7 @@ class EventsView extends StatelessWidget {
                                         if (event.sourceEvent.imagePath != null)
                                           Image.asset(
                                             event.sourceEvent.imagePath,
-                                            width: 64,
+                                            width: 256,
                                           ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
