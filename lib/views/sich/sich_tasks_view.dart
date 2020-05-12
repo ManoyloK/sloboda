@@ -78,7 +78,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                                 task: task,
                                                 onDoPress: () {
                                                   _registerSlobodaForTask(
-                                                      task.name);
+                                                      task.localizedKey);
                                                 },
                                               )),
                                         ),
@@ -109,7 +109,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                                   task: task,
                                                   onRegisterPress: () {
                                                     _registerSlobodaForTask(
-                                                        task.name);
+                                                        task.localizedKey);
                                                   },
                                                 )),
                                           ),
@@ -170,7 +170,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
   List<SLActiveTask> _getActiveTasks(
       List<SLTask> availableTasks, List<SLActiveTask> activeTasks) {
     List<SLActiveTask> result = activeTasks.intersection<SLActiveTask, SLTask>(
-        availableTasks, (a, b) => (a.name == b.name));
+        availableTasks, (a, b) => (a.localizedKey == b.localizedKey));
     return result;
   }
 
@@ -178,7 +178,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
       List<SLTask> availableTasks, List<SLActiveTask> activeTasks) {
     List notTakenTasks =
         availableTasks.rest<SLTask, SLActiveTask>(activeTasks, (a, b) {
-      return (a.name == b.name);
+      return (a.localizedKey == b.localizedKey);
     });
     return notTakenTasks;
   }

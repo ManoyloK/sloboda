@@ -28,14 +28,14 @@ class _SichActiveTaskViewState extends State<SichActiveTaskView> {
   @override
   Widget build(BuildContext context) {
     var task = widget.task;
-    var isCityPropTarget = task.target.localizedNameKey.contains('cityProps');
+    var isCityPropTarget = task.target.localizedKey.contains('cityProps');
     return Column(
       children: [
         TitleText(
-          SlobodaLocalizations.getForKey(task.name),
+          SlobodaLocalizations.getForKey(task.localizedKey),
         ),
         Text(
-          SlobodaLocalizations.getForKey(task.description),
+          SlobodaLocalizations.getForKey(task.localizedDescriptionKey),
         ),
         VDivider(),
         if (isCityPropTarget)
@@ -63,7 +63,7 @@ class _SichActiveTaskViewState extends State<SichActiveTaskView> {
             var existing = city.getStockItem(task.target.toInstanceType());
             if (existing >= task.target.amount) {
               SLSloboda sloboda = await SichConnector()
-                  .doTask(city.name, task.name, task.target.amount);
+                  .doTask(city.name, task.localizedKey, task.target.amount);
               if (sloboda != null) {
                 city.removeStockItem(task.target.toInstanceType());
               }
