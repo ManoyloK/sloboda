@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:rxdart/rxdart.dart';
+import 'package:sloboda/components/rotatable_image.dart';
 import 'package:sloboda/extensions/int.dart';
 import 'package:sloboda/extensions/list.dart';
 import 'package:sloboda/models/abstract/buildable.dart';
@@ -206,6 +207,8 @@ class Sloboda {
         sourceEvent: EventMessage(
           stock: null,
           event: event,
+          imagePath:
+              generateRotatableImagesFromImage(event.imagePath).takeRandom(),
           messageKey: event.choiceToStringKey(yes),
         ),
       ),
@@ -331,9 +334,7 @@ class Sloboda {
       Map<CITY_PROPERTIES, int> generated = cb.generate();
       generated.entries.forEach((e) {
         if (e.key == CITY_PROPERTIES.CITIZENS) {
-          e.value.timesRepeat(() {
-            citizens.add(Citizen());
-          });
+          e.value.timesRepeat(() => citizens.add(Citizen()));
         }
         props.addToType(e.key, e.value);
       });

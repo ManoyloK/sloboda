@@ -146,6 +146,8 @@ class TartarsRaid extends RandomTurnEvent {
   String successMessageKey = 'randomTurnEvent.successTartarRaid';
   String failureMessageKey = 'randomTurnEvent.failureTartarRaid';
   String localizedKey = 'randomTurnEvent.tartarRaid';
+  String failureIconPath = "images/events/successful_event.png";
+  String successIconPath = "images/events/failed_event.png";
   int probability = 20;
   int successRate = 20;
 
@@ -184,6 +186,9 @@ class SaranaInvasion extends RandomTurnEvent {
   String localizedKey = 'randomTurnEvent.saranaInvasion';
   String successMessageKey = 'randomTurnEvent.successSaranaInvasion';
   String failureMessageKey = 'randomTurnEvent.failureSaranaInvasion';
+
+  String failureIconPath = "images/events/successful_event.png";
+  String successIconPath = "images/events/failed_event.png";
   int probability = 50;
   int successRate = 40;
 
@@ -399,6 +404,7 @@ class MerchantVisit extends RandomTurnEvent {
     return () {
       return EventMessage(
         event: this,
+        imagePath: imagePath,
         stock: stock,
         messageKey: this.localizedKey,
       );
@@ -437,6 +443,7 @@ class UniteWithNeighbours extends RandomTurnEvent {
     return () {
       return EventMessage(
         event: this,
+        imagePath: successIconPath,
         stock: stockSuccess,
         cityProps: CityProps(
           values: {

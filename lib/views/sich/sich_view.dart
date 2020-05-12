@@ -51,7 +51,8 @@ class _SichScreenState extends State<SichScreen> {
                         Hero(
                           tag: 'sich',
                           child: RotatableImage(
-                            imagePath: 'images/city_buildings/sich.png',
+                            imagePaths: generateRotatableImagesFromImage(
+                                'images/city_buildings/sich.png'),
                             width: MediaQuery.of(context).size.width,
                           ),
                         ),

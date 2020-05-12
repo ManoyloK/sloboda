@@ -3,23 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class RotatableImage extends StatefulWidget {
-  final String imagePath;
+  final List<String> imagePaths;
   final double width;
 
-  RotatableImage({this.imagePath, this.width = 320.0});
+  RotatableImage({this.imagePaths, this.width = 320.0});
 
   @override
   _RotatableImageState createState() => _RotatableImageState();
 }
 
 class _RotatableImageState extends State<RotatableImage> {
-  int position = 0;
+  int _position = 0;
   bool _visible = true;
-
-  _getPrefix(String fullPath) {
-    var noExtension = fullPath.split(".png");
-    return noExtension[0];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +28,7 @@ class _RotatableImageState extends State<RotatableImage> {
           milliseconds: 50,
         ),
         child: Image.asset(
-          _getPrefix(widget.imagePath) + '_${position}.png',
+          widget.imagePaths[_position],
           width: widget.width,
         ),
       ),
@@ -47,9 +42,9 @@ class _RotatableImageState extends State<RotatableImage> {
   }
 
   _rotate() {
-    position++;
-    if (position >= 4) {
-      position = 0;
+    _position++;
+    if (_position >= widget.imagePaths.length) {
+      _position = 0;
     }
     setState(() {
       _visible = false;
@@ -60,4 +55,14 @@ class _RotatableImageState extends State<RotatableImage> {
         ),
         _toggleOpacity);
   }
+}
+
+List<String> generateRotatableImagesFromImage(String imagePath,
+    [int amount = 4]) {
+  var noExtension = imagePath.split(".png")[0];
+  List<String> result = [];
+  for (var i = 0; i < amount; i++) {
+    result.add('${noExtension}_${i}.png');
+  }
+  return result;
 }

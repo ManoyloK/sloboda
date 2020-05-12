@@ -172,13 +172,13 @@ class _PendingEventsViewState extends State<PendingEventsView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            RotatableImage(
-              width: 320,
-              imagePath: event.imagePath,
-            ),
             Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               TitleText(
                 SlobodaLocalizations.incomingEventLabel,
+              ),
+              RotatableImage(
+                imagePaths: generateRotatableImagesFromImage(event.imagePath),
+                width: MediaQuery.of(context).size.width / 2,
               ),
               SVDivider(),
               Padding(

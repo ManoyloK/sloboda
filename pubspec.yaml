@@ -113,6 +113,12 @@ flutter:
     - images/events/merchant_visit_2.png
     - images/events/merchant_visit_3.png
     - images/events/merchant_visit_128.png
+    - images/events/tartar_attack_in_steppe/tartar_attack_in_steppe.png
+    - images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_1.png
+    - images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_2.png
+    - images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_3.png
+    - images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_0.png
+    - images/events/tartar_attack_in_steppe_128.png
 
   fonts:
     - family: Roboto

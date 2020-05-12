@@ -17,6 +17,7 @@ abstract class ChoicableRandomTurnEvent extends RandomTurnEvent {
     bool success = r <= successRate;
     return EventMessage(
         event: this,
+        imagePath: success ? successIconPath : failureIconPath,
         stock: success ? stockSuccess : stockFailure,
         cityProps: success ? cityPropsSuccess : cityPropsFailure,
         messageKey: success ? this.successMessageKey : this.failureMessageKey);
@@ -188,6 +189,11 @@ class AttackChambul extends ChoicableRandomTurnEvent {
   String localizedKeyYes = 'randomTurnEvent.AttackChambulYes';
   String localizedKeyNo = 'randomTurnEvent.AttackChambulNo';
 
+  String imagePath =
+      'images/events/tartar_attack_in_steppe/tartar_attack_in_steppe.png';
+  String iconPath =
+      'images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_128.png';
+
   int probability = 40;
 
   Stock stockSuccess = Stock(values: {
@@ -234,6 +240,11 @@ class TrapChambulOnWayBack extends ChoicableRandomTurnEvent {
   String failureMessageKey = 'randomTurnEvent.failureTrapChambulOnWayBack';
   String localizedKeyYes = 'randomTurnEvent.TrapChambulOnWayBackYes';
   String localizedKeyNo = 'randomTurnEvent.TrapChambulOnWayBackNo';
+
+  String imagePath =
+      'images/events/tartar_attack_in_steppe/tartar_attack_in_steppe.png';
+  String iconPath =
+      'images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_128.png';
 
   int probability = 50;
 
@@ -331,6 +342,11 @@ class AttackPolishLands extends ChoicableRandomTurnEvent {
   String failureMessageKey = 'randomTurnEvent.failureAttackPolishLands';
   String localizedKeyYes = 'randomTurnEvent.AttackPolishLandsYes';
   String localizedKeyNo = 'randomTurnEvent.AttackPolishLandsNo';
+
+  String imagePath =
+      'images/events/tartar_attack_in_steppe/tartar_attack_in_steppe.png';
+  String iconPath =
+      'images/events/tartar_attack_in_steppe/tartar_attack_in_steppe_128.png';
 
   int probability = 50;
 
@@ -457,6 +473,7 @@ class SendMerchantToKanev extends ChoicableRandomTurnEvent {
         event: this,
         stock: stock,
         cityProps: null,
+        imagePath: success ? successIconPath : failureIconPath,
         messageKey: success ? this.successMessageKey : this.failureMessageKey);
   }
 }
