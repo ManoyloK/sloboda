@@ -23,14 +23,14 @@ class _SichTaskViewState extends State<SichTaskView> {
     return Column(
       children: [
         TitleText(
-          SlobodaLocalizations.getForKey(task.name),
+          SlobodaLocalizations.getForKey(task.localizedKey),
         ),
         Text(
-          SlobodaLocalizations.getForKey(task.description),
+          SlobodaLocalizations.getForKey(task.localizedDescriptionKey),
         ),
         VDivider(),
         TitleText(
-          "${SlobodaLocalizations.getForKey(task.target.localizedNameKey)}: ${task.target.amount}",
+          "${SlobodaLocalizations.getForKey(task.target.localizedKey)}: ${task.target.amount}",
         ),
         VDivider(),
         PressedInContainer(

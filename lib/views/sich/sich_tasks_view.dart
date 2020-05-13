@@ -78,7 +78,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                                 task: task,
                                                 onDoPress: () {
                                                   _registerSlobodaForTask(
-                                                      task.name);
+                                                      task.localizedKey);
                                                 },
                                               )),
                                         ),
@@ -109,7 +109,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
                                                   task: task,
                                                   onRegisterPress: () {
                                                     _registerSlobodaForTask(
-                                                        task.name);
+                                                        task.localizedKey);
                                                   },
                                                 )),
                                           ),
@@ -163,14 +163,19 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
 
     List result = await Future.wait(futures);
     sloboda = result[1];
-    availableTasks = _getNotTakenTasks(result[0], sloboda.activeTasks);
-    activeTasks = _getActiveTasks(result[0], sloboda.activeTasks);
+    if (sloboda == null) {
+      activeTasks = [];
+      availableTasks = result[0];
+    } else {
+      activeTasks = _getActiveTasks(result[0], sloboda.activeTasks);
+      availableTasks = _getNotTakenTasks(result[0], sloboda.activeTasks);
+    }
   }
 
   List<SLActiveTask> _getActiveTasks(
       List<SLTask> availableTasks, List<SLActiveTask> activeTasks) {
     List<SLActiveTask> result = activeTasks.intersection<SLActiveTask, SLTask>(
-        availableTasks, (a, b) => (a.name == b.name));
+        availableTasks, (a, b) => (a.localizedKey == b.localizedKey));
     return result;
   }
 
@@ -178,7 +183,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
       List<SLTask> availableTasks, List<SLActiveTask> activeTasks) {
     List notTakenTasks =
         availableTasks.rest<SLTask, SLActiveTask>(activeTasks, (a, b) {
-      return (a.name == b.name);
+      return (a.localizedKey == b.localizedKey);
     });
     return notTakenTasks;
   }

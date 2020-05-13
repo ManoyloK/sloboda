@@ -4,30 +4,40 @@ import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/stock.dart';
 
 class SLTask {
-  String name;
-  String description;
+  String localizedKey;
+  String localizedDescriptionKey;
   SLTarget target;
 
   static SLTask fromJson(Map<String, dynamic> jsonMap) {
     SLTask task = SLTask()
-      ..name = jsonMap["name"]
-      ..description = jsonMap["description"]
+      ..localizedKey = jsonMap["localizedKey"]
+      ..localizedDescriptionKey = jsonMap["localizedDescriptionKey"]
       ..target = SLTarget.fromJson(jsonMap["target"]);
 
     return task;
+  }
+
+  SLActiveTask toActiveTask(int amount) {
+    SLActiveTask activeTask = SLActiveTask()
+      ..localizedKey = localizedKey
+      ..localizedDescriptionKey = localizedDescriptionKey
+      ..target = target
+      ..progress = amount;
+
+    return activeTask;
   }
 }
 
 class SLTarget {
   String type;
   int amount;
-  String localizedNameKey;
+  String localizedKey;
 
   StockItem toInstanceType() {
-    if (localizedNameKey.contains('cityProps')) {
-      return CityProp.fromKey(localizedNameKey, amount);
-    } else if (localizedNameKey.contains('resources')) {
-      return ResourceType.fromKey(localizedNameKey, amount);
+    if (localizedKey.contains('cityProps')) {
+      return CityProp.fromKey(localizedKey, amount);
+    } else if (localizedKey.contains('resources')) {
+      return ResourceType.fromKey(localizedKey, amount);
     }
   }
 
@@ -51,13 +61,13 @@ class SLTarget {
         var result = SLTargetCossacks();
         result.amount = jsonMap['amount'];
         result.type = jsonMap['type'];
-        result.localizedNameKey = jsonMap['localizedNameKey'];
+        result.localizedKey = jsonMap['localizedKey'];
         return result;
       case 'Money':
         var result = SLTargetMoney();
         result.amount = jsonMap['amount'];
         result.type = jsonMap['type'];
-        result.localizedNameKey = jsonMap['localizedNameKey'];
+        result.localizedKey = jsonMap['localizedKey'];
         return result;
     }
   }
@@ -91,12 +101,10 @@ class SLActiveTask extends SLTask {
   int progress;
 
   static SLActiveTask fromJson(Map<String, dynamic> jsonMap) {
-    SLActiveTask task = SLActiveTask()
-      ..name = jsonMap["name"]
-      ..description = jsonMap["description"]
-      ..target = SLTarget.fromJson(jsonMap["target"])
-      ..progress = jsonMap['progress'];
-
-    return task;
+    SLTask task = SLTask()
+      ..localizedKey = jsonMap["localizedKey"]
+      ..localizedDescriptionKey = jsonMap["localizedDescriptionKey"]
+      ..target = SLTarget.fromJson(jsonMap["target"]);
+    return task.toActiveTask(jsonMap['progress']);
   }
 }
