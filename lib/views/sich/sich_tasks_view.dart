@@ -163,8 +163,13 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
 
     List result = await Future.wait(futures);
     sloboda = result[1];
-    availableTasks = _getNotTakenTasks(result[0], sloboda.activeTasks);
-    activeTasks = _getActiveTasks(result[0], sloboda.activeTasks);
+    if (sloboda == null) {
+      activeTasks = [];
+      availableTasks = result[0];
+    } else {
+      activeTasks = _getActiveTasks(result[0], sloboda.activeTasks);
+      availableTasks = _getNotTakenTasks(result[0], sloboda.activeTasks);
+    }
   }
 
   List<SLActiveTask> _getActiveTasks(

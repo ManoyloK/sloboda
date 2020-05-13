@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:sloboda/models/sich/backend_models.dart';
 
 var productionRoot = 'https://sloboda.locadeserta.com';
-var devRoot = 'http://localhost:8888';
+var devRoot = 'http://192.168.1.141:9090';
 
 class SichConnector {
   final String sichUrl = '/sich';
@@ -25,7 +25,8 @@ class SichConnector {
 
   Future<List> readAvailableTasks() async {
     var response = await http.get(root + sichUrl);
-    List tasks = jsonDecode(response.body)["tasks"];
+    Map responseJson = jsonDecode(response.body);
+    List tasks = responseJson["tasks"]["tasks"];
 
     return tasks.map((taskMap) => SLTask.fromJson(taskMap)).toList();
   }
@@ -69,7 +70,11 @@ class SichConnector {
 
   Future<Map> readStats() async {
     var response = await http.get(root + sichUrl);
-    return jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      return null;
+    }
   }
 
   Future<bool> sendCossacks(int amount, String slobodaName) async {
