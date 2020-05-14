@@ -31,6 +31,10 @@ class _SichActiveTaskViewState extends State<SichActiveTaskView> {
     var isCityPropTarget = task.target.localizedKey.contains('cityProps');
     return Column(
       children: [
+        Image.asset(
+          task.iconPath,
+          width: 64,
+        ),
         TitleText(
           SlobodaLocalizations.getForKey(task.localizedKey),
         ),

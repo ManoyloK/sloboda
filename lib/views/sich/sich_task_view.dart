@@ -22,6 +22,10 @@ class _SichTaskViewState extends State<SichTaskView> {
     var task = widget.task;
     return Column(
       children: [
+        Image.asset(
+          task.iconPath,
+          width: 64,
+        ),
         TitleText(
           SlobodaLocalizations.getForKey(task.localizedKey),
         ),

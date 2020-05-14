@@ -146,7 +146,7 @@ class _SichTasksScreenState extends State<SichTasksScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: FullWidth(
-            child: Center(child: Text("No available tasks")),
+            child: Center(child: Text(SlobodaLocalizations.noAvailableTasks)),
           ),
         ),
       ),

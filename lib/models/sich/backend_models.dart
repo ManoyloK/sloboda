@@ -4,16 +4,17 @@ import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/stock.dart';
 
 class SLTask {
+  SLTarget target;
   String localizedKey;
   String localizedDescriptionKey;
-  SLTarget target;
+  String iconPath;
 
   static SLTask fromJson(Map<String, dynamic> jsonMap) {
     SLTask task = SLTask()
       ..localizedKey = jsonMap["localizedKey"]
       ..localizedDescriptionKey = jsonMap["localizedDescriptionKey"]
-      ..target = SLTarget.fromJson(jsonMap["target"]);
-
+      ..target = SLTarget.fromJson(jsonMap["target"])
+      ..iconPath = jsonMap["iconPath"];
     return task;
   }
 
@@ -22,6 +23,7 @@ class SLTask {
       ..localizedKey = localizedKey
       ..localizedDescriptionKey = localizedDescriptionKey
       ..target = target
+      ..iconPath = iconPath
       ..progress = amount;
 
     return activeTask;
@@ -101,10 +103,7 @@ class SLActiveTask extends SLTask {
   int progress;
 
   static SLActiveTask fromJson(Map<String, dynamic> jsonMap) {
-    SLTask task = SLTask()
-      ..localizedKey = jsonMap["localizedKey"]
-      ..localizedDescriptionKey = jsonMap["localizedDescriptionKey"]
-      ..target = SLTarget.fromJson(jsonMap["target"]);
+    SLTask task = SLTask.fromJson(jsonMap);
     return task.toActiveTask(jsonMap['progress']);
   }
 }
