@@ -4,19 +4,18 @@ import 'package:sloboda/models/resources/resource.dart';
 import 'package:sloboda/models/stock.dart';
 
 class SLTask {
-  SLTarget target;
-  String localizedKey;
-  String localizedDescriptionKey;
-  String iconPath;
-
+  SLTarget target ;
+  String localizedKey ;
+  String localizedDescriptionKey ;
+  String iconPath ;
   static SLTask fromJson(Map<String, dynamic> jsonMap) {
-    SLTask task = SLTask()
+    return SLTask()
+      ..target = SLTarget.fromJson(jsonMap["target"])
       ..localizedKey = jsonMap["localizedKey"]
       ..localizedDescriptionKey = jsonMap["localizedDescriptionKey"]
-      ..target = SLTarget.fromJson(jsonMap["target"])
       ..iconPath = jsonMap["iconPath"];
-    return task;
   }
+
 
   SLActiveTask toActiveTask(int amount) {
     SLActiveTask activeTask = SLActiveTask()
