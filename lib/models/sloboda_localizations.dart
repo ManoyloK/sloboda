@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sloboda/loaders/url_parser.dart';
 import 'package:sloboda/models/app_preferences.dart';
 
-var version = "1.0.3";
+var version = "1.1";
 
 String getDefaultOrUrlLanguage() {
   var urlLang = UrlParser.getLanguage();
